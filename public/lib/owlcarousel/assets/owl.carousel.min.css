@@ -1,0 +1,91 @@
+/* Vendor section styles */
+/* Điều chỉnh vendor item */
+/* Vendor item styles */
+.vendor-item {
+    margin: 5px;                   /* Khoảng cách giữa các item */
+    border: 1px solid #ddd;         /* Đường viền nhẹ quanh item */
+    padding: 5px;
+    text-align: center;
+    width: 129px;                  /* Chiều rộng của item */
+    height: 129px;                 /* Chiều cao của item */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;              /* Ẩn phần dư thừa nếu có */
+}
+
+.vendor-item img {
+    width: 100%;                   /* Đảm bảo hình ảnh vừa với kích thước container */
+    height: auto;                  /* Để tự động điều chỉnh chiều cao theo tỷ lệ của hình ảnh */
+    max-height: 100%;              /* Đảm bảo chiều cao không vượt quá chiều cao của item */
+    object-fit: cover;             /* Hình ảnh giữ đúng tỷ lệ */
+}
+
+.vendor-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.vendor-item:hover img {
+    transform: scale(1.1);
+}
+
+
+.owl-carousel .owl-item {
+    margin: 10px;
+}
+
+.vendor-carousel {
+    display: flex;
+    justify-content: space-around;
+}
+
+.owl-theme .owl-controls {
+    margin-top: 10px;
+}
+
+.owl-theme .owl-controls .owl-page span {
+    background: #007bff !important;
+    opacity: 1;
+}
+
+.owl-theme .owl-controls .owl-page.active span {
+    background: #343a40 !important;
+}
+
+/* Responsive design */
+@media (max-width: 576px) {
+    .vendor-item {
+        width: 129px;              /* Đảm bảo mỗi item có chiều rộng và cao 129px */
+        height: 129px;
+        margin: 5px;               /* Giảm khoảng cách giữa các item */
+    }
+}
+
+/* Related item adjustments */
+.related-carousel .item {
+    margin: 5px;                 /* Khoảng cách giữa các item */
+    border: 1px solid #ddd;       /* Đường viền nhẹ quanh item */
+    padding: 5px;
+    text-align: center;
+    width: 129px;                /* Chiều rộng của item */
+    height: 129px;               /* Chiều cao của item */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.related-carousel .item img {
+    width: 100%;                 /* Đảm bảo hình ảnh vừa với kích thước container */
+    height: 100%;
+    object-fit: cover;           /* Giữ tỷ lệ ảnh */
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 576px) {
+    .related-carousel .item {
+        width: 129px;            /* Đảm bảo kích thước item nhỏ hơn trên màn hình nhỏ */
+        height: 129px;
+        margin: 5px;
+    }
+}

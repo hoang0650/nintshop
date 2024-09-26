@@ -103,21 +103,28 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">Home</a>
-                        <a routerLink="/shop" routerLinkActive="active"  class="nav-item nav-link">Shop</a>
-                        <a routerLink="/detail" routerLinkActive="active" class="nav-item nav-link">Shop Detail</a>
+                        <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">{{ 'HOME' | translate }}</a>
+                        <a routerLink="/shop" routerLinkActive="active"  class="nav-item nav-link">{{ 'PRODUCT' | translate }}</a>
+                        <a routerLink="/detail" routerLinkActive="active" class="nav-item nav-link">{{ 'DETAIL' | translate }}</a>
                         <div class="nav-item dropdown">
-                            <a routerLink="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                            <a routerLink="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ 'CART' | translate }}</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a routerLink="/cart" routerLinkActive="active" class="dropdown-item">Shopping Cart</a>
-                                <a routerLink="/checkout" routerLinkActive="active" class="dropdown-item">Checkout</a>
+                                <a routerLink="/cart" routerLinkActive="active" class="dropdown-item">{{ 'CART' | translate }}</a>
+                                <a routerLink="/checkout" routerLinkActive="active" class="dropdown-item">{{ 'CHECK_OUT' | translate }}</a>
                             </div>
                         </div>
-                        <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">Contact</a>
+                        <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">{{ 'CONTACT' | translate }}</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0">
-                        <a routerLink="login" routerLinkActive="active" class="nav-item nav-link">Login</a>
-                        <a routerLink="signup" routerLinkActive="active" class="nav-item nav-link">Register</a>
+                        <a routerLink="login" routerLinkActive="active" class="nav-item nav-link">{{ 'LOGIN' | translate }}</a>
+                        <a routerLink="signup" routerLinkActive="active" class="nav-item nav-link">{{ 'SIGN_UP' | translate }}</a>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ currentLanguage === 'vi' ? 'VI' : 'EN' }}</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a  class="dropdown-item" (click)="selectLanguage('en')">English</a>
+                            <a  class="dropdown-item" (click)="selectLanguage('vi')">Tiếng Việt</a>
+                        </div>
                     </div>
                 </div>
             </nav>

@@ -8,6 +8,8 @@
     "SERVICE": "Service",
     "LOGIN":"Login",
     "SIGN_UP":"Register",
+    "CATEGORY":"Categories",
+    "KEYCHAIN":"Keychain",
     "BLOG": "Blog",
     "FREE_SHIPPING": "Free Shipping",
     "CONTACT": "Contact",

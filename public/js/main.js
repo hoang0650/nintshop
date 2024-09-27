@@ -20,17 +20,23 @@
 
 
     // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.back-to-top').fadeIn('slow');
-        } else {
-            $('.back-to-top').fadeOut('slow');
-        }
+    $(document).ready(function () {
+        // Kiểm tra khi người dùng cuộn trang
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('.back-to-top').fadeIn('slow');  // Hiện nút 'Back to Top'
+            } else {
+                $('.back-to-top').fadeOut('slow'); // Ẩn nút 'Back to Top'
+            }
+        });
+    
+        // Khi người dùng bấm vào nút 'Back to Top'
+        $('.back-to-top').click(function () {
+            $('html, body').animate({ scrollTop: 0 }, 1500, 'swing');  // Cuộn về đầu trang
+            return false;  // Ngăn chặn hành vi mặc định của nút
+        });
     });
-    $('.back-to-top').click(function () {
-        $('html, body').animate({ scrollTop: 0 }, 1500, 'swing');
-        return false;
-    });
+    
 
     // Vendor carousel
     $('.vendor-carousel').owlCarousel({

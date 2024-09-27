@@ -9565,6 +9565,20 @@ a.text-dark:hover, a.text-dark:focus {
   list-style-type: none;
 }
 
+/* Đảm bảo chiều cao ảnh bằng nhau */
+.img-cover {
+  height: 250px; /* Đặt chiều cao cố định, điều chỉnh theo yêu cầu */
+  object-fit: cover; /* Giữ tỉ lệ ảnh nhưng cắt cho vừa khung */
+}
+
+/* Chỉnh màu tên sản phẩm */
+.product-name {
+  font-weight: bold;
+  padding-left: 10px; /* Thêm khoảng cách bên trái */
+  padding-right: 10px; /* Thêm khoảng cách bên phải */
+  text-align: center; /* Giữ văn bản canh giữa */
+}
+
 .back-to-top {
   position: fixed;
   display: none;

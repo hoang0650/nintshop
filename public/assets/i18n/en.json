@@ -9,6 +9,7 @@
     "SERVICE": "Service",
     "LOGIN":"Login",
     "SIGN_UP":"Register",
+    "LOG_OUT":"Logout",
     "CATEGORY":"Categories",
     "KEYCHAIN":"Keychain",
     "STICKER":"Sticker",

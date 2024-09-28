@@ -1,37 +1,36 @@
 <div class="container">
     <div class="row justify-content-center mt-5">
-        <div class="col-sm-6 col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center mb-4">Đăng nhập tài khoản</h5>
-                    <form (ngSubmit)="login()">
-                        <div class="form-floating mb-3">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="name@example.com"
-                                name="email" required>
-                            
-                        </div>
-                        <div class="form-floating mb-3">
-                            <label for="password">Mật khẩu</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password"
-                                name="password" required>
-                            <a href="#" class="link-primary float-end">Quên mật khẩu?</a>
-                        </div>
-                        <button type="submit" class="btn btn-lg btn-primary mt-3 w-100">Đăng nhập</button>
-                    </form>
-                    <div class=" social-login">
-                        <p>Or login with:</p>
-                        <button class="btn btn-light social-btn">
-                            <i class="fab fa-google"></i>
-                        </button>
-                        <button class="btn btn-light social-btn">
-                            <i class="fab fa-twitter"></i>
-                        </button>
-                    </div>
-                    <hr>
-                    <p class="text-center">Chưa có tài khoản đăng ký? <a [routerLink]="['/signup']">Tại đây</a></p>
-                </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title text-center mb-4">Đăng nhập tài khoản</h5>
+            <form (ngSubmit)="login()">
+              <div class="form-floating mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" [(ngModel)]="email"
+                  name="email" required>           
+              </div>
+              <div class="form-floating mb-3">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" [(ngModel)]="password"
+                  name="password" required>
+                <a href="#" class="link-primary float-end">Forgot Password?</a>
+              </div>
+              <button type="submit" class="btn btn-lg btn-primary mt-3 w-100">Login</button>
+            </form>
+            <div class=" social-login">
+              <p>Or login with:</p>
+              <button class="btn btn-light social-btn">
+                <i class="fab fa-google"></i>
+              </button>
+              <button class="btn btn-light social-btn">
+                <i class="fab fa-twitter"></i>
+              </button>
             </div>
+            <hr>
+            <p class="text-center">Don't have a registered account yet? <a [routerLink]="['/signup']">Here</a></p>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>

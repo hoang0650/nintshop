@@ -109,9 +109,13 @@
                         </div> -->
                         <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">{{ 'CONTACT' | translate }}</a>
                     </div>
-                    <div class="navbar-nav ml-auto py-0">
+                    <div class="navbar-nav ml-auto py-0" *ngIf="!isLoggedIn">
                         <a routerLink="/login" routerLinkActive="active" class="nav-item nav-link">{{ 'LOGIN' | translate }}</a>
                         <a routerLink="/signup" routerLinkActive="active" class="nav-item nav-link">{{ 'SIGN_UP' | translate }}</a>
+                    </div>
+                    <div class="navbar-nav ml-auto py-0" *ngIf="isLoggedIn">
+                        <a routerLinkActive="active" class="nav-item nav-link">{{infor.username}}</a>
+                        <a routerLinkActive="active" class="nav-item nav-link" (click)="logOut()">{{ 'LOG_OUT' | translate }}</a>
                     </div>
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ currentLanguage === 'vi' ? 'VI' : 'EN' }}</a>

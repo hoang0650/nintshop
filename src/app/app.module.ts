@@ -9,7 +9,7 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import en from '@angular/common/locales/en';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 
@@ -32,6 +32,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { ReviewComponent } from './components/review/review.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -58,7 +59,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CheckoutComponent,
     ContactComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ReviewComponent
   ],
   imports: [
     BrowserModule,
@@ -71,8 +73,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     AppRoutingModule,
-    NzLayoutModule,
-    FormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    NzLayoutModule
   ],
   providers: [
     provideClientHydration(),

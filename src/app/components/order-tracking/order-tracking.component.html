@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <h2>Tra cứu mã đơn hàng</h2>
+    <div class="mb-3">
+      <label for="orderId" class="form-label">Nhập mã đơn hàng:</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="orderId" 
+        [(ngModel)]="orderId" 
+        placeholder="Ví dụ: 123456" />
+    </div>
+    <button class="btn btn-primary" (click)="trackOrder()">Tra cứu</button>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
+  
+    <div *ngIf="orderDetails" class="mt-4">
+      <h4>Thông tin đơn hàng:</h4>
+      <pre>{{ orderDetails | json }}</pre>
+    </div>
+    <div *ngIf="!orderDetails" class="mt-4">
+        <h4>Kết quả:</h4>
+        <pre>Không tìm thấy đơn hàng</pre>
+      </div>
+  </div>
+  

@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { Review } from '../interfaces/review';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,11 +14,11 @@ export class ReviewService {
 
   // Lấy danh sách đánh giá theo productId
   getReviewsByProduct(productId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/products/${productId}/`);
+    return this.http.get(`${this.apiUrl}/${productId}/products`);
   }
 
-  // Thêm mới đánh giá
-  addReview(review: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/`, review);
+  // Hàm thêm review
+  addReview(review: Review): Observable<Review> {
+    return this.http.post<Review>(this.apiUrl, review);
   }
 }

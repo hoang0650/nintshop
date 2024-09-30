@@ -39,6 +39,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ReviewComponent } from './components/review/review.component';
 import { QrCodeComponent } from './components/qr-code/qr-code.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { ChatboxComponent } from './components/chatbox/chatbox.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -68,7 +69,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SignupComponent,
     ReviewComponent,
     QrCodeComponent,
-    SearchFilterPipe
+    SearchFilterPipe,
+    ChatboxComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,21 @@
+<div class="chatbot-toggle" (click)="toggleChat()">
+    <i class="fas fa-comments"></i>
+</div>
+
+<div *ngIf="isChatVisible" class="chatbot-container">
+    <div class="chatbot-header">
+        <h3>Chat Bot</h3>
+        <button class="close-btn" (click)="toggleChat()">×</button>
+    </div>
+    <div class="chatbot-messages" id="chatMessages">
+        <div *ngFor="let message of messages" [ngClass]="{'user-message': message.sender === 'Bạn', 'bot-message': message.sender === 'Bot'}" class="message">
+            <div class="sender">{{ message.sender }}:</div>
+            <div class="text">{{ message.text }}</div>
+            <a class="text" *ngIf="message.link" [href]="message.link" target="_blank">{{ message.displayText }}</a>
+        </div>
+    </div>
+    <div class="chatbot-input">
+        <input type="text" [(ngModel)]="newMessage" placeholder="Nhập tin nhắn...">
+        <button (click)="sendMessage()">Gửi</button>
+    </div>
+</div>

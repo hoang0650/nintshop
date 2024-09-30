@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReviewService } from '../../services/review.service';
-import { ProductService } from '../../services/product.service';
 import { UserService } from '../../services/user.service';
 import { Review } from '../../interfaces/review';
 
@@ -11,27 +10,25 @@ import { Review } from '../../interfaces/review';
   styleUrls: ['./review.component.css']
 })
 export class ReviewComponent implements OnInit {
-  @Input() productId!: string;  // Nhận ID sản phẩm từ component cha
+  @Input() productId!: string; // Nhận ID sản phẩm từ component cha
   reviewForm: FormGroup;
-  products: any;
   reviews: Review[] = [];
   users: any;
-  tooltips = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
-  value = 3;
-  newReview: Review | null = { rating: 0, comment: '', createdAt: new Date(), productId: this.productId, userId: '' }; // Khởi tạo với giá trị mặc định
+  products: any;
+  newReview: any = { rating: 0, comment: '', createdAt: new Date(), productId: '', userId: '' };
+
   constructor(
     private reviewService: ReviewService,
     private userService: UserService,
-    private productService: ProductService,
     private fb: FormBuilder
   ) {
-    // FormGroup với các trường cần thiết cho đánh giá
+    // Khởi tạo form đánh giá
     this.reviewForm = this.fb.group({
       createdAt: [new Date(), Validators.required],
       comment: ['', Validators.required],
       rating: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
-      productId: ['', Validators.required],
-      userId: ['', Validators.required]
+      productId: [],
+      userId: []
     });
   }
 
@@ -41,11 +38,12 @@ export class ReviewComponent implements OnInit {
     this.setProductId(); // Gán productId vào form sau khi nhận từ ngOnInit
   }
 
+  // Lấy thông tin người dùng
   loadUsers(): void {
     this.userService.getUserInfor().subscribe(
       (data) => {
         this.users = data;
-        // Gán giá trị userId vào form (giả định rằng có một userId có sẵn)
+        // Gán giá trị userId vào form
         if (this.users && this.users._id) {
           this.reviewForm.patchValue({ userId: this.users._id });
         }
@@ -54,19 +52,30 @@ export class ReviewComponent implements OnInit {
     );
   }
 
-  // Lấy thông tin sản phẩm và gán productId vào form
+  // Gán productId vào form
   setProductId(): void {
-    this.reviewForm.patchValue({ productId: this.productId }); // Gán giá trị productId vào form
+    this.reviewForm.patchValue({ productId: this.productId });
   }
 
+  // Cập nhật số sao khi người dùng chọn
+  setRating(star: number): void {
+    this.newReview.rating = star;
+    this.reviewForm.patchValue({ rating: star }); // Gán giá trị rating vào form
+  }
+
+  // Lấy tất cả các review cho sản phẩm
   getReviews(): void {
-    this.reviewService.getReviewsByProduct(this.productId).subscribe((data: Review[]) => {
-      this.reviews = data;
-    }, (error) => {
-      console.error('Error fetching reviews:', error);
-    });
+    this.reviewService.getReviewsByProduct(this.productId).subscribe(
+      (data: Review[]) => {
+        this.reviews = data;
+      },
+      (error) => {
+        console.error('Error fetching reviews:', error);
+      }
+    );
   }
 
+  // Gửi review mới
   submitReview(): void {
     if (this.reviewForm.valid) {
       const newReview: Review = this.reviewForm.value;

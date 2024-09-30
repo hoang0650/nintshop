@@ -1,10 +1,12 @@
-import {  ChangeDetectorRef,Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { CartService } from '../../services/cart.service';
 import { LanguageService } from '../../services/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../services/user.service';
 import { ProductService } from '../../services/product.service';
+import { of } from 'rxjs';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -16,22 +18,12 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false
   infor: any;
   searchTerm: string = '';
-  showDropdown: boolean = false;
-  products = [{ name: 'Sản phẩm 1' }, { name: 'Sản phẩm 2' }, { name: 'Sản phẩm 3' }];
-  filter: string = '';
-  searchResults?: any
-  listProducts: any[] = []; // Your list of products here
-  filteredProducts: any;
-  showResults: boolean = false;
-  constructor(private cdRef:ChangeDetectorRef, public productService: ProductService, private cartService: CartService, private languageService: LanguageService, private translate: TranslateService, private userService: UserService) {
+  filteredProducts: any
+  public showDropdown = false;  // Biến để hiển thị hoặc ẩn dropdown
+  constructor(private eRef: ElementRef,public productService: ProductService, private cartService: CartService, private languageService: LanguageService, private translate: TranslateService, private userService: UserService) {
     this.currentLanguage = 'vi'; // Ngôn ngữ mặc định
     this.translate.setDefaultLang(this.currentLanguage);
     this.userInfor()
-    this.listProducts = [
-      { id: 1, name: 'Product 1', description: 'Description 1' },
-      { id: 2, name: 'Product 2', description: 'Description 2' },
-      // Add more products as needed
-    ];
 
   }
 
@@ -55,12 +47,16 @@ export class HeaderComponent implements OnInit {
     this.languageService.changeLanguage(language); // Gọi hàm để thay đổi ngôn ngữ
   }
 
-  searchIconClick() {
-    this.showDropdown = false;
-    this.filter = '';
-    this.searchResults = [];
-    this.cdRef.detectChanges()
+  onSearch(): void {
+    of(this.searchTerm).pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => this.productService.getProducts(query))
+    ).subscribe(products => {
+      this.filteredProducts = products;
+    });
   }
+  
 
   logOut() {
     localStorage.removeItem('access_token')
@@ -72,33 +68,26 @@ export class HeaderComponent implements OnInit {
   userInfor() {
     return this.userService.getUserInfor().subscribe(data => {
       this.infor = data
-      console.log('data', data);
-
     });
   }
 
   onSelect(product: number): void {
     // this.productService.setSelectedProduct(product)
     const selectedProduct = this.productService.getProductById(product)
+    this.searchTerm =""
   }
 
-  onInputChange() {
-    // Hiển thị kết quả khi có chữ nhập vào
-    this.cdRef.detectChanges()
+ // Lắng nghe sự kiện click ở bất kỳ đâu trên trang
+ @HostListener('document:click', ['$event'])
+ clickOutside(event: Event) {
+   // Kiểm tra xem nơi nhấp chuột có nằm ngoài component không
+   if (!this.eRef.nativeElement.contains(event.target)) {
+     this.showDropdown = false;  // Đóng dropdown khi nhấp bên ngoài
+   }
+ }
 
-  }
-  // Hàm xử lý blur
-  onBlur() {
-    // Đóng dropdown sau khi rời khỏi ô input
-    setTimeout(() => {
-      this.showDropdown = false;
-    }, 100);
-  }
-  @HostListener('document:click', ['$event'])
-  handleClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.search-container')) {
-      this.showDropdown = false; // Đóng dropdown nếu nhấp ra ngoài
-    }
-  }
+ // Hàm để mở dropdown khi nhấp vào nút hoặc input
+ toggleDropdown() {
+   this.showDropdown = !this.showDropdown;
+ }
 }

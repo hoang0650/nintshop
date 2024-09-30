@@ -33,7 +33,7 @@ export class ProductService {
 
     // Cách 2: Lấy data từ api
     // Gọi API để lấy dữ liệu sản phẩm
-     this.http.get<any[]>('http://localhost:3000/api/products').subscribe(
+     this.http.get<any[]>('https://sale-nest-api.onrender.com/api/products').subscribe(
       data => {
         this.productsSource.next(data);
       },
@@ -42,6 +42,10 @@ export class ProductService {
       }
     );
     
+  }
+
+  getProducts(query: string): Observable<any[]> {
+    return this.http.get<any[]>(`https://sale-nest-api.onrender.com/api/products?search=${query}`);
   }
 
   loadUpdatedData() {

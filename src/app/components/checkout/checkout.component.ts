@@ -36,6 +36,7 @@ export class CheckoutComponent implements OnInit {
   placeOrder() {
     const orderData = {
       ...this.billingInfo,
+      items: this.cartItems,
       totalPrice: this.totalPrice,
       orderId: this.generateOrderId(),
     };

@@ -12,6 +12,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +37,8 @@ import { ContactComponent } from './components/contact/contact.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ReviewComponent } from './components/review/review.component';
+import { QrCodeComponent } from './components/qr-code/qr-code.component';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -60,7 +66,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContactComponent,
     LoginComponent,
     SignupComponent,
-    ReviewComponent
+    ReviewComponent,
+    QrCodeComponent,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -75,7 +83,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    NzLayoutModule
+    NzLayoutModule,
+    NzRateModule,
+    NzCardModule,
+    NzInputModule,
+    NzDropDownModule
   ],
   providers: [
     provideClientHydration(),

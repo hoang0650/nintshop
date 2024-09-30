@@ -1,0 +1,32 @@
+.qr-container {
+    display: flex; /* Sử dụng Flexbox để căn giữa các hình ảnh */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    gap: 20px; /* Khoảng cách giữa hai hình ảnh */
+    margin: 20px 0; /* Khoảng cách trên và dưới cho container */
+}
+
+.qr-item {
+    width: 200px; /* Chiều rộng cố định cho từng hình ảnh */
+    height: 230px; /* Chiều cao cố định cho từng hình ảnh */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Giấu phần hình ảnh ngoài khung */
+}
+
+.qr-code {
+    max-width: 100%; /* Đảm bảo không vượt quá chiều rộng khung */
+    height: auto; /* Chiều cao tự động để giữ tỉ lệ khung hình */
+}
+
+/* Media query cho chế độ di động */
+@media (max-width: 768px) {
+    .qr-container {
+        flex-direction: column; /* Xếp chồng lên nhau khi ở chế độ di động */
+        align-items: center; /* Căn giữa các hình ảnh */
+    }
+
+    .qr-item {
+        margin-bottom: 20px; /* Khoảng cách giữa các hình ảnh */
+    }
+}

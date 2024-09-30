@@ -1,40 +1,53 @@
 <div class="row">
-    <div class="col-md-6">
-        <h4 class="mb-4">{{ reviews.length }} review(s) for "Product Name"</h4>
-        <div *ngFor="let review of reviews" class="media mb-4">
-            <img [src]="review.userId.avatar" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-            <div class="media-body">
-                <h6>{{ review.userId.name }}<small> - <i>{{ review.createdAt | date }}</i></small></h6>
-                <div class="text-primary mb-2">
-                    <i *ngFor="let star of [1, 2, 3, 4, 5]" class="fa-star"
-                        [ngClass]="{'fas': star <= review.rating, 'far': star > review.rating}"></i>
-                </div>
-                <p>{{ review.comment }}</p>
-            </div>
+  <!-- Phần hiển thị đánh giá -->
+  <div class="col-md-6">
+    <h4 class="mb-4">{{ reviews.length }} review(s) for "{{ products?.name || 'Product' }}"</h4>
+
+    <!-- Hiển thị danh sách đánh giá -->
+    <div *ngFor="let review of reviews" class="media mb-4">
+      <img [src]="users?.avatar || 'assets/default-avatar.png'" alt="User Avatar" class="img-fluid rounded-circle mr-3 mt-1"
+        style="width: 45px;">
+      <div class="media-body">
+        <h6>{{ users.name }} 
+          <small> - <i>{{ review.createdAt | date: 'mediumDate' }}</i></small>
+        </h6>
+        <div class="text-primary mb-2">
+          <!-- Hiển thị các ngôi sao đánh giá -->
+          <i *ngFor="let star of [1, 2, 3, 4, 5]" class="fa"
+            [ngClass]="star <= review.rating ? 'fas fa-star' : 'far fa-star'"></i>
         </div>
+        <p>{{ review.comment }}</p>
+      </div>
     </div>
-    <div class="col-md-6">
-        <h4 class="mb-4">Leave a review</h4>
-        <small>Your email address will not be published. Required fields are marked *</small>
-        <div class="d-flex my-3">
-            <p class="mb-0 mr-2">Your Rating * :</p>
-            <div class="text-primary">
-                <i class="far fa-star" (click)="newReview.rating = 1"></i>
-                <i class="far fa-star" (click)="newReview.rating = 2"></i>
-                <i class="far fa-star" (click)="newReview.rating = 3"></i>
-                <i class="far fa-star" (click)="newReview.rating = 4"></i>
-                <i class="far fa-star" (click)="newReview.rating = 5"></i>
-            </div>
+  </div>
+
+  <!-- Form gửi đánh giá -->
+  <div class="col-md-6">
+    <h4 class="mb-4">Leave a review</h4>
+    <small>Your email address will not be published. Required fields are marked *</small>
+
+    <!-- Rating -->
+    <div class="d-flex my-3 align-items-center" >
+      <p class="mb-0 mr-2">Your Rating * :</p>
+      <!-- Hiển thị các ngôi sao đánh giá -->
+      <small class="fas fa-star"></small>
+      <!-- <small *ngFor="let star of [1, 2, 3, 4, 5]" class="fas"
+      [ngClass]="star <= review.rating ? 'fa-star' : 'fa-star-half-alt'"></small> -->
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+      <div class="form-group">
+        <label for="message">Your Review *</label>
+        <textarea formControlName="comment" id="message" cols="30" rows="5" class="form-control"></textarea>
+        <div *ngIf="reviewForm.controls['comment'].invalid && reviewForm.controls['comment'].touched" class="text-danger">
+          Review is required.
         </div>
-        <form (ngSubmit)="submitReview()">
-            <div class="form-group">
-                <label for="message">Your Review *</label>
-                <textarea [(ngModel)]="newReview.comment" name="comment" id="message" cols="30" rows="5"
-                    class="form-control"></textarea>
-            </div>
-            <div class="form-group mb-0">
-                <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-            </div>
-        </form>
-    </div>
+      </div>
+
+      <div class="form-group mb-0">
+        <input type="submit" value="Leave Your Review" class="btn btn-primary px-3" [disabled]="reviewForm.invalid">
+      </div>
+    </form>
+  </div>
 </div>

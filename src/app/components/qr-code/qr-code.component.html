@@ -1,0 +1,39 @@
+<!-- qr-payment.component.html -->
+<nz-card>
+    <div style="text-align: center; margin-top: 30px;">
+        <p>Scan the QR code below to complete your payment</p>
+        
+        <!-- Container chứa hai hình ảnh -->
+        <div class="qr-container">
+            <div class="qr-item">
+                <img src="https://sale-nest-api.onrender.com/api/upload/image/66f84032500667cc9350d3e3" 
+                     alt="MoMo QR Code" 
+                     class="qr-code" />
+            </div>
+            Or:
+            <div class="qr-item">
+                <img src="https://sale-nest-api.onrender.com/api/upload/image/66f84248500667cc9350d3ee" 
+                     alt="Bank QR Code" 
+                     class="qr-code" />
+            </div>
+        </div>
+
+        <!-- Thông tin thanh toán -->
+        <div>
+            <p><strong>Order ID:</strong> {{ orderData.orderId }}</p>
+            <p><strong>Amount:</strong> {{ orderData.totalPrice }} VND</p>
+            <p><strong>Expiry:</strong> 24 hours</p>
+        </div>
+
+        <!-- Hướng dẫn người dùng -->
+        <div style="margin-top: 20px;">
+            <p>Use your banking app to scan the QR code and complete the payment.</p>
+        </div>
+
+        <!-- Nút điều hướng -->
+        <div style="margin-top: 30px;">
+            <button nz-button nzType="primary">View Order Details</button>
+            <button nz-button nzType="default" style="margin-left: 10px;">Cancel Payment</button>
+        </div>
+    </div>
+</nz-card>

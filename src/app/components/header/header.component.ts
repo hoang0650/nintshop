@@ -37,7 +37,6 @@ export class HeaderComponent implements OnInit {
       this.cartItemCount = this.cartService.getTotalItemCount();
     });
     this.userService.isLoggedIn.subscribe((status) => {
-      console.log('status', status);
       this.isLoggedIn = status
       this.userInfor()
     })

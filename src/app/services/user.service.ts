@@ -8,7 +8,7 @@ import { User } from '../interfaces/user';
 export class UserService {
   private headers = new HttpHeaders({ 'Content-Type': 'application/json', 'charset': 'UTF-8' })
   private options = { headers: this.headers }
-  private apiUrl = 'https://hotel-app-smp2.onrender.com/users'
+  private apiUrl = 'https://sale-nest-api.onrender.com/api/users'
   // private apiUrl = 'http://localhost:3000/users'
   public loggedIn = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient) { 

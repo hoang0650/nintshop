@@ -14,4 +14,8 @@ export class CheckoutService {
   placeOrder(orderData: any): Observable<any> {
     return this.http.post(this.apiUrl, orderData);
   }
+
+  getOrders(query: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}?search=${query}`);
+  }
 }

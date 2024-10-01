@@ -44,7 +44,8 @@ export class AdminComponent implements OnInit {
     this.orders = [
       { id: 'ORD123', status: 'pending' },
       { id: 'ORD124', status: 'shipped' },
-      { id: 'ORD125', status: 'delivered' }
+      { id: 'ORD125', status: 'delivered' },
+      { id: 'ORD126', status: 'cancelled' }
     ];
   }
 

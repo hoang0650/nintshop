@@ -11,6 +11,9 @@ import { SignupComponent } from './components/signup/signup.component';
 import { QrCodeComponent } from './components/qr-code/qr-code.component';
 import { OrderTrackingComponent } from './components/order-tracking/order-tracking.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
+import { adminGuard } from './guard/admin.guard';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -23,7 +26,9 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'qr-payment', component: QrCodeComponent },
   { path: 'order-tracking', component: OrderTrackingComponent },
-  { path: 'admin', component: AdminComponent }
+  { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: 'notfound', component: NotfoundComponent },
+  { path: 'admin',canActivate: [adminGuard], component: AdminComponent }
 ];
 
 @NgModule({

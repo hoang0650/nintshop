@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
   cartItemCount: number = 0; // Biến để lưu số lượng sản phẩm trong giỏ hàng
   currentLanguage: string;
   isLoggedIn: boolean = false
+  isAdmin: boolean = false;
   infor: any;
   searchTerm: string = '';
   filteredProducts: any
@@ -40,6 +41,7 @@ export class HeaderComponent implements OnInit {
       this.isLoggedIn = status
       this.userInfor()
     })
+    
   }
 
   selectLanguage(language: string): void {
@@ -67,6 +69,9 @@ export class HeaderComponent implements OnInit {
   userInfor() {
     return this.userService.getUserInfor().subscribe(data => {
       this.infor = data
+      if(this.infor.role === 'admin'){
+        this.isAdmin = true
+      }
     });
   }
 

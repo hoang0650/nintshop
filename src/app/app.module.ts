@@ -47,6 +47,8 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { ChatboxComponent } from './components/chatbox/chatbox.component';
 import { OrderTrackingComponent } from './components/order-tracking/order-tracking.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -79,7 +81,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     SearchFilterPipe,
     ChatboxComponent,
     OrderTrackingComponent,
-    AdminComponent
+    AdminComponent,
+    UnauthorizedComponent,
+    NotfoundComponent
   ],
   imports: [
     BrowserModule,

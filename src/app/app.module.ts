@@ -10,6 +10,7 @@ import en from '@angular/common/locales/en';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzRateModule } from 'ng-zorro-antd/rate';
@@ -21,6 +22,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -49,6 +52,7 @@ import { OrderTrackingComponent } from './components/order-tracking/order-tracki
 import { AdminComponent } from './components/admin/admin.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { OrderComponent } from './components/order/order.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -83,7 +87,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrderTrackingComponent,
     AdminComponent,
     UnauthorizedComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,
@@ -98,6 +103,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right', // You can customize position here
+      timeOut: 3000, // Duration in milliseconds
+      preventDuplicates: true, // Prevent duplicate notifications
+    }),
     NzLayoutModule,
     NzRateModule,
     NzCardModule,
@@ -107,7 +117,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzSelectModule,
     NzListModule,
     NzFormModule,
-    NzTableModule
+    NzTableModule,
+    NzDividerModule,
+    NzButtonModule
   ],
   providers: [
     provideClientHydration(),

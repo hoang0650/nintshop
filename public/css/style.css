@@ -9592,13 +9592,12 @@ a.text-dark:hover, a.text-dark:focus {
 /*** Chat bot Start ***/
 .chatbot-container {
   position: fixed;
-  bottom: 20px;
+  bottom: 70px; /* Chỉnh để khung chat nằm trên nút toggle */
   right: 20px;
   width: 300px;
-  max-width: 90%; /* Đảm bảo không vượt quá màn hình trên mobile */
   background-color: #f1f1f1;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 10px 10px 0 0; /* Chỉ giữ border-radius cho trên */
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -9612,18 +9611,15 @@ a.text-dark:hover, a.text-dark:focus {
   text-align: center;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  border: 1px solid #d19c97; /* Thêm border màu đồng nhất */
-  font-size: 16px; /* Giảm kích thước chữ trên mobile */
 }
 
 .chatbot-messages {
-  min-height: 200px;
   max-height: 400px;
   overflow-y: auto;
   padding: 10px;
   display: flex;
   flex-direction: column;
-  font-size: 14px; /* Giảm kích thước chữ cho phù hợp mobile */
+  border-radius: 0 0 10px 10px; /* Giữ border-radius cho dưới */
 }
 
 .message {
@@ -9631,7 +9627,6 @@ a.text-dark:hover, a.text-dark:focus {
   padding: 8px;
   border-radius: 10px;
   max-width: 80%;
-  word-wrap: break-word; /* Đảm bảo văn bản không bị tràn */
 }
 
 .sender {
@@ -9643,14 +9638,16 @@ a.text-dark:hover, a.text-dark:focus {
   align-self: flex-start;
   background-color: #e1e1e1;
   color: black;
-  border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0; /* Không cần border-radius ở phía dưới */
+  border-bottom-right-radius: 10px; /* Giữ border-radius cho bên phải */
 }
 
 .user-message {
   align-self: flex-end;
   background-color: #d19c97;
   color: white;
-  border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0; /* Không cần border-radius ở phía dưới */
+  border-bottom-left-radius: 10px; /* Giữ border-radius cho bên trái */
 }
 
 .chatbot-input {
@@ -9664,7 +9661,6 @@ a.text-dark:hover, a.text-dark:focus {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px; /* Điều chỉnh font size */
 }
 
 .chatbot-input button {
@@ -9710,13 +9706,11 @@ a.text-dark:hover, a.text-dark:focus {
     width: 80%;
     bottom: 0;
     right: 0;
-    border-radius: 0;
   }
 
   .chatbot-header {
     padding: 8px;
     font-size: 14px;
-    border: 2px solid #d19c97; /* Đảm bảo border màu #d19c97 trên mobile */
   }
 
   .chatbot-messages {
@@ -9741,6 +9735,7 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 /*** Chat bot End ***/
+
 
 
 @keyframes action {

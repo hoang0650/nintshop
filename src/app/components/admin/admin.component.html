@@ -15,38 +15,96 @@
             <!-- Product Tab -->
             <div class="tab-pane fade show active" id="product-tab">
                 <h3 class="mb-4">Manage Products</h3>
-                
+
                 <!-- Form to add/edit product -->
-                <form (ngSubmit)="onSubmitProduct()">
+                <form [formGroup]="productForm" (ngSubmit)="selectedProduct ? updateProduct() : onSubmit()">
                     <div class="mb-3">
-                        <label for="productName" class="form-label">Product Name</label>
-                        <input type="text" class="form-control" id="productName" [(ngModel)]="productName" name="productName" required>
+                        <label class="form-label" for="name">Name</label>
+                        <input class="form-control" id="name" formControlName="name" type="text" />
                     </div>
-
                     <div class="mb-3">
-                        <label for="productPrice" class="form-label">Product Price</label>
-                        <input type="number" class="form-control" id="productPrice" [(ngModel)]="productPrice" name="productPrice" required>
+                        <label class="form-label" for="price">Price</label>
+                        <input class="form-control" id="price" formControlName="price" type="number" />
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="quantity">Quantity</label>
+                        <input class="form-control" id="quantity" formControlName="quantity" type="number" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Description</label>
+                        <input class="form-control" id="description" formControlName="description" type="text" />
+                    </div>
+                    <div class="mb-3">
 
-                    <button type="submit" class="btn btn-primary">Add Product</button>
+                        <!-- Nhiều hình ảnh -->
+                        <label class="form-label" for="images">Images</label>
+                        <input class="form-control" id="images" type="file" (change)="onFilesSelected($event)"
+                            multiple />
+                    </div>
+                    <div class="mb-3">
+                        <!-- Preview Hình ảnh -->
+                        <div *ngIf="imagePreviews.length > 0">
+                            <div *ngFor="let imagePreview of imagePreviews">
+                                <img [src]="imagePreview" alt="Product Image" width="100" height="100" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <!-- Variants -->
+                        <div formArrayName="variants">
+                            <div *ngFor="let variant of variants.controls; let i=index" [formGroupName]="i">
+                                Variants(option):<br>
+                                <label class="form-label" for="size">Size</label>
+                                <input class="form-control" id="size" formControlName="size" type="text" />
+
+                                <label class="form-label" for="color">Color</label>
+                                <input class="form-control" id="color" formControlName="color" type="text" />
+
+                                <label class="form-label" for="stock">Stock</label>
+                                <input class="form-control" id="stock" formControlName="stock" type="number" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{selectedProduct ? 'Update Product' : 'Create a
+                        Product'}}</button>
                 </form>
 
                 <!-- Product List -->
-                <h4 class="mt-5">Product List</h4>
-                <table class="table table-bordered mt-3">
+                <h3>Product List</h3>
+                <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Product Price</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let product of products">
                             <td>{{ product.name }}</td>
-                            <td>${{ product.price }}</td>
+                            <td>{{ product.description }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.quantity }}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm" (click)="removeProduct(product)">Delete</button>
+                                <!-- <button class="btn btn-sm btn-info" (click)="selectProduct(product)">Update</button>
+                        <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)">Delete</button> -->
+                                <button class="btn btn-sm btn-info" (click)="startEdit(product._id)" nzType="default"
+                                    *ngIf="editingProductId !== product._id">
+                                    <i nz-icon nzType="edit"></i>Edit
+                                </button>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a nz-popconfirm nzPopconfirmTitle="Sure to delete?"
+                                    (nzOnConfirm)="deleteProduct(product._id)" *ngIf="editingProductId !== product._id">
+                                    <button class="btn btn-sm btn-danger" nzType="text">
+                                        <i nz-icon nzType="delete"></i>Delete
+                                    </button>
+                                </a>
+                                <button nz-button nzShape="round" (click)="stopEdit()" nzType="default"
+                                    *ngIf="editingProductId === product._id">
+                                    <i nz-icon nzType="save"></i>Cancel
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -61,7 +119,8 @@
                 <form (ngSubmit)="onSubmitOrder()">
                     <div class="mb-3">
                         <label for="orderId" class="form-label">Order ID</label>
-                        <input type="text" class="form-control" id="orderId" [(ngModel)]="orderId" name="orderId" required>
+                        <input type="text" class="form-control" id="orderId" [(ngModel)]="orderId" name="orderId"
+                            required>
                     </div>
 
                     <div class="mb-3">

@@ -14,6 +14,9 @@ interface CartItem {
 })
 export class CartService {
   private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
+  private voucherCode: string | null = null; // Thêm thuộc tính mã voucher
+  private discount: number = 0; // Thêm thuộc tính giảm giá
+
   cartItems$ = this.cartItemsSubject.asObservable();
 
   constructor() {}
@@ -53,6 +56,8 @@ export class CartService {
 
   clearCart() {
     this.cartItemsSubject.next([]);
+    this.voucherCode = null; // Reset mã voucher khi giỏ hàng bị xóa
+    this.discount = 0; // Reset giảm giá
   }
 
   getTotalItemCount(): number {
@@ -60,6 +65,23 @@ export class CartService {
   }
 
   getTotalPrice(): number {
-    return this.getCartItems().reduce((total, item) => total + item.price * item.quantity, 0);
+    const subtotal = this.getCartItems().reduce((total, item) => total + item.price * item.quantity, 0);
+    return subtotal - this.discount; // Trả về tổng giá trừ đi giảm giá
+  }
+
+  // Thêm phương thức để áp dụng voucher
+  applyVoucher(code: string, discountAmount: number) {
+    this.voucherCode = code;
+    this.discount = discountAmount; // Giả sử discountAmount là số tiền giảm giá
+  }
+
+  // Phương thức để lấy giá trị giảm giá hiện tại
+  getCurrentDiscount(): number {
+    return this.discount;
+  }
+
+  // Phương thức để kiểm tra xem có voucher hay không
+  hasVoucher(): boolean {
+    return this.voucherCode !== null;
   }
 }

@@ -5,11 +5,12 @@ export interface Product {
     name: string;
     description: string;
     price: number;
+    quantity:number;
     variants: [{
       size: String,
       color: String,
       stock: Number
   }],
-    image?: string;
+    image?: string[];
     reviews: Review[];  // Kết nối với review
   }

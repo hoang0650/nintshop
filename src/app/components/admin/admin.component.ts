@@ -1,10 +1,7 @@
 import { Component , OnInit} from '@angular/core';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-}
+import { ProductService } from '../../services/product.service';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { Product } from '../../interfaces/product';
 
 interface Order {
   id: string;
@@ -17,13 +14,15 @@ interface Order {
   styleUrl: './admin.component.css'
 })
 export class AdminComponent implements OnInit {
-
+ 
   // Product variables
-  productName: string = '';
-  productPrice: number = 0;
-  products: Product[] = [];
+  products: any[] = [];
+  productForm: FormGroup;
+  selectedProduct: any = null;
   isEditing: boolean = false;
-  editingProductId: number | null = null;
+  editingProductId: string | null = null;
+  imagePreviews: string[] = [];
+  selectedFiles: File[] = [];
 
   // Order variables
   orderId: string = '';
@@ -31,15 +30,22 @@ export class AdminComponent implements OnInit {
   orders: Order[] = [];
   editingOrder: Order | null = null;
 
-  constructor() { }
+  constructor( private productService: ProductService,
+    private fb: FormBuilder) {
+      // Khởi tạo form
+      this.productForm = this.fb.group({
+        name: [''],
+        price: [0],
+        quantity: [0],
+        description: [''],
+        variants: this.fb.array([this.createVariant()])
+      });
+
+  }
 
   ngOnInit(): void {
     // Initialize with some dummy data or fetch from a service
-    this.products = [
-      { id: 1, name: 'Product A', price: 100000 },
-      { id: 2, name: 'Product B', price: 200000 },
-      { id: 3, name: 'Product C', price: 300000 }
-    ];
+    this.loadProducts();
 
     this.orders = [
       { id: 'ORD123', status: 'pending' },
@@ -49,54 +55,119 @@ export class AdminComponent implements OnInit {
     ];
   }
 
-  // Product Methods
-  onSubmitProduct(): void {
-    if (this.isEditing && this.editingProductId !== null) {
-      // Update existing product
-      const index = this.products.findIndex(p => p.id === this.editingProductId);
-      if (index !== -1) {
-        this.products[index].name = this.productName;
-        this.products[index].price = this.productPrice;
-      }
-      this.isEditing = false;
-      this.editingProductId = null;
-    } else {
-      // Add new product
-      if (this.productName && this.productPrice) {
-        const newProduct: Product = {
-          id: this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1,
-          name: this.productName,
-          price: this.productPrice
+  get variants(): FormArray {
+    return this.productForm.get('variants') as FormArray;
+  }
+
+  createVariant(): FormGroup {
+    return this.fb.group({
+      size: [''],
+      color: [''],
+      stock: [0]
+    });
+  }
+
+  addVariant() {
+    this.variants.push(this.createVariant());
+  }
+
+  // Xử lý khi người dùng chọn file
+  onFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedFiles = Array.from(input.files);
+      this.imagePreviews = [];
+      this.selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagePreviews.push(e.target.result);
         };
-        this.products.push(newProduct);
-      }
+        reader.readAsDataURL(file);
+      });
     }
-
-    // Reset form
-    this.productName = '';
-    this.productPrice = 0;
   }
 
-  editProduct(product: Product): void {
-    this.isEditing = true;
-    this.editingProductId = product.id;
-    this.productName = product.name;
-    this.productPrice = product.price;
+  startEdit(id: string): void {
+    this.editingProductId = id;
+    const productToEdit = this.products.find(r => r._id === id);
+    if (productToEdit) {
+      this.selectedProduct = { ...productToEdit };
+      this.productForm.patchValue(productToEdit);
+    }
   }
 
-  cancelEdit(): void {
-    this.isEditing = false;
+  stopEdit(): void {
     this.editingProductId = null;
-    this.productName = '';
-    this.productPrice = 0;
+    this.selectedProduct = null;
+    this.productForm.reset();
   }
 
-  removeProduct(product: Product): void {
-    this.products = this.products.filter(p => p.id !== product.id);
-    // If the product being edited is removed, cancel editing
-    if (this.editingProductId === product.id) {
-      this.cancelEdit();
+  onSubmit() {
+    const product: Product = this.productForm.value;
+    
+    // Tạo form data để upload file
+    const formData = new FormData();
+    this.selectedFiles.forEach(file => {
+      formData.append('images', file);
+    });
+
+    // Thêm các thông tin khác vào formData
+    formData.append('name', product.name);
+    formData.append('price', product.price.toString());
+    formData.append('quantity', product.quantity.toString());
+    formData.append('description', product.description);
+    formData.append('variants', JSON.stringify(product.variants));
+
+    // Gửi dữ liệu sản phẩm và hình ảnh đến server
+    this.productService.addProduct(formData).subscribe(() => {
+      console.log('Product added with images');
+      // Làm gì đó sau khi thêm sản phẩm thành công
+    });
+    this.loadProducts();
+  }
+
+
+  loadProducts(): void {
+    this.productService.products$.subscribe(data => {
+      this.products = data;
+    });
+  }
+
+  // Chọn sản phẩm để cập nhật
+  selectProduct(product: any): void {
+    this.selectedProduct = product;
+    this.productForm.patchValue(product);
+  }
+
+  // Cập nhật sản phẩm
+  updateProduct(): void {
+    if (this.productForm.valid && this.selectedProduct) {
+      this.productService.updateProduct(this.productForm.value).subscribe(response => {
+        if (response) {
+          this.productService.loadUpdatedData();
+          this.resetForm();
+        } else {
+          console.error('Failed to update product');
+        }
+      });
     }
+  }
+
+  // Xóa sản phẩm
+  deleteProduct(id: string): void {
+    this.productService.deleteProduct(id).subscribe(response => {
+      if (response) {
+        this.productService.loadUpdatedData();
+      } else {
+        console.error('Failed to delete product');
+      }
+    });
+  }
+
+  // Reset form
+  resetForm(): void {
+    this.productForm.reset();
+    this.selectedProduct = null;
   }
 
   // Order Methods

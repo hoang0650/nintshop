@@ -13,6 +13,7 @@ import { OrderTrackingComponent } from './components/order-tracking/order-tracki
 import { AdminComponent } from './components/admin/admin.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { OrderComponent } from './components/order/order.component';
 import { adminGuard } from './guard/admin.guard';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'qr-payment', component: QrCodeComponent },
   { path: 'order-tracking', component: OrderTrackingComponent },
+  { path: 'order', component: OrderComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'notfound', component: NotfoundComponent },
   { path: 'admin',canActivate: [adminGuard], component: AdminComponent }

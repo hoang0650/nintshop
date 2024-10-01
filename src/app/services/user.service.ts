@@ -8,8 +8,8 @@ import { User } from '../interfaces/user';
 export class UserService {
   private headers = new HttpHeaders({ 'Content-Type': 'application/json', 'charset': 'UTF-8' })
   private options = { headers: this.headers }
-  private apiUrl = 'https://sale-nest-api.onrender.com/api/users'
-  // private apiUrl = 'http://localhost:3000/users'
+  // private apiUrl = 'https://sale-nest-api.onrender.com/api/users'
+  private apiUrl = 'http://localhost:3000/api/users'
   public loggedIn = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient) { 
     this.checkToken();
@@ -94,6 +94,21 @@ export class UserService {
 
   deleteUser(user:any): Observable<any>{
     return this.http.delete(`/api/user/${user._id}`, this.options)
+  }
+
+  // Giả sử dữ liệu người dùng được lưu trong localStorage hoặc database
+  getCurrentUser() {
+    return JSON.parse(localStorage.getItem('currentUser') || '{}');
+  }
+
+  updateUser(user: any) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    // Hoặc gọi API để cập nhật người dùng trong database
+  }
+
+  // Phương thức để áp dụng mã voucher
+  applyVoucher(userId: string, voucherCode: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/apply-voucher`, { userId, voucherCode });
   }
 
 }

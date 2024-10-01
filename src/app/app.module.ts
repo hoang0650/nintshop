@@ -16,6 +16,11 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,6 +46,7 @@ import { QrCodeComponent } from './components/qr-code/qr-code.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { ChatboxComponent } from './components/chatbox/chatbox.component';
 import { OrderTrackingComponent } from './components/order-tracking/order-tracking.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -72,7 +78,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     QrCodeComponent,
     SearchFilterPipe,
     ChatboxComponent,
-    OrderTrackingComponent
+    OrderTrackingComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +98,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzRateModule,
     NzCardModule,
     NzInputModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NzTabsModule,
+    NzSelectModule,
+    NzListModule,
+    NzFormModule,
+    NzTableModule
   ],
   providers: [
     provideClientHydration(),

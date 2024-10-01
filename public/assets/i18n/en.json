@@ -4,6 +4,7 @@
     "PRODUCT": "Product",
     "SHOP": "Shop",
     "TRACKING":"Order Tracking",
+    "ADMIN":"Admin",
     "DETAIL":"Detail",
     "CART":"Cart",
     "CHECK_OUT":"Checkout",

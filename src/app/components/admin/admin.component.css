@@ -1,0 +1,11 @@
+.nav-tabs .nav-link {
+    border-radius: 0;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.table .btn {
+    margin-right: 5px;
+}

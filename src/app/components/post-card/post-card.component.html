@@ -1,0 +1,43 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <!-- Nội dung bài viết -->
+        <img src="img/carousel-2.jpg" alt="Post Image" class="img-fluid mb-3">
+        <h5 class="card-title">{{ post.content }}</h5>
+        <!-- <img *ngIf="post.image" [src]="post.image" alt="Post Image" class="img-fluid mb-3"> -->
+    </div>
+
+    <!-- Footer chứa các nút like, comment, share -->
+    <div class="card-footer text-muted d-flex justify-content-between">
+        <!-- Like button -->
+        <button class="btn btn-outline-danger" (click)="likePost()">
+            <i class="fa fa-heart"></i> {{ post.likes }} Thả tim
+        </button>
+
+        <!-- Comment button -->
+        <button class="btn btn-outline-secondary" (click)="toggleCommentSection()">
+            <i class="fa fa-comment"></i> Bình luận
+        </button>
+
+        <!-- Share button -->
+        <button class="btn btn-outline-primary" (click)="sharePost()">
+            <i class="fa fa-share"></i> Chia sẻ
+        </button>
+    </div>
+
+    <!-- Comment Section -->
+    <div *ngIf="showComments" class="card-body">
+        <div *ngFor="let comment of post.comments" class="mb-2">
+            <strong>{{ comment.author }}:</strong> {{ comment.text }}
+        </div>
+
+        <form (ngSubmit)="addComment()">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Viết bình luận..." [(ngModel)]="newComment"
+                    name="comment">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Bình luận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

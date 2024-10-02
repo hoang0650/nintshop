@@ -15,10 +15,12 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { OrderComponent } from './components/order/order.component';
 import { adminGuard } from './guard/admin.guard';
+import { PostFeedComponent } from './components/post-feed/post-feed.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'shop', component: ShopComponent },
+  { path: 'shop-page', component: PostFeedComponent },
   { path: 'detail/:id', component: DetailComponent },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },

@@ -60,7 +60,7 @@ export class ProductService {
   }
 
   // Xóa sản phẩm theo ID
-  deleteProduct(productId: string): Observable<any> {
+  deleteProduct(productId: any): Observable<any> {
     return this.http.delete<any>(`https://sale-nest-api.onrender.com/api/products/${productId}`).pipe(
       catchError(error => {
         console.error('Error deleting product:', error);

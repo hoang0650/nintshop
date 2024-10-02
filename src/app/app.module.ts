@@ -24,6 +24,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,6 +54,9 @@ import { AdminComponent } from './components/admin/admin.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { OrderComponent } from './components/order/order.component';
+import { NewPostComponent } from './components/new-post/new-post.component';
+import { PostCardComponent } from './components/post-card/post-card.component';
+import { PostFeedComponent } from './components/post-feed/post-feed.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -88,7 +92,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdminComponent,
     UnauthorizedComponent,
     NotfoundComponent,
-    OrderComponent
+    OrderComponent,
+    NewPostComponent,
+    PostCardComponent,
+    PostFeedComponent
   ],
   imports: [
     BrowserModule,
@@ -119,7 +126,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzFormModule,
     NzTableModule,
     NzDividerModule,
-    NzButtonModule
+    NzButtonModule,
+    NzIconModule
   ],
   providers: [
     provideClientHydration(),

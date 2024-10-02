@@ -8,8 +8,8 @@ import { User } from '../interfaces/user';
 export class UserService {
   private headers = new HttpHeaders({ 'Content-Type': 'application/json', 'charset': 'UTF-8' })
   private options = { headers: this.headers }
-  // private apiUrl = 'https://sale-nest-api.onrender.com/api/users'
-  private apiUrl = 'http://localhost:3000/api/users'
+  private apiUrl = 'https://sale-nest-api.onrender.com/api/users'
+  // private apiUrl = 'http://localhost:3000/api/users'
   public loggedIn = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient) { 
     this.checkToken();

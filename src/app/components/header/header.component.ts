@@ -15,6 +15,7 @@ import { of } from 'rxjs';
 export class HeaderComponent implements OnInit {
   cartItemCount: number = 0; // Biến để lưu số lượng sản phẩm trong giỏ hàng
   currentLanguage: string;
+  products: any
   isLoggedIn: boolean = false
   isAdmin: boolean = false;
   isSticky: boolean = false;
@@ -42,20 +43,27 @@ export class HeaderComponent implements OnInit {
       this.isLoggedIn = status
       this.userInfor()
     })
-    
+    // Initialize with all products
+    this.productService.products$.subscribe(products => {
+      this.products = products;
+      this.filteredProducts = [...this.products]; // Sao chép danh sách ban đầu
+    });
   }
 
   selectLanguage(language: string): void {
     this.languageService.changeLanguage(language); // Gọi hàm để thay đổi ngôn ngữ
   }
 
-  onSearch(): void {
-    of(this.searchTerm).pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(query => this.productService.getProducts(query))
-    ).subscribe(products => {
-      this.filteredProducts = products;
+  onSearchChange(event: any): void {
+    this.searchTerm = event.target.value.toLowerCase();
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    // Lọc theo giá, màu sắc, kích thước
+    this.filteredProducts = this.products.filter((product:any) => {
+      const nameMatch = product.name.toLowerCase().includes(this.searchTerm);
+      return nameMatch;
     });
   }
   
@@ -76,10 +84,15 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  onSelect(product: number): void {
-    // this.productService.setSelectedProduct(product)
-    const selectedProduct = this.productService.getProductById(product)
-    this.searchTerm =""
+  onSelect(productId: string): void { // Sửa productId thành kiểu string
+    const selectedProduct = this.productService.getProductById(productId);
+    if (selectedProduct) {
+      this.productService.setSelectedProduct(selectedProduct); // Đặt sản phẩm được chọn
+      this.searchTerm = ""
+      this.showDropdown = false
+    } else {
+      console.error(`Product with ID ${productId} not found`);
+    }
   }
 
  // Lắng nghe sự kiện click ở bất kỳ đâu trên trang

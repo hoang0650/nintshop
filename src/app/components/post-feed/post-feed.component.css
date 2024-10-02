@@ -28,6 +28,11 @@
     border: 5px solid white;
 }
 
+/* Followers and action buttons */
+.mt-2 button {
+    margin-left: 5px;
+  }
+
 /* Adjust layout */
 .container {
     max-width: 1200px;

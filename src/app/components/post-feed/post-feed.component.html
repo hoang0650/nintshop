@@ -1,76 +1,80 @@
 <div class="container">
-    <!-- Header: Avatar, Cover Photo, and Edit Cover Icon -->
-    <div class="profile-header mb-4">
-      <!-- Cover Photo -->
-      <div class="cover-photo position-relative">
-        <img src="img/carousel-1.jpg" alt="Cover Photo" class="img-fluid w-100" />
-        <!-- Edit Cover Photo Icon -->
-        <button class="btn btn-outline-light position-absolute edit-cover-icon" title="Chỉnh sửa ảnh bìa">
-          <i class="fa fa-camera"></i>
-        </button>
+  <!-- Header: Avatar, Cover Photo, and Edit Cover Icon -->
+  <div class="profile-header mb-4">
+    <!-- Cover Photo -->
+    <div class="cover-photo position-relative">
+      <img src="img/carousel-1.jpg" alt="Cover Photo" class="img-fluid w-100" />
+      <!-- Edit Cover Photo Icon -->
+      <button class="btn btn-outline-light position-absolute edit-cover-icon" title="Chỉnh sửa ảnh bìa">
+        <i class="fa fa-camera"></i>
+      </button>
+    </div>
+
+    <!-- Avatar and Info -->
+    <div class="d-flex align-items-center mt-3">
+      <!-- Avatar -->
+      <div class="avatar-container">
+        <img src="img/carousel-2.jpg" alt="Avatar" class="rounded-circle img-thumbnail" width="250px">
       </div>
-  
-      <!-- Avatar and Info -->
-      <div class="d-flex align-items-center mt-3">
-        <!-- Avatar -->
-        <div class="avatar-container">
-          <img src="img/carousel-2.jpg" alt="Avatar" class="rounded-circle img-thumbnail" width="250px">
-        </div>
-        
-        <!-- Information and Bio -->
-        <div class="ml-4">
-          <h3 class="mb-0">Nint Shop</h3>
-          <p class="text-muted mb-0">Slogan / Tiểu sử ngắn gọn</p>
-          <p class="text-muted">Địa chỉ cửa hàng | Số điện thoại | Email</p>
+
+      <!-- Information and Bio -->
+      <div class="ml-4">
+        <h3 class="mb-0">Nint Shop</h3>
+        <p class="text-muted mb-0">Slogan / Tiểu sử ngắn gọn</p>
+        <p class="text-muted">Địa chỉ cửa hàng | Số điện thoại | Email</p>
+        <div class="mt-2">
+          <span class="text-muted">20K người theo dõi</span>
+          <button class="btn btn-primary ml-2">Thêm bạn</button>
+          <button class="btn btn-outline-secondary ml-2">Nhắn tin</button>
         </div>
       </div>
     </div>
-  
-    <!-- Body Content -->
-    <div class="row">
-      <!-- Left Side: Information and Image Gallery -->
-      <div class="col-md-4">
-        <!-- Info Section -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Thông tin cửa hàng</h5>
-            <p class="card-text">Thông tin mô tả cửa hàng...</p>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Địa chỉ: 123 ABC, TP. HCM</li>
-              <li class="list-group-item">Số điện thoại: 0987654321</li>
-              <li class="list-group-item">Email: example&#64;shop.com</li>
-            </ul>
-          </div>
+  </div>
+
+  <!-- Body Content -->
+  <div class="row">
+    <!-- Left Side: Information and Image Gallery -->
+    <div class="col-md-4">
+      <!-- Info Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Thông tin cửa hàng</h5>
+          <p class="card-text">Thông tin mô tả cửa hàng...</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Địa chỉ: 123 ABC, TP. HCM</li>
+            <li class="list-group-item">Số điện thoại: 0987654321</li>
+            <li class="list-group-item">Email: example&#64;shop.com</li>
+          </ul>
         </div>
-  
-        <!-- Image Gallery Section -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Hình ảnh</h5>
-            <div class="row">
-              <div class="col-6 mb-3">
-                <img src="nintshop_img/005/014-Pikachu.png" class="img-fluid" alt="Product Image 1">
-              </div>
-              <div class="col-6 mb-3">
-                <img src="nintshop_img/005/019-Ash&Pikachu.png" class="img-fluid" alt="Product Image 2">
-              </div>
-              <div class="col-6">
-                <img src="nintshop_img/005/008-Lucario.png" class="img-fluid" alt="Product Image 3">
-              </div>
-              <div class="col-6">
-                <img src="nintshop_img/005/001-Articuno.png" class="img-fluid" alt="Product Image 4">
-              </div>
+      </div>
+
+      <!-- Image Gallery Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Hình ảnh</h5>
+          <div class="row">
+            <div class="col-6 mb-3">
+              <img src="nintshop_img/005/014-Pikachu.png" class="img-fluid" alt="Product Image 1">
+            </div>
+            <div class="col-6 mb-3">
+              <img src="nintshop_img/005/019-Ash&Pikachu.png" class="img-fluid" alt="Product Image 2">
+            </div>
+            <div class="col-6">
+              <img src="nintshop_img/005/008-Lucario.png" class="img-fluid" alt="Product Image 3">
+            </div>
+            <div class="col-6">
+              <img src="nintshop_img/005/001-Articuno.png" class="img-fluid" alt="Product Image 4">
             </div>
           </div>
         </div>
       </div>
-  
-      <!-- Right Side: Post Feed -->
-      <div class="col-md-8">
-        <app-new-post (postCreated)="addPost($event)"></app-new-post>
-        <!-- Post Feed (PostCard Components) -->
-        <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
-      </div>
+    </div>
+
+    <!-- Right Side: Post Feed -->
+    <div class="col-md-8">
+      <app-new-post (postCreated)="addPost($event)"></app-new-post>
+      <!-- Post Feed (PostCard Components) -->
+      <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
     </div>
   </div>
-  
+</div>

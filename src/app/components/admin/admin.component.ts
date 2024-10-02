@@ -2,6 +2,7 @@ import { Component , OnInit} from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Product } from '../../interfaces/product';
+import { ProductApiService } from '../../services/product-api.service';
 
 interface Order {
   id: string;
@@ -30,8 +31,7 @@ export class AdminComponent implements OnInit {
   orders: Order[] = [];
   editingOrder: Order | null = null;
 
-  constructor( private productService: ProductService,
-    private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private productService: ProductApiService) {
       // Khởi tạo form
       this.productForm = this.fb.group({
         name: [''],
@@ -103,34 +103,48 @@ export class AdminComponent implements OnInit {
   }
 
   onSubmit() {
-    const product: Product = this.productForm.value;
+    // const product: Product = this.productForm.value;
     
     // Tạo form data để upload file
-    const formData = new FormData();
-    this.selectedFiles.forEach(file => {
-      formData.append('images', file);
-    });
+    // const formData = new FormData();
+    // this.selectedFiles.forEach(file => {
+    //   formData.append('images', file);
+    // });
 
     // Thêm các thông tin khác vào formData
-    formData.append('name', product.name);
-    formData.append('price', product.price.toString());
-    formData.append('quantity', product.quantity.toString());
-    formData.append('description', product.description);
-    formData.append('variants', JSON.stringify(product.variants));
+    // formData.append('name', product.name);
+    // formData.append('price', product.price.toString());
+    // formData.append('quantity', product.quantity.toString());
+    // formData.append('description', product.description);
+    // formData.append('variants', JSON.stringify(product.variants));
 
     // Gửi dữ liệu sản phẩm và hình ảnh đến server
-    this.productService.addProduct(formData).subscribe(() => {
-      console.log('Product added with images');
+    // this.productService.createProduct(formData).subscribe(() => {
+    //   console.log('Product added with images');
       // Làm gì đó sau khi thêm sản phẩm thành công
-    });
-    this.loadProducts();
+    // });
+    // this.loadProducts();
+    if (this.productForm.valid) {
+      const newProduct: Product = this.productForm.value;
+      this.productService.createProduct(newProduct).subscribe(
+        (data: Product) => {
+          this.products.push(data);
+          this.productForm.reset();
+        },
+        error => console.error('Error creating room:', error)
+      );
+    } else {
+      console.error('Form is invalid');
+    }
   }
 
 
   loadProducts(): void {
-    this.productService.products$.subscribe(data => {
+    this.productService.getProducts().subscribe(data => {
       this.products = data;
-    });
+    },
+    error => console.error('Error fetching rooms:', error)
+  );
   }
 
   // Chọn sản phẩm để cập nhật
@@ -142,10 +156,10 @@ export class AdminComponent implements OnInit {
   // Cập nhật sản phẩm
   updateProduct(): void {
     if (this.productForm.valid && this.selectedProduct) {
-      this.productService.updateProduct(this.productForm.value).subscribe(response => {
+      this.productService.updateProduct(this.selectedProduct._id!,this.productForm.value).subscribe(response => {
         if (response) {
-          this.productService.loadUpdatedData();
-          this.resetForm();
+          this.loadProducts();
+          this.stopEdit();
         } else {
           console.error('Failed to update product');
         }
@@ -155,13 +169,11 @@ export class AdminComponent implements OnInit {
 
   // Xóa sản phẩm
   deleteProduct(id: string): void {
-    this.productService.deleteProduct(id).subscribe(response => {
-      if (response) {
-        this.productService.loadUpdatedData();
-      } else {
-        console.error('Failed to delete product');
-      }
-    });
+    this.productService.deleteProduct(id).subscribe(() => {
+      this.products = this.products.filter(r => r._id !== id); // Remove deleted room from the list
+    },
+    error => console.error('Error deleting product:', error)
+  );
   }
 
   // Reset form

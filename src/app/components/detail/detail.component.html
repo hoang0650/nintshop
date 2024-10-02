@@ -19,9 +19,9 @@
             <div id="product-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner border">
                     <div class="carousel-item active">
-                        <img class="w-100 h-100 img-cover" src="{{product.image[0]}}" alt="Image">
+                        <img class="w-100 h-100 img-cover" src="{{product?.image[0]}}" alt="Image">
                     </div>
-                    <div class="carousel-item" *ngFor="let img of product.image.slice(1)">
+                    <div class="carousel-item" *ngFor="let img of product?.image.slice(1)">
                         <img class="w-100 h-100 img-cover" [src]="img" alt="Image">
                     </div>
                 </div>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-lg-7 pb-5">
-            <h3 class="font-weight-semi-bold">{{product.name}}</h3>
+            <h3 class="font-weight-semi-bold">{{product?.name | json}}</h3>
             <div class="d-flex mb-3">
                 <div class="text-primary mr-2">
                     <small class="fas fa-star"></small>
@@ -46,16 +46,16 @@
                 </div>
                 <small class="pt-1">(50 Reviews)</small>
             </div>
-            <h3 class="font-weight-semi-bold mb-4">{{ product.price | number: '1.0-0'}} VNĐ</h3>
-            <div class="d-flex mb-4">
+            <h3 class="font-weight-semi-bold mb-4">{{ product?.price | number: '1.0-0'}} VNĐ</h3>
+            <!-- <div class="d-flex mb-4">
                 <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
                 <form>
-                    <div class="custom-control custom-radio custom-control-inline" *ngFor="let variant of product.variants">
+                    <div class="custom-control custom-radio custom-control-inline" *ngFor="let variant of product?.variants">
                         <input type="radio" class="custom-control-input" [id]="'color-' + variant.color" name="color" (change)="selectVariant(variant)">
-                        <label class="custom-control-label" [for]="'color-' + variant.color">{{ variant.color }}</label>
+                        <label class="custom-control-label" [for]="'color-' + variant?.color">{{ variant.color }}</label>
                     </div>
                 </form>
-            </div>
+            </div> -->
 
             <div class="d-flex align-items-center mb-4 pt-2">
                 <button class="btn btn-primary px-3" (click)="addToCart(product)"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
@@ -90,10 +90,10 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-pane-1">
                     <h4 class="mb-3">Product Description</h4>
-                    <p class="product-description">{{product.description}}</p>
+                    <p class="product-description">{{product?.description}}</p>
                 </div>
                 <div class="tab-pane fade" id="tab-pane-3">
-                    <app-review [productId]="product._id"></app-review>
+                    <app-review [productId]="product?.id"></app-review>
                 </div>
             </div>
         </div>

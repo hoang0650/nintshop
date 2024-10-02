@@ -7,29 +7,18 @@ import { Component, Input } from '@angular/core';
 })
 export class PostCardComponent {
   @Input() post: any;
-  showComments: boolean = false;
-  newComment: string = '';
 
-  // Thêm lượt thích (like)
-  likePost() {
-    this.post.likes++;
+  likePost(post: any) {
+    post.likes++;
   }
 
-  // Hiển thị hoặc ẩn phần bình luận
-  toggleCommentSection() {
-    this.showComments = !this.showComments;
+  commentOnPost(post: any) {
+    // Logic for adding a comment can be implemented here
+    console.log('Bình luận trên bài viết:', post);
   }
 
-  // Thêm bình luận mới
-  addComment() {
-    if (this.newComment.trim()) {
-      this.post.comments.push({ author: 'Người dùng', text: this.newComment });
-      this.newComment = '';
-    }
-  }
-
-  // Chia sẻ bài viết (hiện thông báo chia sẻ)
-  sharePost() {
-    alert('Đã chia sẻ bài viết!');
+  sharePost(post: any) {
+    // Logic for sharing the post
+    console.log('Chia sẻ bài viết:', post);
   }
 }

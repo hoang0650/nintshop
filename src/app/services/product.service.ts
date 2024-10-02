@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-
+import { ProductApiService } from './product-api.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,78 +10,105 @@ export class ProductService {
 
   private productsSource = new BehaviorSubject<any[]>([]);
   products$ = this.productsSource.asObservable();
-  // https://sale-nest-api.onrender.com/api/products
-  // http://localhost:3000/api/products/
-  constructor(private http: HttpClient) {
+  
+  // URL của API
+  private apiUrl = 'https://sale-nest-api.onrender.com/api/products';
+
+  constructor(private http: HttpClient, private productapiService:ProductApiService) {
     // Tải dữ liệu từ server khi khởi tạo service
     this.loadProducts();
   }
 
-  // Tải tất cả sản phẩm từ API
   private loadProducts() {
-    this.http.get<any[]>('https://sale-nest-api.onrender.com/api/products').subscribe(
-      data => {
-        this.productsSource.next(data);
+    // Cách 1: Data Set Cứng
+    // Giả sử có một API hoặc dữ liệu từ server
+    // const fakeServerData = [
+    //   { id: 1, name: 'Product 1', description: 'Description 1' },
+    //   { id: 2, name: 'Product 2', description: 'Description 2' },
+    //   { id: 3, name: 'Product 3', description: 'Description 3' },
+    //   { id: 4, name: 'Product 1', description: 'Description 4' },
+    //   { id: 5, name: 'Product 2', description: 'Description 5' },
+    //   { id: 6, name: 'Product 3', description: 'Description 6' },
+    //   { id: 7, name: 'Product 1', description: 'Description 7' },
+    //   { id: 8, name: 'Product 2', description: 'Description 8' },
+     
+    // ];
+
+
+    // Cập nhật dữ liệu trong BehaviorSubject
+    // this.productsSource.next(fakeServerData);
+    
+    // Cách 2: Lấy data từ api
+    // Gọi API để lấy dữ liệu sản phẩm
+    //  this.http.get<any[]>('http://localhost:3000/rooms').subscribe(
+    //   data => {
+    //     this.productsSource.next(data);
+    //   },
+    //   error => {
+    //     console.error('Error loading products:', error);
+    //   }
+    // );
+    this.productapiService.getProducts().subscribe(
+      data =>{
+        this.productsSource.next(data)
       },
-      error => {
-        console.error('Error loading products:', error);
+      error =>{
+        console.error('Error loading products:', error)
       }
-    );
+      
+    )
+    
   }
 
-  // Lấy danh sách sản phẩm theo query tìm kiếm
-  getProducts(query: string): Observable<any[]> {
-    return this.http.get<any[]>(`https://sale-nest-api.onrender.com/api/products?search=${query}`);
-  }
-
-  // Cập nhật lại dữ liệu sản phẩm khi có thay đổi
   loadUpdatedData() {
     this.loadProducts();
   }
+  
+  // updateProducts(newData: any[]): void {
+  //   this.productsSource.next(newData);
+  // }
 
-  // Thêm sản phẩm mới
-  addProduct(newProduct: any): Observable<any> {
-    return this.http.post<any>('https://sale-nest-api.onrender.com/api/products', newProduct).pipe(
-      catchError(error => {
-        console.error('Error adding product:', error);
-        return of(null); // Handle error bằng cách trả về null
-      })
-    );
-  }
-
-  // Cập nhật thông tin sản phẩm
-  updateProduct(updatedProduct: any): Observable<any> {
-    return this.http.put<any>(`https://sale-nest-api.onrender.com/api/products/${updatedProduct.id}`, updatedProduct).pipe(
-      catchError(error => {
-        console.error('Error updating product:', error);
-        return of(null); // Handle error bằng cách trả về null
-      })
-    );
-  }
-
-  // Xóa sản phẩm theo ID
-  deleteProduct(productId: any): Observable<any> {
-    return this.http.delete<any>(`https://sale-nest-api.onrender.com/api/products/${productId}`).pipe(
-      catchError(error => {
-        console.error('Error deleting product:', error);
-        return of(null); // Handle error bằng cách trả về null
-      })
-    );
-  }
-
-  // Lấy sản phẩm theo ID từ BehaviorSubject
-  getProductById(id: number): any {
+  updateProducts(updatedProduct: any): Observable<any> {
     const currentProducts = this.productsSource.value;
-    return currentProducts.find(product => product.id === id);
+
+    // Find the index of the product in the local array
+    const index = currentProducts.findIndex(product => product.roomNumber === updatedProduct.roomNumber);
+
+    if (index !== -1) {
+      // Update the local array
+      const updatedProducts = [...currentProducts];
+      updatedProducts[index] = { ...updatedProduct };
+      this.productsSource.next(updatedProducts);
+      // Update the product in the API
+      return this.http.put<any>('https://hotel-app-smp2.onrender.com/checkin' + updatedProduct.roomNumber, updatedProduct)
+      .pipe(
+        catchError(error => {
+          console.error('Error updating room:', error);
+          return of(null); // Return an observable that emits null in case of an error
+        })
+      );
   }
 
-  // Đặt sản phẩm được chọn
+  // If the product is not found, return an observable that emits null
+  return of(null); // Handle error if the product is not found
+  }
+
   setSelectedProduct(product: any): void {
     this.productsSource.next(product);
   }
 
-  // Lấy sản phẩm được chọn
   getSelectedProduct(): Observable<any> {
     return this.productsSource.asObservable();
+  }
+
+  getProductById(id: any): any {
+    // Lấy sản phẩm từ dữ liệu hiện tại
+    const currentProducts = this.productsSource.value;
+    return currentProducts.find(product => product.roomNumber === id);
+  }
+
+// Lấy danh sách sản phẩm theo query tìm kiếm
+  getProducts(query: string): Observable<any[]> {
+    return this.http.get<any[]>(`https://sale-nest-api.onrender.com/api/products?search=${query}`);
   }
 }

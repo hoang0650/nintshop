@@ -95,10 +95,17 @@
               }
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+              "css/style.css",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "lib/owlcarousel/assets/owl.carousel.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "mail/jqBootstrapValidation.min.js",
+              "mail/contact.js",
+              "js/main.js",
+              "lib/owlcarousel/owl.carousel.min.js",
+              "lib/easing/easing.js"
+          ]
           }
         }
       }

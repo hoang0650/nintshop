@@ -5,14 +5,14 @@ import { CartService } from '../../services/cart.service';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrl: './product.component.css'
+  styleUrls: ['./product.component.css'] // Đảm bảo rằng styleUrls là dạng số nhiều
 })
 export class ProductComponent {
-  constructor(public productService: ProductService,private cartService: CartService) { }
+  constructor(public productService: ProductService, private cartService: CartService) { }
 
   onSelect(product: number): void {
-    // this.productService.setSelectedProduct(product)
-    const selectedProduct = this.productService.getProductById(product)
+    this.productService.setSelectedProduct(product)
+    // const selectedProduct = this.productService.getProductById(product)
   }
   // Hàm thêm sản phẩm vào giỏ hàng
   addToCart(product: any) {

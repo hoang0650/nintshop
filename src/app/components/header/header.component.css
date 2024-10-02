@@ -1,0 +1,12 @@
+/* Để giữ navbar cố định ở top khi cuộn */
+.sticky-navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Ẩn top bar sau khi cuộn */
+.hide-topbar {
+    display: none;
+}

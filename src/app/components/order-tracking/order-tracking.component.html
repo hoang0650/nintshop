@@ -1,3 +1,14 @@
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-1">
+  <div class="d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 100px;">
+      <div class="d-inline-flex">
+          <p class="m-0"><a routerLink="/home">Home</a></p>
+          <p class="m-0 px-2">/</p>
+          <p class="m-0"><a routerLink="/order-tracking">Order Tracking</a></p>
+      </div>
+  </div>
+</div>
+<!-- Page Header End -->
 <div class="container mt-5">
   <h2>Tra cứu mã đơn hàng</h2>
   <div class="mb-3">
@@ -10,7 +21,7 @@
     {{ errorMessage }}
   </div>
 
-  <div class="container">
+  <div class="container mt-2">
     <h2>Order Details</h2>
 
     <div *ngFor="let order of orderDetails">

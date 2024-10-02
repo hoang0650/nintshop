@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
   currentLanguage: string;
   isLoggedIn: boolean = false
   isAdmin: boolean = false;
+  isSticky: boolean = false;
   infor: any;
   searchTerm: string = '';
   filteredProducts: any
@@ -89,6 +90,18 @@ export class HeaderComponent implements OnInit {
      this.showDropdown = false;  // Đóng dropdown khi nhấp bên ngoài
    }
  }
+
+ @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const offset = window.pageYOffset;
+    const stickyPoint = 150;  // Tùy chỉnh vị trí cuộn để top bar ẩn
+
+    if (offset >= stickyPoint) {
+      this.isSticky = true;  // Khi cuộn qua stickyPoint
+    } else {
+      this.isSticky = false;  // Khi trở lại phần đầu trang
+    }
+  }
 
  // Hàm để mở dropdown khi nhấp vào nút hoặc input
  toggleDropdown() {

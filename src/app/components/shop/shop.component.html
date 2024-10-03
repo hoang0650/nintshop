@@ -142,7 +142,7 @@
                         <div
                             class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                             <img class="img-fluid w-100 img-cover" src="{{product.image[0]}}" alt=""
-                                (click)="onSelect(product.id)" [routerLink]="['/detail', product.id]">
+                                (click)="onSelect(product._id)" [routerLink]="['/detail', product._id]">
                         </div>
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3 text-primary product-name">{{product.name}}</h6>
@@ -151,7 +151,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a (click)="onSelect(product.id)" [routerLink]="['/detail', product.id]"
+                            <a (click)="onSelect(product._id)" [routerLink]="['/detail', product._id]"
                                 class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                                 Detail</a>
                             <a (click)="addToCart(product)" class="btn btn-sm text-dark p-0"><i

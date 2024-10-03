@@ -16,7 +16,7 @@ export class ProductApiService {
   constructor(private http: HttpClient) { }
 
   getProducts(){
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<Product[]>(this.apiUrl);
   }
 
   // Lấy danh sách sản phẩm theo query tìm kiếm
@@ -32,8 +32,8 @@ export class ProductApiService {
     return this.http.post<Product>(this.apiUrl, data);
   }
 
-  updateProduct(id: string, room: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, room);
+  updateProduct(id: string, formData: FormData): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, formData);
   }
 
   deleteProduct(id: string): Observable<void> {

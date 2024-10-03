@@ -17,7 +17,7 @@
                 <h3 class="mb-4">Manage Products</h3>
 
                 <!-- Form to add/edit product -->
-                <form [formGroup]="productForm" (ngSubmit)="selectedProduct ? updateProduct() : onSubmit()">
+                <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
                     <div class="mb-3">
                         <label class="form-label" for="name">Name</label>
                         <input class="form-control" id="name" formControlName="name" type="text" />
@@ -32,17 +32,14 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="description">Description</label>
-                        <input class="form-control" id="description" formControlName="description" type="text" />
+                        <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-
-                        <!-- Nhiều hình ảnh -->
-                        <label class="form-label" for="images">Images</label>
-                        <input class="form-control" id="images" type="file" (change)="onFilesSelected($event)"
-                            multiple />
+                        <label class="form-label" for="image">Images</label>
+                        <input class="form-control" id="image" type="file" (change)="onFilesSelected($event)" multiple />
                     </div>
                     <div class="mb-3">
-                        <!-- Preview Hình ảnh -->
+                        <!-- Preview Images -->
                         <div *ngIf="imagePreviews.length > 0">
                             <div *ngFor="let imagePreview of imagePreviews">
                                 <img [src]="imagePreview" alt="Product Image" width="100" height="100" />
@@ -52,28 +49,40 @@
                     <div class="mb-3">
                         <!-- Variants -->
                         <div formArrayName="variants">
-                            <div *ngFor="let variant of variants.controls; let i=index" [formGroupName]="i">
-                                Variants(option):<br>
-                                <label class="form-label" for="size">Size</label>
-                                <input class="form-control" id="size" formControlName="size" type="text" />
-
-                                <label class="form-label" for="color">Color</label>
-                                <input class="form-control" id="color" formControlName="color" type="text" />
-
-                                <label class="form-label" for="stock">Stock</label>
-                                <input class="form-control" id="stock" formControlName="stock" type="number" />
+                            <h4>Variants</h4>
+                            <div *ngFor="let variant of variants.controls; let i=index" [formGroupName]="i" class="mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h5 class="mb-0">Variant {{i + 1}}</h5>
+                                    <button type="button" class="btn btn-danger btn-sm" (click)="removeVariant(i)">
+                                        <i class="fas fa-trash"></i> Delete Variant
+                                    </button>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="size">Size</label>
+                                    <input class="form-control" id="size" formControlName="size" type="text" />
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="color">Color</label>
+                                    <input class="form-control" id="color" formControlName="color" type="text" />
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="stock">Stock</label>
+                                    <input class="form-control" id="stock" formControlName="stock" type="number" />
+                                </div>
                             </div>
+                            <button type="button" class="btn btn-secondary mt-2" (click)="addVariant()">Add Variant</button>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">{{selectedProduct ? 'Update Product' : 'Create a
-                        Product'}}</button>
+                    <button type="submit" class="btn btn-primary">{{isEditing ? 'Update Product' : 'Create Product'}}</button>
+                    <button *ngIf="isEditing" type="button" class="btn btn-secondary ml-2" (click)="stopEdit()">Cancel</button>
                 </form>
 
                 <!-- Product List -->
-                <h3>Product List</h3>
+                <h3 class="mt-5">Product List</h3>
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Name</th>
                             <th>Description</th>
                             <th>Price</th>
@@ -82,31 +91,62 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let product of products">
-                            <td>{{ product.name }}</td>
-                            <td>{{ product.description }}</td>
-                            <td>{{ product.price }}</td>
-                            <td>{{ product.quantity }}</td>
-                            <td>
-                                <!-- <button class="btn btn-sm btn-info" (click)="selectProduct(product)">Update</button>
-                        <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)">Delete</button> -->
-                                <button class="btn btn-sm btn-info" (click)="startEdit(product._id)" nzType="default"
-                                    *ngIf="editingProductId !== product._id">
-                                    <i nz-icon nzType="edit"></i>Edit
-                                </button>
-                                <nz-divider nzType="vertical"></nz-divider>
-                                <a nz-popconfirm nzPopconfirmTitle="Sure to delete?"
-                                    (nzOnConfirm)="deleteProduct(product._id)" *ngIf="editingProductId !== product._id">
-                                    <button class="btn btn-sm btn-danger" nzType="text">
-                                        <i nz-icon nzType="delete"></i>Delete
+                        <ng-container *ngFor="let product of products">
+                            <tr>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" (click)="onExpandChange(product._id)">
+                                        <i class="fas" [ngClass]="{'fa-chevron-down': expandedProductId !== product._id, 'fa-chevron-up': expandedProductId === product._id}"></i>
                                     </button>
-                                </a>
-                                <button nz-button nzShape="round" (click)="stopEdit()" nzType="default"
-                                    *ngIf="editingProductId === product._id">
-                                    <i nz-icon nzType="save"></i>Cancel
-                                </button>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.description }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info" (click)="startEdit(product._id)" *ngIf="editingProductId !== product._id">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-danger ml-2" (click)="deleteProduct(product._id)" *ngIf="editingProductId !== product._id">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="expandedProductId === product._id">
+                                <td colspan="6">
+                                    <div class="p-3">
+                                        <h5>Preview Images</h5>
+                                        <div class="d-flex flex-wrap">
+                                            <!-- <div *ngFor="let image of product.image" class="m-2">
+                                                <img [src]="image" alt="product.name" width="100" height="100" class="img-thumbnail" />
+                                            </div> -->
+                                            <div *ngFor="let imageUrl of selectedProduct?.image">
+                                                <img [src]="imageUrl" alt="Product Image" width="100" height="100" />
+                                                <button type="button" class="btn btn-danger btn-sm" (click)="markImageForDeletion(imageUrl)">
+                                                  <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <h5 class="mt-3">Variants</h5>
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Size</th>
+                                                    <th>Color</th>
+                                                    <th>Stock</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let variant of product.variants">
+                                                    <td>{{ variant.size }}</td>
+                                                    <td>{{ variant.color }}</td>
+                                                    <td>{{ variant.stock }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
                     </tbody>
                 </table>
             </div>
@@ -119,8 +159,7 @@
                 <form (ngSubmit)="onSubmitOrder()">
                     <div class="mb-3">
                         <label for="orderId" class="form-label">Order ID</label>
-                        <input type="text" class="form-control" id="orderId" [(ngModel)]="orderId" name="orderId"
-                            required>
+                        <input type="text" class="form-control" id="orderId" [(ngModel)]="orderId" name="orderId" required>
                     </div>
 
                     <div class="mb-3">

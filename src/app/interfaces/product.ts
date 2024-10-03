@@ -8,6 +8,7 @@ export interface Product {
     price: number;
     quantity:number;
     variants: [{
+      name: String,
       size: String,
       color: String,
       stock: Number

@@ -112,7 +112,7 @@ export class ShopComponent implements OnInit{
     this.applyFilters();
   }
 
-  onSelect(product: number): void {
+  onSelect(product: string): void {
     // this.productService.setSelectedProduct(product)
     const selectedProduct = this.productService.getProductById(product)
   }

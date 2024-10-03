@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
+import { ProductApiService } from '../../services/product-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
-
+import { Product } from '../../interfaces/product';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -14,20 +14,23 @@ export class DetailComponent implements OnInit {
   selectedVariant: any;
 
   constructor(
-    private productService: ProductService,
+    private productService: ProductApiService,
     private route: ActivatedRoute,
     private cartService: CartService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const productId = +params['id']; // Lấy ID dưới dạng chuỗi
-      this.product = this.productService.getProductById(productId); // Gọi hàm với ID chuỗi
-    });
-    this.route.data.subscribe(data => {
-      // Assuming data.room contains room details
-      // this.room = data.room;
-    });
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.productService.getProductById(id).subscribe(
+        (data: Product) => {
+          this.product = data;
+        },
+        error => {
+          console.error('Error fetching product details:', error);
+        }
+      );
+    }
   }
 
   addToCart(product: any) {

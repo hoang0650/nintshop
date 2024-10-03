@@ -32,6 +32,8 @@
       <p><strong>Address:</strong> {{ order.address }}</p>
       <p><strong>Email:</strong> {{ order.email }}</p>
       <p><strong>Status:</strong> {{ order.status }}</p>
+      <p><strong>SubTotal:</strong> {{ order.subtotal | currency: 'VND' }}</p>
+      <p><strong>Discount:</strong> {{ order.discount | currency: 'VND' }}</p>
       <p><strong>Total Price:</strong> {{ order.totalPrice | currency: 'VND' }}</p>
       <p><strong>Created At:</strong> {{ order.createdAt | date: 'dd/MM/yyyy' }}</p>
 

@@ -14,17 +14,19 @@ interface CartItem {
 })
 export class CartService {
   private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
-  private voucherCode: string | null = null; // Thêm thuộc tính mã voucher
-  private discount: number = 0; // Thêm thuộc tính giảm giá
+  private voucherCode: string | null = null; // Mã voucher
+  private discount: number = 0; // Số tiền giảm giá
 
-  cartItems$ = this.cartItemsSubject.asObservable();
+  cartItems$ = this.cartItemsSubject.asObservable(); // Observable để theo dõi thay đổi của giỏ hàng
 
   constructor() {}
 
+  // Lấy danh sách sản phẩm trong giỏ hàng
   getCartItems(): CartItem[] {
     return this.cartItemsSubject.value;
   }
 
+  // Thêm sản phẩm vào giỏ hàng
   addToCart(item: CartItem) {
     const currentItems = this.getCartItems();
     const existingItem = currentItems.find(cartItem => cartItem.name === item.name);
@@ -33,54 +35,60 @@ export class CartService {
       // Nếu sản phẩm đã có trong giỏ, tăng số lượng
       existingItem.quantity += item.quantity;
     } else {
-      // Nếu chưa có, thêm sản phẩm mới
+      // Nếu chưa có, thêm sản phẩm mới vào giỏ hàng
       currentItems.push(item);
     }
 
-    this.cartItemsSubject.next(currentItems);
+    this.cartItemsSubject.next([...currentItems]); // Cập nhật lại giỏ hàng
   }
 
+  // Cập nhật số lượng của một sản phẩm
   updateQuantity(name: string, quantity: number) {
     const currentItems = this.getCartItems();
     const itemToUpdate = currentItems.find(item => item.name === name);
+
     if (itemToUpdate && quantity > 0) {
       itemToUpdate.quantity = quantity;
-      this.cartItemsSubject.next(currentItems);
+      this.cartItemsSubject.next([...currentItems]); // Cập nhật lại giỏ hàng
     }
   }
 
+  // Xóa sản phẩm khỏi giỏ hàng
   removeFromCart(name: string) {
     const currentItems = this.getCartItems().filter(item => item.name !== name);
-    this.cartItemsSubject.next(currentItems);
+    this.cartItemsSubject.next([...currentItems]); // Cập nhật lại giỏ hàng
   }
 
+  // Xóa toàn bộ giỏ hàng
   clearCart() {
-    this.cartItemsSubject.next([]);
-    this.voucherCode = null; // Reset mã voucher khi giỏ hàng bị xóa
+    this.cartItemsSubject.next([]); // Xóa sản phẩm
+    this.voucherCode = null; // Reset mã voucher
     this.discount = 0; // Reset giảm giá
   }
 
+  // Tính tổng số lượng sản phẩm trong giỏ hàng
   getTotalItemCount(): number {
     return this.getCartItems().reduce((count, item) => count + item.quantity, 0);
   }
 
+  // Tính tổng giá tiền trong giỏ hàng
   getTotalPrice(): number {
     const subtotal = this.getCartItems().reduce((total, item) => total + item.price * item.quantity, 0);
-    return subtotal - this.discount; // Trả về tổng giá trừ đi giảm giá
+    return subtotal; // Trả về tổng giá sau khi trừ giảm giá
   }
 
-  // Thêm phương thức để áp dụng voucher
+  // Áp dụng mã voucher và tính số tiền giảm giá
   applyVoucher(code: string, discountAmount: number) {
     this.voucherCode = code;
-    this.discount = discountAmount; // Giả sử discountAmount là số tiền giảm giá
+    this.discount = discountAmount; // Áp dụng giảm giá
   }
 
-  // Phương thức để lấy giá trị giảm giá hiện tại
+  // Lấy số tiền giảm giá hiện tại
   getCurrentDiscount(): number {
-    return this.discount;
+    return this.discount*this.getCartItems().reduce((total, item) => total + item.price * item.quantity, 0)/100;
   }
 
-  // Phương thức để kiểm tra xem có voucher hay không
+  // Kiểm tra xem có áp dụng mã voucher không
   hasVoucher(): boolean {
     return this.voucherCode !== null;
   }

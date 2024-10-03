@@ -31,7 +31,7 @@
 /* Followers and action buttons */
 .mt-2 button {
     margin-left: 5px;
-  }
+}
 
 /* Adjust layout */
 .container {
@@ -57,4 +57,17 @@
 
 .card-footer button {
     width: 100%;
+}
+
+.friend-avatar-container {
+    text-align: center;
+}
+
+.friend-avatar-container img {
+    border: 2px solid #ddd;
+    transition: transform 0.3s ease;
+}
+
+.friend-avatar-container img:hover {
+    transform: scale(1.1);
 }

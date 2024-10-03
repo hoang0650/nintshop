@@ -12,8 +12,8 @@ import { ToastrService } from 'ngx-toastr'; // Thêm thư viện thông báo n�
 export class CartComponent implements OnInit {
   voucherCode: string = '';
   voucherError: string | null = null; // Để hiển thị lỗi voucher nếu có
-  userId: string = ''; // Khởi tạo userId
-  discount: number = 0; // Biến này có thể dùng để lưu thông tin giảm giá
+  user: any; // Khởi tạo userId
+  discount: number = 0; // Lưu số tiền giảm giá từ voucher
   cartItems: any[] = []; // Khởi tạo giỏ hàng là một mảng rỗng
   totalPrice: number = 0; // Tổng tiền trước khi giảm giá
   isLoggedIn: boolean = false;
@@ -35,65 +35,84 @@ export class CartComponent implements OnInit {
     // Gọi phương thức getUserInfo để lấy thông tin người dùng khi khởi tạo component
     this.userService.getUserInfor().subscribe({
       next: (userInfo) => {
-        this.userId = userInfo.userId; // Lưu userId từ thông tin người dùng
-        this.isLoggedIn = true
+        this.user = userInfo; // Lưu userId từ thông tin người dùng
+        console.log('this.user',this.user);
+        
+        this.isLoggedIn = true;
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error('Error fetching user information.');
       }
     });
   }
 
+  // Tăng số lượng sản phẩm
   increaseQuantity(item: any) {
     this.cartService.updateQuantity(item.name, item.quantity + 1);
   }
 
+  // Giảm số lượng sản phẩm
   decreaseQuantity(item: any) {
     if (item.quantity > 1) {
       this.cartService.updateQuantity(item.name, item.quantity - 1);
     }
   }
 
+  // Xóa sản phẩm khỏi giỏ hàng
   removeItem(name: string) {
     this.cartService.removeFromCart(name);
   }
 
+  // Áp dụng mã voucher và tính số tiền giảm giá
   applyVoucher() {
     if (!this.isLoggedIn) {
       this.voucherError = 'Vui lòng đăng nhập để nhập mã voucher.';
       return;
     }
-    // Giả sử bạn có cách để tính toán discountAmount
-    const discountAmount = this.calculateDiscount(); // Hàm này có thể trả về số tiền giảm giá dựa trên voucher
-    if (this.voucherCode) {
-      this.cartService.applyVoucher(this.voucherCode, discountAmount);
-      this.voucherError = null; // Reset lỗi
+
+    if(this.user.usedVouchers.length > 0 && (this.user.usedVouchers ==='DISCOUNT10' || this.user.usedVouchers ==='SUMMER20')){
+      this.voucherError = 'Mã vouvher của bạn đã được sử dụng.';
+      return;
+    }
+    // Giả định bạn đã có sẵn các mã voucher và giá trị tương ứng
+    const availableVouchers: { [code: string]: number } = {
+      'DISCOUNT10': 10,  // Giảm 10 đơn vị
+      'SUMMER20': 20,      // Giảm 20 đơn vị
+    };
+
+    // Kiểm tra mã voucher có hợp lệ không
+    if (this.voucherCode in availableVouchers) {
+      const discountAmount = availableVouchers[this.voucherCode]; // Lấy giá trị giảm giá từ mã voucher
+      this.cartService.applyVoucher(this.voucherCode, discountAmount); // Áp dụng giảm giá vào CartService
+      this.discount = discountAmount; // Cập nhật giảm giá trong component
+      this.voucherError = null; // Reset lỗi nếu có
+      this.toastr.success(`Voucher applied successfully! Discount: ${discountAmount}`);
     } else {
-      this.voucherError = 'Vui lòng nhập mã voucher hợp lệ.';
+      this.voucherError = 'Mã voucher không hợp lệ. Vui lòng thử lại.';
+      this.toastr.error(this.voucherError);
     }
   }
 
-  calculateDiscount(): number {
-    const totalPrice = this.cartService.getTotalPrice(); // Lấy tổng giá trị giỏ hàng
-    const discountPercentage = 10; // Tỷ lệ giảm giá
-    const discountAmount = (totalPrice * discountPercentage) / 100; // Tính số tiền giảm giá
-
-    return discountAmount; // Trả về số tiền giảm giá
-}
+  // Tính tổng giá trị giỏ hàng sau khi áp dụng giảm giá
 
 
-  getTotalPrice(): number {
-    return this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) - this.discount;
+  getTotalPrice(): number{
+    return this.cartService.getTotalPrice() - this.discount;
   }
 
+  // Chuyển sang trang thanh toán
   proceedToCheckout() {
-    const cartItemsString = JSON.stringify(this.cartItems); // Chuyển đối tượng thành chuỗi JSON
-    const totalPrice = this.getTotalPrice();
-
+    const cartItemsString = JSON.stringify(this.cartItems); // Chuyển giỏ hàng thành chuỗi JSON
+    const discount = this.cartService.getCurrentDiscount()
+    const subtotal = this.cartService.getTotalPrice();
     this.router.navigate(['/checkout'], {
       queryParams: {
+        user: this.user,
+        voucherCode: this.voucherCode,
         cartItems: cartItemsString,
-        totalPrice: totalPrice
+        subtotal: subtotal,
+        discount: discount,
+        totalPrice: subtotal - discount
       }
     });
   }

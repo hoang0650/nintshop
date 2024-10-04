@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="row px-xl-5">
     <div class="col">
         <!-- Tabs for Product and Order -->
@@ -84,7 +85,6 @@
                         <tr>
                             <th></th>
                             <th>Name</th>
-                            <th>Description</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Actions</th>
@@ -99,7 +99,6 @@
                                     </button>
                                 </td>
                                 <td>{{ product.name }}</td>
-                                <td>{{ product.description }}</td>
                                 <td>{{ product.price }}</td>
                                 <td>{{ product.quantity }}</td>
                                 <td>
@@ -114,6 +113,8 @@
                             <tr *ngIf="expandedProductId === product._id">
                                 <td colspan="6">
                                     <div class="p-3">
+                                        <h5>Description</h5>
+                                        {{ product.description }}
                                         <h5>Preview Images</h5>
                                         <div class="d-flex flex-wrap">
                                             <!-- <div *ngFor="let image of product.image" class="m-2">
@@ -199,3 +200,4 @@
         </div>
     </div>
 </div>
+<app-footer></app-footer>

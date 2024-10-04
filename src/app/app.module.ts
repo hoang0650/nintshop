@@ -61,6 +61,7 @@ import { PostCardComponent } from './components/post-card/post-card.component';
 import { PostFeedComponent } from './components/post-feed/post-feed.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.component';
+import { LivestreamComponent } from './components/livestream/livestream.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -102,6 +103,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PostFeedComponent,
     UserInfoComponent,
     RevenueChartComponent,
+    LivestreamComponent,
  
   ],
   imports: [

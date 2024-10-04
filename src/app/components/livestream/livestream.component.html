@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <div class="livestream-container">
+        <!-- Video Livestream Section -->
+        <div class="livestream-video">
+            <video controls autoplay>
+                <source src="your-livestream-source.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <!-- Avatar và tên chủ phiên live -->
+            <div class="host-info">
+                <img src="nintshop_img/logo.jpg" alt="Host Avatar" class="host-avatar">
+                <span class="host-name">Nint Shop</span>
+            </div>
+
+            <!-- Viewers, Live Label, and Timer -->
+            <div class="view-count">
+                <span class="live-timer">{{ liveTimer }}</span>
+                <span class="live-label">LIVE</span>
+                <span class="viewers">{{ viewCount }} viewers</span>
+            </div>
+
+            <!-- Nút like và share -->
+            <div class="action-buttons">
+                <button class="like-button">
+                    <i class="fas fa-thumbs-up"></i>
+                </button>
+                <button class="share-button" routerLink="/home">
+                    <i class="fas fa-share"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-box">
+            <div #chatMessages class="chat-messages" [ngClass]="{'show-more': showMore}">
+                <div *ngFor="let message of messages" class="chat-message text-light">
+                    <!-- <strong>{{ message.user }}:</strong> {{ message.text }} -->
+                    {{message}}
+                </div>
+            </div>
+
+            <!-- Nút xem thêm / thu gọn -->
+            <div class="toggle-button" (click)="toggleShowMore()">
+                {{ showMore ? 'Thu nhỏ' : 'Xem thêm' }}
+            </div>
+
+            <!-- Chat input -->
+            <div class="chat-input">
+                <input type="text" class="form-control" [(ngModel)]="chatMessage" (keyup.enter)="sendMessage()"
+                    placeholder="Type your message here...">
+                <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+            </div>
+
+            <!-- GIF Section -->
+            <div class="gif-section">
+                <img src="path/to/gif.gif" alt="GIF" class="gif-button" id="gifButton" />
+            </div>
+
+            <!-- Gift Modal -->
+            <div class="gift-modal" id="giftModal" style="display: none;">
+                <div>Your gift content goes here!</div>
+                <button id="closeModalButton">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

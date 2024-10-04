@@ -49,7 +49,7 @@
 
                 <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="top-search" style="width: calc(100% - 30px); z-index: 999;">
                     <div class="navbar-nav w-100 overflow-hidden" style="height: 410px" *ngIf="showDropdown">
-                        <a (click)="onSelect(product.id)" href="/detail/{{product.id}}" class="nav-item nav-link" *ngFor="let product of filteredProducts">{{ product.type }} - {{ product.name }}</a>
+                        <a (click)="onSelect(product._id)" href="/detail/{{product._id}}" class="nav-item nav-link" *ngFor="let product of filteredProducts">{{ product.type }} - {{ product.name }}</a>
                     </div>
                 </nav>
             </form>

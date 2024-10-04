@@ -18,6 +18,26 @@
         $(window).resize(toggleNavbarMethod);
     });
 
+    document.addEventListener("DOMContentLoaded", function() {
+        const gifButton = document.getElementById('gifButton');
+        const giftModal = document.getElementById('giftModal');
+        const closeModalButton = document.getElementById('closeModalButton');
+    
+        gifButton.addEventListener('click', function() {
+            giftModal.style.display = 'block'; // Show the modal
+            setTimeout(() => { // Delay to allow display change
+                giftModal.classList.add('show'); // Add show class for animation
+            }, 10); // Short delay for CSS transition
+        });
+    
+        closeModalButton.addEventListener('click', function() {
+            giftModal.classList.remove('show'); // Remove show class
+            setTimeout(() => { // Delay to allow animation to finish
+                giftModal.style.display = 'none'; // Hide the modal
+            }, 300); // Match the transition duration
+        });
+    });
+
 
     // Back to top button
     $(document).ready(function () {

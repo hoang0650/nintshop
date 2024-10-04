@@ -9,6 +9,7 @@
           <label for="fileUpload">Tải lên hình ảnh</label>
           <input type="file" class="form-control-file" id="fileUpload" (change)="onFileSelected($event)">
         </div>
+        <a type="button" href="/livestream" class="btn btn-primary mr-2">Live</a>
         <button type="submit" class="btn btn-primary" [disabled]="!postContent">Đăng</button>
       </form>
     </div>

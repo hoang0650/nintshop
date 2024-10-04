@@ -18,6 +18,7 @@ import { adminGuard } from './guard/admin.guard';
 import { PostFeedComponent } from './components/post-feed/post-feed.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.component';
+import { LivestreamComponent } from './components/livestream/livestream.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'user-info', component: UserInfoComponent },
+  { path: 'livestream', component: LivestreamComponent },
   { path: 'qr-payment', component: QrCodeComponent },
   { path: 'order-tracking', component: OrderTrackingComponent },
   { path: 'chart', component: RevenueChartComponent },

@@ -106,6 +106,11 @@ export class UserService {
     // Hoặc gọi API để cập nhật người dùng trong database
   }
 
+  // Cập nhật thông tin người dùng
+  updateUserInfo(data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/update`, data);
+  }
+
   // Phương thức để áp dụng mã voucher
   applyVoucher(userId: string, voucherCode: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/apply-voucher`, { userId, voucherCode });

@@ -16,6 +16,8 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
 import { OrderComponent } from './components/order/order.component';
 import { adminGuard } from './guard/admin.guard';
 import { PostFeedComponent } from './components/post-feed/post-feed.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
+import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -27,8 +29,10 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'user-info', component: UserInfoComponent },
   { path: 'qr-payment', component: QrCodeComponent },
   { path: 'order-tracking', component: OrderTrackingComponent },
+  { path: 'chart', component: RevenueChartComponent },
   { path: 'order', component: OrderComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'notfound', component: NotfoundComponent },

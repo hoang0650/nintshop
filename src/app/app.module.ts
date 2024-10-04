@@ -11,6 +11,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { NgxEchartsModule } from 'ngx-echarts'; // Import NgxEchartsModule
+import { HighchartsChartModule } from 'highcharts-angular';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzRateModule } from 'ng-zorro-antd/rate';
@@ -57,6 +59,8 @@ import { OrderComponent } from './components/order/order.component';
 import { NewPostComponent } from './components/new-post/new-post.component';
 import { PostCardComponent } from './components/post-card/post-card.component';
 import { PostFeedComponent } from './components/post-feed/post-feed.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
+import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -95,7 +99,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrderComponent,
     NewPostComponent,
     PostCardComponent,
-    PostFeedComponent
+    PostFeedComponent,
+    UserInfoComponent,
+    RevenueChartComponent,
+ 
   ],
   imports: [
     BrowserModule,
@@ -108,6 +115,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     AppRoutingModule,
+    NgxEchartsModule.forRoot({ echarts: () => import('echarts') }),
+    HighchartsChartModule,
     ReactiveFormsModule,
     FormsModule,
     ToastrModule.forRoot({

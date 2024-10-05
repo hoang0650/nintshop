@@ -2,11 +2,7 @@
     <div class="livestream-container">
         <!-- Video Livestream Section -->
         <div class="livestream-video">
-            <video controls autoplay>
-                <source src="your-livestream-source.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-
+            <video id="localVideo" controls autoplay playsinline muted></video>
             <!-- Avatar và tên chủ phiên live -->
             <div class="host-info">
                 <img src="nintshop_img/logo.jpg" alt="Host Avatar" class="host-avatar">
@@ -28,10 +24,10 @@
                 <button class="share-button" routerLink="/home">
                     <i class="fas fa-share"></i>
                 </button>
-                <button class="like-button">
+                <button class="like-button" (click)="startVideoStream()">
                     <i class="fas fa-solid fa-file-audio"></i>
                 </button>
-                <button class="share-button" (click)="toggleAudio()">
+                <button class="share-button" (click)="stopVideoStream()" [disabled]="!localStream">
                     <i class="fas fa-solid fa-volume-off"></i>
                 </button>
             </div>

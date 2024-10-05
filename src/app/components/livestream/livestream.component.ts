@@ -11,7 +11,7 @@ export class LivestreamComponent implements OnInit, AfterViewInit {
   startTime: Date;
   showGiftModal: boolean = false;
   isMobileView: boolean = false;
-  localStream!: MediaStream;
+  localStream: MediaStream | undefined;
   
   messages: string[] = [];
   chatMessage: string = '';
@@ -27,11 +27,8 @@ export class LivestreamComponent implements OnInit, AfterViewInit {
     this.streamService.onMessage((msg: string) => {
       this.messages.push(msg);
     });
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then(stream => {
-        this.localStream = stream;
-        // ...
-      });
+    // Truy cập camera và micro
+    this.startVideoStream();
     // Initialize any necessary logic here
     this.startTimer();
     this.checkViewMode();
@@ -57,14 +54,37 @@ export class LivestreamComponent implements OnInit, AfterViewInit {
     }
   }
 
-  toggleVideo() {
-    const videoTrack = this.localStream.getVideoTracks()[0];
-    videoTrack.enabled = !videoTrack.enabled;
+  startVideoStream() {
+    // Sử dụng navigator để truy cập camera và micro
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then(stream => {
+        this.localStream = stream;
+
+        // Lấy video element từ DOM
+        const videoElement = document.getElementById('localVideo') as HTMLVideoElement;
+
+        // Gán stream vào video element
+        if (videoElement) {
+          videoElement.srcObject = stream;
+        }
+      })
+      .catch(error => {
+        console.error('Error accessing media devices.', error);
+      });
   }
 
-  toggleAudio() {
-    const audioTrack = this.localStream.getAudioTracks()[0];
-    audioTrack.enabled = !audioTrack.enabled;
+  // Hàm để ngắt stream khi không cần sử dụng
+  stopVideoStream() {
+    if (this.localStream) {
+      this.localStream.getTracks().forEach(track => track.stop());
+      this.localStream = undefined; // Đặt lại localStream thành undefined
+
+      // Ngắt kết nối video
+      const videoElement = document.getElementById('localVideo') as HTMLVideoElement;
+      if (videoElement) {
+        videoElement.srcObject = null; // Ngắt kết nối video
+      }
+    }
   }
 
   scrollToBottom() {

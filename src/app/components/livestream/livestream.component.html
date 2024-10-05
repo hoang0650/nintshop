@@ -28,6 +28,12 @@
                 <button class="share-button" routerLink="/home">
                     <i class="fas fa-share"></i>
                 </button>
+                <button class="like-button">
+                    <i class="fas fa-solid fa-file-audio"></i>
+                </button>
+                <button class="share-button" (click)="toggleAudio()">
+                    <i class="fas fa-solid fa-volume-off"></i>
+                </button>
             </div>
         </div>
 
@@ -35,8 +41,8 @@
         <div class="chat-box">
             <div #chatMessages class="chat-messages" [ngClass]="{'show-more': showMore}">
                 <div *ngFor="let message of messages" class="chat-message text-light">
-                    <!-- <strong>{{ message.user }}:</strong> {{ message.text }} -->
-                    {{message}}
+                    <strong>Phan Hoàng:</strong> {{ message }} 
+                    <small>{{ startTime | date: 'shortTime' }}</small>
                 </div>
             </div>
 

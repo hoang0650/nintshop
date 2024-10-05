@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="chatbot-input">
-        <input type="text" [(ngModel)]="newMessage" placeholder="Nhập tin nhắn...">
+        <input type="text" [(ngModel)]="newMessage" placeholder="Nhập tin nhắn..." (keyup.enter)="sendMessage()">
         <button (click)="sendMessage()">Gửi</button>
     </div>
 </div>

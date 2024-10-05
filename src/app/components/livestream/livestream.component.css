@@ -124,6 +124,14 @@ video {
     transition: max-height 0.3s ease;
 }
 
+.message-time {
+    font-size: 0.8rem;
+    color: #666;
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+  }
+
 .chat-messages.show-more {
     max-height: calc(100% - 120px);
 }

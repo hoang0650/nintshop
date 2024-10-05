@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { Message } from '../../interfaces/message';
+import { Chatbox } from '../../interfaces/chatbox';
 @Component({
   selector: 'app-chatbox',
   templateUrl: './chatbox.component.html',
   styleUrl: './chatbox.component.css'
 })
 export class ChatboxComponent {
-  messages: Message[] = [
+  messages: Chatbox[] = [
     { sender: 'Bot', text: 'Xin chào! Chúng tôi rất vui được hỗ trợ bạn. Bạn cần giúp đỡ gì ạ?', link:'',displayText:'' }
   ];
   newMessage: string = '';

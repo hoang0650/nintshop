@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
-
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
@@ -11,18 +11,29 @@ export class ShopComponent implements OnInit{
   selectedPrices: string[] = [];
   selectedColors: string[] = [];
   selectedSizes: string[] = [];
+  selectedCategory!: string;
   searchTerm: string = '';
   selectedSort: string = ''; // Khai báo thuộc tính selectedSort
 
   products: any[] = []; // Giả sử đây là danh sách sản phẩm từ service
   filteredProducts: any[] = [];
-  constructor(public productService: ProductService,private cartService: CartService) { }
+  constructor(private route: ActivatedRoute,public productService: ProductService,private cartService: CartService) { }
 
   ngOnInit(): void {
     // Initialize with all products
     this.productService.products$.subscribe(products => {
       this.products = products;
       this.filteredProducts = [...this.products]; // Sao chép danh sách ban đầu
+    });
+    // Lấy category từ query params
+    this.route.queryParams.subscribe(params => {
+      this.selectedCategory = params['type'];
+      // Bạn có thể sử dụng giá trị này để lọc các sản phẩm hiển thị
+      this.filteredProducts = this.products.filter(product => {
+        const typeMatch = product.type.toLowerCase().includes(this.selectedCategory);
+        return typeMatch
+      })
+      // Thực hiện logic để hiển thị sản phẩm tương ứng với category
     });
   }
 
@@ -58,8 +69,9 @@ export class ShopComponent implements OnInit{
       const priceMatch = this.selectedPrices.length === 0 || this.selectedPrices.includes(this.getPriceRange(product.price));
       const colorMatch = this.selectedColors.length === 0 || this.selectedColors.includes(product.color);
       const sizeMatch = this.selectedSizes.length === 0 || this.selectedSizes.includes(product.size);
+      const typeMatch = product.type.toLowerCase().includes(this.searchTerm);
       const nameMatch = product.name.toLowerCase().includes(this.searchTerm);
-      return priceMatch && colorMatch && sizeMatch && nameMatch;
+      return priceMatch && colorMatch && sizeMatch && nameMatch && typeMatch;
     });
   
     // Sắp xếp sau khi đã lọc

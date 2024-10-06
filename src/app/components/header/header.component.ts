@@ -1,12 +1,10 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { CartService } from '../../services/cart.service';
 import { LanguageService } from '../../services/language.service';
 import { TranslateService } from '@ngx-translate/core';
-import { User } from '../../interfaces/user';
 import { UserService } from '../../services/user.service';
 import { ProductService } from '../../services/product.service';
-import { of } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -23,7 +21,7 @@ export class HeaderComponent implements OnInit {
   searchTerm: string = '';
   filteredProducts: any
   public showDropdown = false;  // Biến để hiển thị hoặc ẩn dropdown
-  constructor(private eRef: ElementRef,public productService: ProductService, private cartService: CartService, private languageService: LanguageService, private translate: TranslateService, private userService: UserService) {
+  constructor(private router: Router,private eRef: ElementRef,public productService: ProductService, private cartService: CartService, private languageService: LanguageService, private translate: TranslateService, private userService: UserService) {
     this.currentLanguage = 'vi'; // Ngôn ngữ mặc định
     this.translate.setDefaultLang(this.currentLanguage);
     this.userInfor()
@@ -49,6 +47,16 @@ export class HeaderComponent implements OnInit {
       this.filteredProducts = [...this.products]; // Sao chép danh sách ban đầu
     });
   }
+  categories = [
+    { name: 'keychain', id: 1 },
+    { name: 'sticker', id: 2 },
+    // Các category khác
+  ];
+
+  onCategorySelect(category: any) {
+    // Chuyển hướng tới ShopComponent với type là category đã chọn
+    this.router.navigate(['/shop'], { queryParams: { type: category.name } });
+  }
 
   selectLanguage(language: string): void {
     this.languageService.changeLanguage(language); // Gọi hàm để thay đổi ngôn ngữ
@@ -63,8 +71,13 @@ export class HeaderComponent implements OnInit {
     // Lọc theo giá, màu sắc, kích thước
     this.filteredProducts = this.products.filter((product:any) => {
       const nameMatch = product.name.toLowerCase().includes(this.searchTerm);
-      return nameMatch;
+      const typeMatch = product.type.toLowerCase().includes(this.searchTerm);
+      return nameMatch && typeMatch;
     });
+  }
+
+  onCategory(){
+
   }
   
 

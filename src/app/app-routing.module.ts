@@ -19,6 +19,8 @@ import { PostFeedComponent } from './components/post-feed/post-feed.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.component';
 import { LivestreamComponent } from './components/livestream/livestream.component';
+import { AiChatComponent } from './components/ai-chat/ai-chat.component';
+import { LivestreamHomepageComponent } from './components/livestream-homepage/livestream-homepage.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -32,6 +34,8 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'user-info', component: UserInfoComponent },
   { path: 'livestream', component: LivestreamComponent },
+  { path: 'livestream-homepage', component: LivestreamHomepageComponent },
+  { path: 'ai-chat', component: AiChatComponent },
   { path: 'qr-payment', component: QrCodeComponent },
   { path: 'order-tracking', component: OrderTrackingComponent },
   { path: 'chart', component: RevenueChartComponent },

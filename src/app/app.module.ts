@@ -62,6 +62,8 @@ import { PostFeedComponent } from './components/post-feed/post-feed.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.component';
 import { LivestreamComponent } from './components/livestream/livestream.component';
+import { AiChatComponent } from './components/ai-chat/ai-chat.component';
+import { LivestreamHomepageComponent } from './components/livestream-homepage/livestream-homepage.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -104,6 +106,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserInfoComponent,
     RevenueChartComponent,
     LivestreamComponent,
+    AiChatComponent,
+    LivestreamHomepageComponent,
  
   ],
   imports: [

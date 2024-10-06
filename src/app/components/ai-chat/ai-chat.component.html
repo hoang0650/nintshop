@@ -1,0 +1,25 @@
+<div class="chat-container">
+    <div class="messages">
+        <div *ngFor="let message of messages"
+            [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+            {{ message.text }}
+        </div>
+    </div>
+    <div class="input-container">
+        <input [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Nhập tin nhắn...">
+        <button (click)="sendMessage()">Gửi</button>
+    </div>
+    <div class="file-upload">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*">
+        <button (click)="uploadFile()">Upload for OCR</button>
+        <button (click)="detectObjects()">Detect Objects</button>
+    </div>
+    <div *ngIf="ocrResult">
+        <h3>OCR Result:</h3>
+        <p>{{ ocrResult }}</p>
+    </div>
+    <div *ngIf="objectDetectionResult">
+        <h3>Object Detection Result:</h3>
+        <pre>{{ objectDetectionResult | json }}</pre>
+    </div>
+</div>

@@ -1,69 +1,123 @@
-<div class="container-fluid">
-    <div class="livestream-container">
-        <!-- Video Livestream Section -->
-        <div class="livestream-video">
+<div class="livestream-container">
+    <div class="video-section">
+        <div class="video-wrapper">
             <video id="localVideo" controls autoplay playsinline muted></video>
-            <!-- Avatar và tên chủ phiên live -->
-            <div class="host-info">
-                <img src="nintshop_img/logo.jpg" alt="Host Avatar" class="host-avatar">
-                <span class="host-name">Nint Shop</span>
-            </div>
-
-            <!-- Viewers, Live Label, and Timer -->
-            <div class="view-count">
-                <span class="live-timer">{{ liveTimer }}</span>
-                <span class="live-label">LIVE</span>
-                <span class="viewers">{{ viewCount }} viewers</span>
-            </div>
-
-            <!-- Nút like và share -->
-            <div class="action-buttons">
-                <button class="like-button">
-                    <i class="fas fa-thumbs-up"></i>
-                </button>
-                <button class="share-button" routerLink="/home">
-                    <i class="fas fa-share"></i>
-                </button>
-                <button class="like-button" (click)="startVideoStream()">
-                    <i class="fas fa-solid fa-file-audio"></i>
-                </button>
-                <button class="share-button" (click)="stopVideoStream()" [disabled]="!localStream">
-                    <i class="fas fa-solid fa-volume-off"></i>
-                </button>
+            <div class="video-overlay">
+                <div class="host-info">
+                    <img src="nintshop_img/logo.jpg" alt="Host Avatar" class="host-avatar">
+                    <span class="host-name">Nint Shop</span>
+                </div>
+                <div class="stream-info">
+                    <span class="live-timer">{{ liveTimer }}</span>
+                    <span class="live-label">LIVE</span>
+                    <span class="viewers">{{ viewCount }} viewers</span>
+                </div>
             </div>
         </div>
 
-        <!-- Chat Section -->
-        <div class="chat-box">
-            <div #chatMessages class="chat-messages" [ngClass]="{'show-more': showMore}">
-                <div *ngFor="let message of messages" class="chat-message text-light">
-                    <strong>Phan Hoàng:</strong> {{ message }} 
-                    <small>{{ startTime | date: 'shortTime' }}</small>
+        <!-- Action buttons for live interaction -->
+        <div class="action-buttons">
+            <button class="action-btn like-btn" [class.active]="isLiked" (click)="toggleLike()">
+                <i class="fas fa-thumbs-up"></i>
+                <span class="btn-text">Like</span>
+            </button>
+            <button class="action-btn share-btn" (click)="startVideoStream()">
+                <i class="fas fa-share"></i>
+                <span class="btn-text">Start</span>
+            </button>
+            <button class="action-btn fullscreen-btn" (click)="stopVideoStream()">
+                <i class="fas fa-expand"></i>
+                <span class="btn-text">Stop</span>
+            </button>
+            <button class="action-btn audio-btn" (click)="toggleAudio()">
+                <i class="fas" [ngClass]="{'fa-volume-up': !isMuted, 'fa-volume-mute': isMuted}"></i>
+                <span class="btn-text">{{ isMuted ? 'Unmute' : 'Mute' }}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Section -->
+    <div class="chat-section">
+        <div class="chat-header">
+            <h2>Live Chat</h2>
+            <button class="toggle-chat-btn" (click)="toggleChat()">
+                {{ isChatCollapsed ? 'Expand' : 'Collapse' }}
+            </button>
+        </div>
+
+        <div class="chat-body" [class.collapsed]="isChatCollapsed">
+            <div #chatMessages class="chat-messages show-more" [ngClass]="{'show-more': showMore}">
+                <div *ngFor="let message of messages" class="chat-message">
+                    <img [src]="message.avatar" [alt]="message.username" class="user-avatar">
+                    <div class="message-content">
+                        <span class="username">{{ message.username }}</span>
+                        <p>{{ message.text }}</p>
+                        <span class="timestamp">{{ message.timestamp | date:'shortTime' }}</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Nút xem thêm / thu gọn -->
+            <!-- Toggle more/less chat messages -->
             <div class="toggle-button" (click)="toggleShowMore()">
                 {{ showMore ? 'Thu nhỏ' : 'Xem thêm' }}
             </div>
 
+            <!-- Chat action buttons (Gift and Products) -->
+            <div class="chat-actions">
+
+                <div>
+                    <i class="fas fa-gift"></i>
+                    <a type="button" class="btn-text ml-1" (click)="openGiftModal()">Send Gift</a>
+                </div>
+                <div>
+                    <i class="fas fa-gift"></i>
+                    <a type="button" class="btn-text ml-1" (click)="openCartModal()">View Products</a>
+                </div>
+            </div>
+
             <!-- Chat input -->
             <div class="chat-input">
-                <input type="text" class="form-control" [(ngModel)]="chatMessage" (keyup.enter)="sendMessage()"
-                    placeholder="Type your message here...">
-                <button class="btn btn-primary" (click)="sendMessage()">Send</button>
-            </div>
-
-            <!-- GIF Section -->
-            <div class="gif-section">
-                <img src="path/to/gif.gif" alt="GIF" class="gif-button" id="gifButton" />
-            </div>
-
-            <!-- Gift Modal -->
-            <div class="gift-modal" id="giftModal" style="display: none;">
-                <div>Your gift content goes here!</div>
-                <button id="closeModalButton">Close</button>
+                <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()"
+                    placeholder="Type your message...">
+                <button (click)="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal for gifts -->
+<div class="modal gift-modal" [class.show]="isGiftModalOpen">
+    <div class="modal-content">
+        <h3>Choose a Gift</h3>
+        <div class="gift-grid">
+            <button *ngFor="let gift of gifts" class="gift-item" (click)="sendGift(gift)">
+                <img [src]="gift.image" [alt]="gift.name">
+                <span>{{ gift.name }}</span>
+            </button>
+        </div>
+        <button class="close-modal-btn" (click)="closeGiftModal()">Close</button>
+    </div>
+</div>
+
+<!-- Giỏ hàng -->
+<div class="modal gift-modal" [class.show]="isCartView">
+    <div class="modal-content">
+        <h3>Cart</h3>
+        <div class="cart-item" *ngFor="let gift of gifts">
+            <img [src]="gift.image" [alt]="gift.name">
+            <div>
+                <strong>Sản phẩm 1</strong><br>
+                <small>Giá: 100.000đ</small>
+            </div>
+        </div>
+        <!-- <div class="gift-grid">
+            <button class="gift-item" (click)="sendGift(gift)">
+                <img [src]="gift.image" [alt]="gift.name">
+                <span>{{ gift.name }}</span>
+            </button>
+        </div> -->
+        <button class="close-modal-btn" (click)="closeCartModal()">Close</button>
     </div>
 </div>

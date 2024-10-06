@@ -1,57 +1,62 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { StreamService } from '../../services/stream.service';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+
+interface ChatMessage {
+  username: string;
+  avatar: string;
+  text: string;
+  timestamp: Date;
+}
+
+interface Gift {
+  name: string;
+  image: string;
+}
+
 @Component({
   selector: 'app-livestream',
   templateUrl: './livestream.component.html',
-  styleUrls: ['./livestream.component.css']
+  styleUrls: ['./livestream.component.scss']
 })
-export class LivestreamComponent implements OnInit, AfterViewInit {
-  @ViewChild('chatMessages', { static: false }) chatMessages!: ElementRef;
-  liveTimer: string = '00:00:00'; // Initial time for the live stream
-  startTime: Date;
-  showGiftModal: boolean = false;
-  isMobileView: boolean = false;
+export class LivestreamComponent implements OnInit {
+  @ViewChild('chatMessages') chatMessages!: ElementRef;
+
+  liveTimer: string = '00:00:00';
+  viewCount: number = 0;
+  messages: ChatMessage[] = [];
+  newMessage: string = '';
+  showMore: boolean = false;
+  isChatCollapsed: boolean = false;
+  isLiked: boolean = false;
+  isMuted: boolean = false;
+  isGiftModalOpen: boolean = false;
+  isCartView: boolean = false;
   localStream: MediaStream | undefined;
-  
-  messages: string[] = [];
-  chatMessage: string = '';
-  viewCount: number = 1000;
-  showMore: boolean = true;
+  gifts: Gift[] = [
+    { name: 'Pikachu', image: 'nintshop_img/005/014-Pikachu.png' },
+    { name: 'Articuno', image: 'nintshop_img/005/001-Articuno.png' },
+    { name: 'Mew', image: 'nintshop_img/005/003-Mew.png' },
+    { name: 'Lucario', image: 'nintshop_img/005/008-Lucario.png' },
+  ];
 
-  constructor(private streamService: StreamService) {
-    this.startTime = new Date(); // Store the start time of the live stream
+  constructor() { }
+
+  ngOnInit(): void {
+    this.startLiveTimer();
+    this.simulateViewCount();
+    this.simulateChatMessages();
   }
 
-  ngOnInit() {
-    // Lắng nghe tin nhắn từ server
-    this.streamService.onMessage((msg: string) => {
-      this.messages.push(msg);
-    });
-    // Truy cập camera và micro
-    this.startVideoStream();
-    // Initialize any necessary logic here
-    this.startTimer();
-    this.checkViewMode();
-    window.addEventListener('resize', () => this.checkViewMode());
-  }
-
-  ngAfterViewInit() {
-    this.scrollToBottom();
-  }
-
-  sendMessage() {
-    if (this.chatMessage.trim()) {
-      this.streamService.sendMessage(this.chatMessage);
-      this.startTime
-      this.chatMessage = '';
-    }
-  }
-
-  toggleShowMore() {
-    this.showMore = !this.showMore;
-    if (this.showMore) {
-      setTimeout(() => this.scrollToBottom(), 0);
-    }
+  startLiveTimer(): void {
+    let seconds = 0;
+    setInterval(() => {
+      seconds++;
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const remainingSeconds = seconds % 60;
+      this.liveTimer = [hours, minutes, remainingSeconds]
+        .map(v => v < 10 ? "0" + v : v)
+        .join(":");
+    }, 1000);
   }
 
   startVideoStream() {
@@ -87,37 +92,106 @@ export class LivestreamComponent implements OnInit, AfterViewInit {
     }
   }
 
-  scrollToBottom() {
-    if (this.chatMessages) {
-      const chatContainer = this.chatMessages.nativeElement;
-      chatContainer.scrollTop = chatContainer.scrollHeight;
+  simulateViewCount(): void {
+    setInterval(() => {
+      this.viewCount = Math.floor(Math.random() * 1000) + 500;
+    }, 5000);
+  }
+
+  simulateChatMessages(): void {
+    const sampleMessages = [
+      "Great stream!",
+      "Love the content!",
+      "Can you show that again?",
+      "Hello from New York!",
+      "First time here, loving it!",
+    ];
+
+    setInterval(() => {
+      const randomMessage = sampleMessages[Math.floor(Math.random() * sampleMessages.length)];
+      this.messages.push({
+        username: `User${Math.floor(Math.random() * 1000)}`,
+        avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`,
+        text: randomMessage,
+        timestamp: new Date()
+      });
+      this.scrollToBottom();
+    }, 3000);
+  }
+
+  scrollToBottom(): void {
+    setTimeout(() => {
+      if (this.chatMessages) {
+        this.chatMessages.nativeElement.scrollTop = this.chatMessages.nativeElement.scrollHeight;
+      }
+    });
+  }
+
+  sendMessage(): void {
+    if (this.newMessage.trim()) {
+      this.messages.push({
+        username: 'You',
+        avatar: 'assets/images/your-avatar.jpg',
+        text: this.newMessage,
+        timestamp: new Date()
+      });
+      this.newMessage = '';
+      this.scrollToBottom();
     }
   }
 
-  // Method to update the live timer
-  startTimer() {
-    setInterval(() => {
-      const currentTime = new Date();
-      const elapsedTime = currentTime.getTime() - this.startTime.getTime();
-      
-      const hours = Math.floor(elapsedTime / 1000 / 60 / 60);
-      const minutes = Math.floor((elapsedTime / 1000 / 60) % 60);
-      const seconds = Math.floor((elapsedTime / 1000) % 60);
-
-      this.liveTimer = `${this.padTime(hours)}:${this.padTime(minutes)}:${this.padTime(seconds)}`;
-    }, 1000);
+  toggleChat(): void {
+    this.isChatCollapsed = !this.isChatCollapsed;
   }
 
-  // Method to pad time with leading zeros
-  padTime(time: number): string {
-    return time < 10 ? '0' + time : time.toString();
+  toggleLike(): void {
+    this.isLiked = !this.isLiked;
   }
 
-  toggleGiftModal(): void {
-    this.showGiftModal = !this.showGiftModal;
+  toggleShowMore(): void{
+    this.showMore = !this.showMore
+  }
+  
+
+  shareStream(): void {
+    // Implement share functionality
+    console.log('Sharing stream...');
   }
 
-  checkViewMode(): void {
-    this.isMobileView = window.innerWidth <= 768; // Mobile view detection
+  toggleAudio(): void {
+    this.isMuted = !this.isMuted;
+    // Implement actual audio muting logic here
+  }
+
+  toggleFullscreen(): void {
+    // Implement fullscreen toggle logic
+    console.log('Toggling fullscreen...');
+  }
+
+  openGiftModal(): void {
+    this.isGiftModalOpen = true;
+  }
+
+  closeGiftModal(): void {
+    this.isGiftModalOpen = false;
+  }
+
+  openCartModal(): void {
+    this.isCartView = true;
+  }
+
+  closeCartModal(): void {
+    this.isCartView = false;
+  }
+
+  sendGift(gift: Gift): void {
+    console.log(`Sending gift: ${gift.name}`);
+    // Implement gift sending logic
+    this.closeGiftModal();
+  }
+
+  viewProducts(): void {
+    // Implement product viewing logic
+    console.log('Viewing products...');
   }
 }

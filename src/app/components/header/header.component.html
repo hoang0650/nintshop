@@ -106,27 +106,29 @@
                         <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">{{ 'HOME' | translate }}</a>
                         <a routerLink="/shop" routerLinkActive="active"  class="nav-item nav-link">{{ 'SHOP' | translate }}</a>
                         <a routerLink="/shop-page" routerLinkActive="active"  class="nav-item nav-link">{{ 'SHOP_PAGE' | translate }}</a>
-                        <a routerLink="/chart" routerLinkActive="active"  class="nav-item nav-link">{{ 'REVENUE' | translate }}</a>
+                        <a routerLink="/livestream-homepage" routerLinkActive="active"  class="nav-item nav-link">{{ 'LIVE' | translate }}</a>
                         <a routerLink="/order-tracking" routerLinkActive="active"  class="nav-item nav-link">{{ 'TRACKING' | translate }}</a>
-                        <a routerLink="/admin"  *ngIf="isAdmin" routerLinkActive="active"  class="nav-item nav-link">{{ 'ADMIN' | translate }}</a>
-                        <!-- <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ 'CART' | translate }}</a>
+                        <div class="nav-item dropdown" *ngIf="isAdmin">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ 'ADMIN' | translate }}</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a routerLink="/cart" routerLinkActive="active" class="dropdown-item">{{ 'CART' | translate }}</a>
-                                <a routerLink="/checkout" routerLinkActive="active" class="dropdown-item">{{ 'CHECK_OUT' | translate }}</a>
+                                <a routerLink="/admin" routerLinkActive="active" class="dropdown-item">{{ 'ADMIN' | translate }}</a>
+                                <a routerLink="/ai-chat" routerLinkActive="active" class="dropdown-item">{{ 'AI_CHAT' | translate }}</a>
+                                <a routerLink="/chart" routerLinkActive="active" class="dropdown-item">{{ 'REVENUE' | translate }}</a>
+                                <a routerLink="/user-management" routerLinkActive="active" class="dropdown-item">{{ 'USER_MANAGEMENT' | translate }}</a>
                             </div>
-                        </div> -->
+                        </div>
                         <!-- <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">{{ 'CONTACT' | translate }}</a> -->
                     </div>
                     <div class="navbar-nav ml-auto py-0" *ngIf="!isLoggedIn">
                         <a routerLink="/login" routerLinkActive="active" class="nav-item nav-link">{{ 'LOGIN' | translate }}</a>
-                        <a routerLink="/signup" routerLinkActive="active" class="nav-item nav-link">{{ 'SIGN_UP' | translate }}</a>
+                        <a routerLink="/register" routerLinkActive="active" class="nav-item nav-link">{{ 'SIGN_UP' | translate }}</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0" *ngIf="isLoggedIn">
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{infor.username}}</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a  class="dropdown-item" routerLink="/user-info">{{ 'USER_INFO' | translate }}</a>
+                                <a  class="dropdown-item" routerLink="/balance">{{ 'BALANCE' | translate }}</a>
                             </div>
 
                         </div>

@@ -3,7 +3,7 @@
       <div class="col-sm-6 col-md-4">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title text-center mb-4">Đăng nhập tài khoản</h5>
+            <h5 class="card-title text-center mb-4">Login</h5>
             <form (ngSubmit)="login()">
               <div class="form-floating mb-3">
                 <label for="email">Email</label>
@@ -14,7 +14,7 @@
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" placeholder="Password" [(ngModel)]="password"
                   name="password" required>
-                <a href="#" class="link-primary float-end">Forgot Password?</a>
+                <a [routerLink]="['/forgot-password']" class="link-primary float-end">Forgot Password?</a>
               </div>
               <button type="submit" class="btn btn-lg btn-primary mt-3 w-100">Login</button>
             </form>
@@ -28,7 +28,7 @@
               </button>
             </div>
             <hr>
-            <p class="text-center">Don't have a registered account yet? <a [routerLink]="['/signup']">Here</a></p>
+            <p class="text-center">Don't have a registered account yet? <a [routerLink]="['/register']">Here</a></p>
           </div>
         </div>
       </div>

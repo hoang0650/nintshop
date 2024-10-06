@@ -1,0 +1,22 @@
+<div class="container d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="card" style="width: 400px;">
+        <div class="card-header text-center">
+            <h3>Xác Nhận OTP</h3>
+        </div>
+        <div class="card-body">
+            <form (ngSubmit)="onSubmit()">
+                <div class="mb-3">
+                    <label for="otp" class="form-label">Nhập Mã OTP</label>
+                    <input type="text" class="form-control" id="otp" [(ngModel)]="otp" name="otp" required placeholder="Nhập mã OTP đã gửi đến email của bạn" maxlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Xác Nhận</button>
+            </form>
+            <div class="mt-3 text-center">
+                <p class="mb-0">Chưa nhận được mã? <a href="#" (click)="resendOtp()">Gửi lại</a></p>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <p class="mb-0">Quay lại <a href="/forgot-password">Quên Mật Khẩu</a></p>
+        </div>
+    </div>
+</div>

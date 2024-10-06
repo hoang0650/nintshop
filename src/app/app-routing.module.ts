@@ -22,6 +22,9 @@ import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.
 import { LivestreamComponent } from './components/livestream/livestream.component';
 import { AiChatComponent } from './components/ai-chat/ai-chat.component';
 import { LivestreamHomepageComponent } from './components/livestream-homepage/livestream-homepage.component';
+import { ForgotComponent } from './components/forgot/forgot.component';
+import { OtpComponent } from './components/otp/otp.component';
+import { BalanceComponent } from './components/balance/balance.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -32,18 +35,21 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: 'register', component: SignupComponent },
+  { path: 'balance', component: BalanceComponent },
+  { path: 'forgot-password', component: ForgotComponent },
+  { path: 'reset-password', component: OtpComponent },
   { path: 'user-info', component: UserInfoComponent },
-  { path: 'user-management', component: UserManagementComponent },
   { path: 'livestream', component: LivestreamComponent },
   { path: 'livestream-homepage', component: LivestreamHomepageComponent },
-  { path: 'ai-chat', component: AiChatComponent },
   { path: 'qr-payment', component: QrCodeComponent },
   { path: 'order-tracking', component: OrderTrackingComponent },
-  { path: 'chart', component: RevenueChartComponent },
   { path: 'order', component: OrderComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'notfound', component: NotfoundComponent },
+  { path: 'ai-chat', canActivate: [adminGuard], component: AiChatComponent },
+  { path: 'user-management',canActivate: [adminGuard], component: UserManagementComponent },
+  { path: 'chart', canActivate: [adminGuard], component: RevenueChartComponent },
   { path: 'admin',canActivate: [adminGuard], component: AdminComponent }
 ];
 

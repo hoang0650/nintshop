@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
 interface ChatMessage {
   username: string;
   avatar: string;
@@ -27,10 +26,13 @@ export class LivestreamComponent implements OnInit {
   showMore: boolean = false;
   isChatCollapsed: boolean = false;
   isLiked: boolean = false;
-  isMuted: boolean = false;
+  isMicroMuted = false; // Trạng thái tắt/mở micro
   isGiftModalOpen: boolean = false;
   isCartView: boolean = false;
+  isShare: boolean = false;
   localStream: MediaStream | undefined;
+  shareModal: any; // Khai báo biến shareModal
+  shareLink: string = 'https://example.com/your-livestream-link'; // Link để chia sẻ
   gifts: Gift[] = [
     { name: 'Pikachu', image: 'nintshop_img/005/014-Pikachu.png' },
     { name: 'Articuno', image: 'nintshop_img/005/001-Articuno.png' },
@@ -151,16 +153,29 @@ export class LivestreamComponent implements OnInit {
   toggleShowMore(): void{
     this.showMore = !this.showMore
   }
-  
+
+  // Hàm sao chép link
+  copyLink() {
+    const input = document.getElementById('shareLink') as HTMLInputElement;
+    input.select(); // Chọn text trong input
+    document.execCommand('copy'); // Sao chép text vào clipboard
+    alert('Link đã được sao chép vào clipboard!'); // Thông báo cho người dùng
+  }
 
   shareStream(): void {
     // Implement share functionality
     console.log('Sharing stream...');
   }
 
-  toggleAudio(): void {
-    this.isMuted = !this.isMuted;
-    // Implement actual audio muting logic here
+  // Hàm bật/tắt micro
+  toggleMicrophone() {
+    if (this.localStream) {
+      const audioTracks = this.localStream.getAudioTracks();
+      if (audioTracks.length > 0) {
+        this.isMicroMuted = !this.isMicroMuted;
+        audioTracks[0].enabled = !this.isMicroMuted; // Tắt/bật micro
+      }
+    }
   }
 
   toggleFullscreen(): void {
@@ -182,6 +197,14 @@ export class LivestreamComponent implements OnInit {
 
   closeCartModal(): void {
     this.isCartView = false;
+  }
+
+  openShareModal(): void{
+    this.isShare = true
+  }
+
+  closeShareModal(): void{
+    this.isShare = false
   }
 
   sendGift(gift: Gift): void {

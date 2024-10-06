@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, BehaviorSubject } from 'rxjs';
 import { User } from '../interfaces/user';
+import { editUser } from '../interfaces/editUser';
 @Injectable({
   providedIn: 'root'
 })
@@ -96,15 +97,39 @@ export class UserService {
     return this.http.delete(`/api/user/${user._id}`, this.options)
   }
 
+  getUsers(): Observable<editUser[]> {
+    return this.http.get<editUser[]>(this.apiUrl);
+  }
+
+  getTotalUsers(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count`);
+  }
+
+  updateUser(user: editUser): Observable<editUser> {
+    return this.http.put<editUser>(`${this.apiUrl}/${user.id}`, user);
+  }
+
+  getUserLoginHistory(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${userId}/login-history`);
+  }
+
+  getUserOrderHistory(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${userId}/order-history`);
+  }
+
+  updateUserPermissions(userId: number, permissions: any): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${userId}/permissions`, permissions);
+  }
+
+
   // Giả sử dữ liệu người dùng được lưu trong localStorage hoặc database
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('currentUser') || '{}');
   }
 
-  updateUser(user: any) {
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    // Hoặc gọi API để cập nhật người dùng trong database
-  }
+  // updateUser(user: any) {
+  //   localStorage.setItem('currentUser', JSON.stringify(user));
+  // }
 
   // Cập nhật thông tin người dùng
   updateUserInfo(data: any): Observable<any> {

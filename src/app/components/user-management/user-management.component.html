@@ -1,0 +1,88 @@
+<div class="container mt-5">
+    <h2 class="mb-4">Quản lý người dùng</h2>
+  
+    <!-- Hiển thị số lượng người dùng -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Số lượng người dùng đăng ký</h5>
+            <p class="card-text">{{ totalUsers }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Bảng danh sách người dùng -->
+    <table class="table table-hover mt-4">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Block</th>
+          <th>Ảnh</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <select [(ngModel)]="user.role" (change)="updateUserRole(user)">
+              <option *ngFor="let role of roles">{{ role }}</option>
+            </select>
+          </td>
+          <td>
+            <input type="checkbox" [(ngModel)]="user.blocked" (change)="toggleBlockUser(user)" />
+          </td>
+          <td><img [src]="user.image" alt="User Image" width="50"></td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="editUser(user)">Sửa</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteUser(user)">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Modal để chỉnh sửa người dùng -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editUserModalLabel">Chỉnh sửa người dùng</h5>
+            <button type="button" class="btn btn-secondary"(click)="closeModal()">x</button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" [(ngModel)]="selectedUser.username" name="username" readonly>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" [(ngModel)]="selectedUser.email" name="email" readonly>
+              </div>
+              <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <select class="form-control" id="role" [(ngModel)]="selectedUser.role" name="role">
+                  <option *ngFor="let role of roles">{{ role }}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="block" class="form-label">Block</label>
+                <input type="checkbox" id="block" [(ngModel)]="selectedUser.blocked" name="block">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Đóng</button>
+            <button type="button" class="btn btn-primary" (click)="saveChanges()">Lưu thay đổi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  

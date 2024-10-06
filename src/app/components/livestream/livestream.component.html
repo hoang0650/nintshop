@@ -15,22 +15,27 @@
             </div>
         </div>
         <!-- Action buttons for live interaction -->
-        <div class="action-buttons">
+        <div class="action-buttons" style="margin-bottom: 20px;">
             <button class="action-btn like-btn" [class.active]="isLiked" (click)="toggleLike()">
                 <i class="fas fa-thumbs-up"></i>
                 <span class="btn-text">Like</span>
             </button>
             <button class="action-btn share-btn" (click)="startVideoStream()">
-                <i class="fas fa-share"></i>
+                <i class="fas fa-solid fa-play"></i>
                 <span class="btn-text">Start</span>
             </button>
             <button class="action-btn fullscreen-btn" (click)="stopVideoStream()">
-                <i class="fas fa-expand"></i>
+                <i class="fas fa-solid fa-stop"></i>
                 <span class="btn-text">Stop</span>
             </button>
-            <button class="action-btn audio-btn" (click)="toggleAudio()">
-                <i class="fas" [ngClass]="{'fa-volume-up': !isMuted, 'fa-volume-mute': isMuted}"></i>
-                <span class="btn-text">{{ isMuted ? 'Unmute' : 'Mute' }}</span>
+            <!-- Các nút điều khiển khác -->
+            <button class="action-btn audio-btn" (click)="toggleMicrophone()">
+                <i class="fas" [ngClass]="{'fa-volume-up': !isMicroMuted, 'fa-volume-mute': isMicroMuted}"></i>
+                <span class="btn-text">{{ isMicroMuted ? 'Unmute Micro' : 'Mute Micro' }}</span>
+            </button>
+            <button class="action-btn share-btn" (click)="openShareModal()">
+                <i class="fas fa-share"></i>
+                <span class="btn-text">Share</span>
             </button>
         </div>
     </div>
@@ -111,12 +116,30 @@
                 <small>Giá: 100.000đ</small>
             </div>
         </div>
-        <!-- <div class="gift-grid">
-            <button class="gift-item" (click)="sendGift(gift)">
-                <img [src]="gift.image" [alt]="gift.name">
-                <span>{{ gift.name }}</span>
-            </button>
-        </div> -->
         <button class="close-modal-btn" (click)="closeCartModal()">Close</button>
     </div>
 </div>
+
+<!-- Giỏ hàng -->
+<div class="modal fade" [class.show]="isShare">
+    <div class="modal-dialog" style="width: 100%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chia sẻ liên kết</h5>
+                <button type="button" class="btn btn-secondary"(click)="closeShareModal()">x</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="shareLink" [value]="shareLink" readonly>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeShareModal()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="copyLink()">Sao chép liên kết</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

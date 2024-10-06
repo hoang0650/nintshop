@@ -17,6 +17,7 @@ import { OrderComponent } from './components/order/order.component';
 import { adminGuard } from './guard/admin.guard';
 import { PostFeedComponent } from './components/post-feed/post-feed.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
+import { UserManagementComponent } from './components/user-management/user-management.component';
 import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.component';
 import { LivestreamComponent } from './components/livestream/livestream.component';
 import { AiChatComponent } from './components/ai-chat/ai-chat.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'user-info', component: UserInfoComponent },
+  { path: 'user-management', component: UserManagementComponent },
   { path: 'livestream', component: LivestreamComponent },
   { path: 'livestream-homepage', component: LivestreamHomepageComponent },
   { path: 'ai-chat', component: AiChatComponent },

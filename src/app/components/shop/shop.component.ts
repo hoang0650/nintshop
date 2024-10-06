@@ -20,22 +20,30 @@ export class ShopComponent implements OnInit{
   constructor(private route: ActivatedRoute,public productService: ProductService,private cartService: CartService) { }
 
   ngOnInit(): void {
-    // Initialize with all products
+    // Lấy danh sách sản phẩm và lọc sản phẩm khi có thay đổi queryParams
     this.productService.products$.subscribe(products => {
       this.products = products;
-      this.filteredProducts = [...this.products]; // Sao chép danh sách ban đầu
-    });
-    // Lấy category từ query params
-    this.route.queryParams.subscribe(params => {
-      this.selectedCategory = params['type'];
-      // Bạn có thể sử dụng giá trị này để lọc các sản phẩm hiển thị
-      this.filteredProducts = this.products.filter(product => {
-        const typeMatch = product.type.toLowerCase().includes(this.selectedCategory);
-        return typeMatch
-      })
-      // Thực hiện logic để hiển thị sản phẩm tương ứng với category
+      // Sao chép toàn bộ danh sách sản phẩm
+      this.filteredProducts = [...this.products];
+      
+      // Lắng nghe thay đổi queryParams
+      this.route.queryParams.subscribe(params => {
+        this.selectedCategory = params['type'];
+        
+        // Kiểm tra nếu có category được chọn thì lọc sản phẩm
+        if (this.selectedCategory) {
+          this.filteredProducts = this.products.filter(product => {
+            // So sánh loại sản phẩm với category đã chọn
+            return product.type.toLowerCase() === this.selectedCategory.toLowerCase();
+          });
+        } else {
+          // Nếu không có category được chọn, hiển thị toàn bộ sản phẩm
+          this.filteredProducts = [...this.products];
+        }
+      });
     });
   }
+  
 
   onSearchChange(event: any): void {
     this.searchTerm = event.target.value.toLowerCase();

@@ -1,4 +1,7 @@
 <nz-layout>
+  <!-- Hiển thị header và footer dựa trên giá trị showHeaderFooter -->
+  <app-header *ngIf="showHeaderFooter"></app-header>
   <router-outlet></router-outlet>
-  <!-- Back to Top -->
+  <app-footer *ngIf="showHeaderFooter"></app-footer>
+  
 </nz-layout>

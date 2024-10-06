@@ -27,6 +27,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -142,7 +143,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzTableModule,
     NzDividerModule,
     NzButtonModule,
-    NzIconModule
+    NzIconModule,
+    NzSpinModule
   ],
   providers: [
     provideClientHydration(),

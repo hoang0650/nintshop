@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { LivestreamService, Livestream, CreateLivestreamDto } from '../../services/livestream.service';
-interface Video {
+interface Stream {
   id: number;
   title: string;
-  views: number;
-  timeAgo: string;
+  streamer: string;
+  viewers: number;
   thumbnailUrl: string;
 }
 
-interface Gift {
-  id: number;
-  name: string;
+interface ChatMessage {
+  username: string;
+  message: string;
 }
 @Component({
   selector: 'app-livestream-homepage',
@@ -18,52 +18,42 @@ interface Gift {
   styleUrls: ['./livestream-homepage.component.scss']
 })
 export class LivestreamHomepageComponent {
-  constructor(private livestreamService: LivestreamService) { }
-  latestVideo: Video = {
-    id: 1,
-    title: 'Livestream gần nhất',
-    views: 10000,
-    timeAgo: '1 giờ trước',
-    thumbnailUrl: '/assets/latest-video-thumbnail.jpg'
+  mainVideo = {
+    id: 0,
+    title: 'Featured Live Stream',
+    username: '@featured_user',
+    description: 'Don\'t miss out on this amazing live performance!',
+    likes: '50.2K',
+    comments: '5.2K',
+    viewers: '100K'
   };
 
-  gifts: Gift[] = [
-    { id: 1, name: 'Quà 1' },
-    { id: 2, name: 'Quà 2' },
-    { id: 3, name: 'Quà 3' },
-    { id: 4, name: 'Quà 4' }
+  relatedVideos = [
+    { id: 1, title: 'Cooking Show', username: '@chef_user', description: 'Learn to cook delicious meals', likes: '15.2K', comments: '1.2K', category: 'Cooking' },
+    { id: 2, title: 'Gaming Stream', username: '@gamer_user', description: 'Watch me play the latest games', likes: '20.5K', comments: '2.8K', category: 'Gaming' },
+    { id: 3, title: 'Music Concert', username: '@musician_user', description: 'Live music performance', likes: '30.1K', comments: '3.5K', category: 'Music' },
+    { id: 4, title: 'Art Creation', username: '@artist_user', description: 'Watch me create a masterpiece', likes: '10.7K', comments: '800', category: 'Art' }
   ];
 
-  relatedVideos: Video[] = Array(12).fill(null).map((_, index) => ({
-    id: index + 2,
-    title: `Video liên quan ${index + 1}`,
-    views: Math.floor(Math.random() * 10000),
-    timeAgo: `${Math.floor(Math.random() * 24)} giờ trước`,
-    thumbnailUrl: `/assets/video-thumbnail-${index + 1}.jpg`
-  }));
+  creatorRankings = [
+    { rank: 1, username: '@top_creator', followers: '1.2M', category: 'Entertainment' },
+    { rank: 2, username: '@music_star', followers: '980K', category: 'Music' },
+    { rank: 3, username: '@fitness_guru', followers: '850K', category: 'Fitness' },
+    { rank: 4, username: '@tech_wizard', followers: '720K', category: 'Technology' },
+    { rank: 5, username: '@food_lover', followers: '650K', category: 'Cooking' }
+  ];
 
-  getRelatedVideoCards() {
-    return Array(3).fill(null).map((_, i) => 
-      this.relatedVideos.slice(i * 4, (i + 1) * 4)
-    );
+  suggestedCategories = [
+    'All', 'Gaming', 'Music', 'Cooking', 'Art', 'Technology', 'Fitness', 'Travel', 'Comedy'
+  ];
+
+  goToLiveDetail(videoId: number) {
+    console.log(`Navigating to live detail page for video ${videoId}`);
+    // Implement navigation logic here
   }
 
-  startLivestream() {
-    const newLivestream: CreateLivestreamDto = {
-      title: 'My New Livestream',
-      description: 'This is a test livestream',
-      thumbnailUrl: 'https://example.com/thumbnail.jpg'
-    };
-
-    this.livestreamService.createLivestream(newLivestream).subscribe(
-      (createdLivestream: Livestream) => {
-        console.log('Livestream created:', createdLivestream);
-        // Navigate to the new livestream or update the UI as needed
-      },
-      (error) => {
-        console.error('Error creating livestream:', error);
-        // Handle the error (e.g., show an error message to the user)
-      }
-    );
+  filterByCategory(category: string) {
+    console.log(`Filtering by category: ${category}`);
+    // Implement category filtering logic here
   }
 }

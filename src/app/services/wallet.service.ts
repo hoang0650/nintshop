@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WalletService {
-  private apiUrl = 'https://sale-nest-api.onrender.com/wallet'; // Đường dẫn đến API Node.js
+  private apiUrl = 'https://sale-nest-api.onrender.com/api/wallet'; // Đường dẫn đến API Node.js
 
   constructor(private http: HttpClient) {}
 

@@ -1,50 +1,111 @@
-<div class="container">
-    <!-- Main video section -->
-    <div class="main-video">
+<div class="container-fluid p-0">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Livestream Home Page</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Live</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-video-container">
         <div class="video-container">
-            <video controls>
-                <source src="/assets/latest-video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <h2>{{ latestVideo.title }}</h2>
-    </div>
-
-    <!-- Gift section -->
-    <div class="gift-section">
-        <h3>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="gift-icon">
-                <polyline points="20 12 20 22 4 22 4 12"></polyline>
-                <rect x="2" y="7" width="20" height="5"></rect>
-                <line x1="12" y1="22" x2="12" y2="7"></line>
-                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
-                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
-            </svg>
-            Quà tặng
-        </h3>
-        <div class="gift-grid">
-            <button *ngFor="let gift of gifts" class="gift-button">
-                {{ gift.name }}
-            </button>
+            <img src="https://via.placeholder.com/1920x1080" alt="Main video thumbnail" class="main-video-thumbnail">
+            <div class="video-overlay">
+                <div class="video-info">
+                    <h2>{{ mainVideo.title }}</h2>
+                    <h3>{{ mainVideo.username }}</h3>
+                    <p>{{ mainVideo.description }}</p>
+                </div>
+                <div class="video-actions">
+                    <button class="btn btn-danger btn-lg" (click)="goToLiveDetail(mainVideo.id)">
+                        <i class="fas fa-video"></i> Watch Live
+                    </button>
+                    <div class="action-icons">
+                        <div><i class="fas fa-heart"></i> {{ mainVideo.likes }}</div>
+                        <div><i class="fas fa-comment"></i> {{ mainVideo.comments }}</div>
+                        <div><i class="fas fa-eye"></i> {{ mainVideo.viewers }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Related videos section -->
-    <div class="related-videos">
-        <h3>Video liên quan</h3>
-        <div class="video-cards">
-            <div class="card" *ngFor="let videoGroup of getRelatedVideoCards()">
-                <div class="card-content">
-                    <div class="video-grid">
-                        <div class="video-item" *ngFor="let video of videoGroup">
-                            <div class="video-thumbnail">
-                                <img [src]="video.thumbnailUrl" [alt]="video.title">
-                            </div>
-                            <h4>{{ video.title }}</h4>
-                            <p>{{ video.views }} lượt xem • {{ video.timeAgo }}</p>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Trending Categories</h5>
+                        <div class="category-container">
+                            <button *ngFor="let category of suggestedCategories"
+                                class="btn btn-outline-primary mr-2 mb-2" (click)="filterByCategory(category)">
+                                {{ category }}
+                            </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="mb-3">Related Live Streams</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4" *ngFor="let video of relatedVideos">
+                        <div class="card h-100">
+                            <img src="https://via.placeholder.com/400x225" class="card-img-top" alt="Video thumbnail">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ video.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ video.username }}</h6>
+                                <p class="card-text">{{ video.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button class="btn btn-danger btn-sm" (click)="goToLiveDetail(video.id)">Watch
+                                        Live</button>
+                                    <div class="action-icons">
+                                        <span><i class="fas fa-heart"></i> {{ video.likes }}</span>
+                                        <span><i class="fas fa-comment"></i> {{ video.comments }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                Category: {{ video.category }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h2 class="mb-3">Top Creators</h2>
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let creator of creatorRankings">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="badge badge-primary mr-2">{{ creator.rank }}</span>
+                                    <strong>{{ creator.username }}</strong>
+                                </div>
+                                <div>
+                                    <small class="text-muted">{{ creator.followers }} followers</small>
+                                </div>
+                            </div>
+                            <small class="text-muted">{{ creator.category }}</small>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

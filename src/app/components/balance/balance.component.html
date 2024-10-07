@@ -1,127 +1,70 @@
-<div class="container d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
-    <div class="card" style="width: 600px;">
-        <div class="card-header text-center">
-            <h3>Ví Của Tôi</h3>
-            <ul class="nav nav-tabs" id="walletTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="deposit-tab" data-toggle="tab" href="#deposit" role="tab" aria-controls="deposit" aria-selected="true">Nạp Tiền</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="transfer-tab" data-toggle="tab" href="#transfer" role="tab" aria-controls="transfer" aria-selected="false">Chuyển Tiền</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="check-account-tab" data-toggle="tab" href="#check-account" role="tab" aria-controls="check-account" aria-selected="false">Kiểm Tra Tài Khoản</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="convert-tab" data-toggle="tab" href="#convert" role="tab" aria-controls="convert" aria-selected="false">Quy Đổi Sang Coin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="gift-tab" data-toggle="tab" href="#gift" role="tab" aria-controls="gift" aria-selected="false">Tặng Quà</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="withdraw-tab" data-toggle="tab" href="#withdraw" role="tab" aria-controls="withdraw" aria-selected="false">Rút Tiền</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#convertCoinToMoney">Quy đổi từ Coin sang USD</a>
-                </li>
-            </ul>
+<div class="wallet-container">
+    <h2>Ví của bạn</h2>
+    <div class="balance-section">
+        <p><strong>Số dư hiện tại (USD):</strong> {{ balance }} USD</p>
+        <p><strong>Số dư hiện tại (Coin):</strong> {{ coinBalance }} coin</p>
+    </div>
+    <div class="tab-container">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs flex-wrap justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#deposit">Nạp tiền</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#transfer">Chuyển tiền</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#convert">Quy đổi coin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#gift">Tặng quà</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#withdraw">Rút tiền</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#convertCoinToMoney">Quy đổi coin sang USD</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content mt-3">
+        <div id="deposit" class="tab-pane fade show active">
+            <h3>Nạp tiền</h3>
+            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền cần nạp" class="form-control mb-2"/>
+            <button class="btn btn-primary" (click)="deposit()">Nạp tiền</button>
         </div>
-        <div class="card-body">
-            <h5 class="text-center">Số dư hiện tại:</h5>
-            <h2 class="text-center" id="balance">{{ balance.toFixed(2) }} USD / {{ coinBalance }} Coin</h2>
-            <hr>
 
-            <div class="tab-content" id="walletTabContent">
-                <!-- Nạp Tiền -->
-                <div class="tab-pane fade show active" id="deposit" role="tabpanel" aria-labelledby="deposit-tab">
-                    <form (ngSubmit)="onDeposit()">
-                        <div class="mb-3">
-                            <label for="depositAmount" class="form-label">Nhập số tiền cần nạp (USD)</label>
-                            <input type="number" class="form-control" id="depositAmount" [(ngModel)]="depositAmount" name="depositAmount" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Nạp Tiền</button>
-                    </form>
-                </div>
-
-                <!-- Chuyển Tiền -->
-                <div class="tab-pane fade" id="transfer" role="tabpanel" aria-labelledby="transfer-tab">
-                    <form (ngSubmit)="onTransfer()">
-                        <h5 class="text-center">Chuyển Tiền</h5>
-                        <div class="mb-3">
-                            <label for="recipient" class="form-label">Email hoặc Username người nhận</label>
-                            <input type="text" class="form-control" id="recipient" [(ngModel)]="recipient" name="recipient" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="transferAmount" class="form-label">Nhập số tiền cần chuyển (USD)</label>
-                            <input type="number" class="form-control" id="transferAmount" [(ngModel)]="transferAmount" name="transferAmount" required>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100">Chuyển Tiền (Quy Đổi Sang Coin)</button>
-                    </form>
-                </div>
-
-                <!-- Tìm Kiếm Tài Khoản -->
-                <div class="tab-pane fade" id="check-account" role="tabpanel" aria-labelledby="check-account-tab">
-                    <div class="mb-3">
-                        <h5 class="text-center">Kiểm Tra Tài Khoản</h5>
-                        <input type="text" class="form-control" placeholder="Nhập email hoặc username để tìm kiếm" [(ngModel)]="searchAccount" (keyup.enter)="checkAccount()" />
-                        <button class="btn btn-info mt-2" (click)="checkAccount()">Kiểm Tra</button>
-                        <div *ngIf="isAccountValid !== null" class="mt-2 text-center">
-                            <p *ngIf="isAccountValid; else invalidAccount">Tài khoản hợp lệ</p>
-                            <ng-template #invalidAccount><p>Tài khoản không hợp lệ</p></ng-template>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quy Đổi Sang Coin -->
-                <div class="tab-pane fade" id="convert" role="tabpanel" aria-labelledby="convert-tab">
-                    <form (ngSubmit)="onConvert()">
-                        <h5 class="text-center">Quy Đổi Sang Coin</h5>
-                        <div class="mb-3">
-                            <label for="convertAmount" class="form-label">Nhập số tiền cần quy đổi (USD)</label>
-                            <input type="number" class="form-control" id="convertAmount" [(ngModel)]="convertAmount" name="convertAmount" required>
-                        </div>
-                        <button type="submit" class="btn btn-warning w-100">Quy Đổi</button>
-                    </form>
-                </div>
-
-                <!-- Tặng Quà -->
-                <div class="tab-pane fade" id="gift" role="tabpanel" aria-labelledby="gift-tab">
-                    <form (ngSubmit)="onGift()">
-                        <h5 class="text-center">Tặng Quà</h5>
-                        <div class="mb-3">
-                            <label for="giftRecipient" class="form-label">Email hoặc Username người nhận quà</label>
-                            <input type="text" class="form-control" id="giftRecipient" [(ngModel)]="giftRecipient" name="giftRecipient" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="giftAmount" class="form-label">Số coin tặng</label>
-                            <input type="number" class="form-control" id="giftAmount" [(ngModel)]="giftAmount" name="giftAmount" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Tặng Quà</button>
-                    </form>
-                </div>
-
-                <!-- Rút Tiền -->
-                <div class="tab-pane fade" id="withdraw" role="tabpanel" aria-labelledby="withdraw-tab">
-                    <form (ngSubmit)="onWithdraw()">
-                        <h5 class="text-center">Rút Tiền</h5>
-                        <div class="mb-3">
-                            <label for="withdrawAmount" class="form-label">Nhập số tiền cần rút (USD)</label>
-                            <input type="number" class="form-control" id="withdrawAmount" [(ngModel)]="withdrawAmount" name="withdrawAmount" required>
-                        </div>
-                        <button type="submit" class="btn btn-danger w-100">Rút Tiền</button>
-                    </form>
-                </div>
-            </div>
+        <div id="transfer" class="tab-pane fade">
+            <h3>Chuyển tiền</h3>
+            <input type="email" [(ngModel)]="recipientEmail" placeholder="Email người nhận" class="form-control mb-2"/>
+            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền cần chuyển" class="form-control mb-2" />
+            <button class="btn btn-primary" (click)="transfer()">Chuyển tiền</button>
         </div>
-        <!-- Quy đổi từ Coin sang USD -->
-      <div id="convertCoinToMoney" class="tab-pane fade">
-        <h3>Quy đổi từ Coin sang USD</h3>
-        <input type="number" [(ngModel)]="coinToMoneyAmount" placeholder="Nhập số coin cần quy đổi">
-        <button (click)="onConvertCoinToMoney()">Quy đổi</button>
-        <p><small>Lưu ý: Sẽ trừ 1% phí khi quy đổi từ coin sang USD</small></p>
-      </div>
-        <div class="card-footer text-center">
-            <button class="btn btn-secondary" (click)="goBack()">Quay lại</button>
+
+        <div id="convert" class="tab-pane fade">
+            <h3>Quy đổi sang coin</h3>
+            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền USD cần quy đổi" class="form-control mb-2"/>
+            <button class="btn btn-primary" (click)="convertToCoin()">Quy đổi sang coin</button>
+        </div>
+
+        <div id="gift" class="tab-pane fade">
+            <h3>Tặng quà</h3>
+            <input type="text" [(ngModel)]="recipientEmail" placeholder="Tên người nhận" class="form-control mb-2"/>
+            <input type="number" [(ngModel)]="coinAmount" placeholder="Nhập số coin cần tặng" class="form-control mb-2"/>
+            <button class="btn btn-primary" (click)="gift()">Tặng quà</button>
+        </div>
+
+        <div id="withdraw" class="tab-pane">
+            <h3>Rút tiền</h3>
+            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền cần rút" class="form-control mb-2"/>
+            <button class="btn btn-primary" (click)="withdraw()">Rút tiền</button>
+        </div>
+
+        <div id="convertCoinToMoney" class="tab-pane">
+            <h3>Quy đổi coin sang USD (trừ 1% phí)</h3>
+            <input type="number" [(ngModel)]="coinAmount" placeholder="Nhập số coin cần quy đổi" class="form-control mb-2"/>
+            <button class="btn btn-primary" (click)="convertCoinToMoney()">Quy đổi coin sang USD</button>
         </div>
     </div>
 </div>

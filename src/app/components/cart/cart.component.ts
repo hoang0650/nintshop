@@ -35,9 +35,7 @@ export class CartComponent implements OnInit {
     // Gọi phương thức getUserInfo để lấy thông tin người dùng khi khởi tạo component
     this.userService.getUserInfor().subscribe({
       next: (userInfo) => {
-        this.user = userInfo; // Lưu userId từ thông tin người dùng
-        console.log('this.user',this.user);
-        
+        this.user = userInfo; // Lưu userId từ thông tin người dùng        
         this.isLoggedIn = true;
       },
       error: () => {
@@ -70,7 +68,7 @@ export class CartComponent implements OnInit {
       return;
     }
 
-    if(this.user.usedVouchers.length > 0 && (this.user.usedVouchers ==='DISCOUNT10' || this.user.usedVouchers ==='SUMMER20')){
+    if(this.user.usedVouchers.length > 0 && (this.user.usedVouchers[length] ==='DISCOUNT10' || this.user.usedVouchers[length] ==='SUMMER20')){
       this.voucherError = 'Mã vouvher của bạn đã được sử dụng.';
       return;
     }

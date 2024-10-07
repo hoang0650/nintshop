@@ -1,0 +1,82 @@
+.wallet-container {
+    padding: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .balance-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .tab-container {
+    margin-top: 20px;
+  }
+  
+  .nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .nav-item {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .nav-link {
+    padding: 10px 0;
+    font-size: 14px;
+  }
+  
+  .tab-content {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .tab-pane {
+    margin-top: 10px;
+  }
+  
+  input.form-control {
+    font-size: 16px;
+  }
+  
+  button.btn {
+    width: 100%;
+    font-size: 16px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .wallet-container {
+      padding: 10px;
+    }
+  
+    .nav-tabs {
+      display: block;
+    }
+  
+    .nav-item {
+      margin-bottom: 10px;
+    }
+  
+    .tab-content {
+      padding: 5px;
+    }
+  
+    input.form-control {
+      font-size: 14px;
+    }
+  
+    button.btn {
+      font-size: 14px;
+    }
+  
+    h3 {
+      font-size: 18px;
+    }
+  }
+  

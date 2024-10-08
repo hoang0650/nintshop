@@ -1,53 +1,102 @@
 import { Component } from '@angular/core';
-import { LivestreamService, Livestream, CreateLivestreamDto } from '../../services/livestream.service';
-interface Stream {
-  id: number;
-  title: string;
-  streamer: string;
-  viewers: number;
-  thumbnailUrl: string;
-}
+import { LivestreamService, Video, Creator } from '../../services/livestream.service';
 
-interface ChatMessage {
-  username: string;
-  message: string;
-}
 @Component({
   selector: 'app-livestream-homepage',
   templateUrl: './livestream-homepage.component.html',
   styleUrls: ['./livestream-homepage.component.scss']
 })
 export class LivestreamHomepageComponent {
-  mainVideo = {
-    id: 0,
-    title: 'Featured Live Stream',
-    username: '@featured_user',
-    description: 'Don\'t miss out on this amazing live performance!',
-    likes: '50.2K',
-    comments: '5.2K',
-    viewers: '100K'
+  mainVideo: Video = {
+    _id: '0',
+    title: 'Default Video',
+    username: '@default_user',
+    description: 'This is a default video description.',
+    likes: 0,
+    comments: 0,
+    viewers: 0,
+    category: 'Default',
+    thumbnailUrl: '/assets/default-thumbnail.jpg',
+    streamUrl: ''
   };
 
-  relatedVideos = [
-    { id: 1, title: 'Cooking Show', username: '@chef_user', description: 'Learn to cook delicious meals', likes: '15.2K', comments: '1.2K', category: 'Cooking' },
-    { id: 2, title: 'Gaming Stream', username: '@gamer_user', description: 'Watch me play the latest games', likes: '20.5K', comments: '2.8K', category: 'Gaming' },
-    { id: 3, title: 'Music Concert', username: '@musician_user', description: 'Live music performance', likes: '30.1K', comments: '3.5K', category: 'Music' },
-    { id: 4, title: 'Art Creation', username: '@artist_user', description: 'Watch me create a masterpiece', likes: '10.7K', comments: '800', category: 'Art' }
-  ];
-
-  creatorRankings = [
-    { rank: 1, username: '@top_creator', followers: '1.2M', category: 'Entertainment' },
-    { rank: 2, username: '@music_star', followers: '980K', category: 'Music' },
-    { rank: 3, username: '@fitness_guru', followers: '850K', category: 'Fitness' },
-    { rank: 4, username: '@tech_wizard', followers: '720K', category: 'Technology' },
-    { rank: 5, username: '@food_lover', followers: '650K', category: 'Cooking' }
-  ];
+  relatedVideos: Video[] = [];
+  creatorRankings: Creator[] = [];
 
   suggestedCategories = [
     'All', 'Gaming', 'Music', 'Cooking', 'Art', 'Technology', 'Fitness', 'Travel', 'Comedy'
   ];
 
-  goToLiveDetail(videoId: number) {
+  constructor(private livestreamService: LivestreamService) {}
+
+  ngOnInit() {
+    this.loadFeaturedVideo();
+    this.loadRelatedVideos();
+    this.loadTopCreators();
+  }
+
+  loadFeaturedVideo() {
+    this.livestreamService.getFeaturedVideo().subscribe(
+      video => {
+        if (video) {
+          this.mainVideo = video;
+        }
+      },
+      error => {
+        console.error('Error loading featured video:', error);
+      }
+    );
+  }
+
+  loadRelatedVideos() {
+    this.livestreamService.getRelatedVideos().subscribe(
+      videos => {
+        this.relatedVideos = videos.length > 0 ? videos : this.generateDefaultVideos(4);
+      },
+      error => {
+        console.error('Error loading related videos:', error);
+        this.relatedVideos = this.generateDefaultVideos(4);
+      }
+    );
+  }
+
+  loadTopCreators() {
+    this.livestreamService.getTopCreators().subscribe(
+      creators => {
+        this.creatorRankings = creators.length > 0 ? creators : this.generateDefaultCreators(5);
+      },
+      error => {
+        console.error('Error loading top creators:', error);
+        this.creatorRankings = this.generateDefaultCreators(5);
+      }
+    );
+  }
+
+  generateDefaultVideos(count: number): Video[] {
+    return Array(count).fill(null).map((_, index) => ({
+      _id: `default-${index}`,
+      title: `Default Video ${index + 1}`,
+      username: `@default_user_${index + 1}`,
+      description: 'This is a default video description.',
+      likes: 0,
+      comments: 0,
+      viewers: 0,
+      category: 'Default',
+      thumbnailUrl: '/assets/default-thumbnail.jpg',
+      streamUrl: ''
+    }));
+  }
+
+  generateDefaultCreators(count: number): Creator[] {
+    return Array(count).fill(null).map((_, index) => ({
+      _id: `default-creator-${index}`,
+      username: `@default_creator_${index + 1}`,
+      followers: 0,
+      category: 'Default'
+    }));
+  }
+
+  goToLiveDetail(videoId: string) {
     console.log(`Navigating to live detail page for video ${videoId}`);
     // Implement navigation logic here
   }

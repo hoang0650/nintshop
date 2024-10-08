@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Product } from '../../interfaces/product';
 import { ProductApiService } from '../../services/product-api.service';
-
-interface Order {
-  id: string;
-  status: string;
-}
+import { CheckoutService } from '../../services/checkout.service';
 
 @Component({
   selector: 'app-admin',
@@ -35,9 +31,9 @@ export class AdminComponent implements OnInit {
   // Order variables
   orderId: string = '';
   orderStatus: string = 'pending';
-  orders: Order[] = [];
+  orders: any;
 
-  constructor(private fb: FormBuilder, private productService: ProductApiService) {
+  constructor(private fb: FormBuilder, private productService: ProductApiService, private checkoutService: CheckoutService) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
@@ -51,13 +47,13 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
-
-    this.orders = [
-      { id: 'ORD123', status: 'pending' },
-      { id: 'ORD124', status: 'shipped' },
-      { id: 'ORD125', status: 'delivered' },
-      { id: 'ORD126', status: 'cancelled' }
-    ];
+    this.checkoutService.getOrders().subscribe(
+      data => {
+        console.log('data',data);
+        
+        this.orders = data
+      }
+    )
   }
 
   get variants(): FormArray {
@@ -237,19 +233,22 @@ export class AdminComponent implements OnInit {
   }
 
   onSubmitOrder(): void {
-    const order = this.orders.find(o => o.id === this.orderId);
+    const order = this.orders.find((o:any) => o.orderId === this.orderId);
     if (order) {
       order.status = this.orderStatus;
+      this.checkoutService.updateOrderStatus(this.orders._id,this.orderStatus).subscribe(
+        data => {console.log("Successfully",data)}
+      )
     } else {
-      this.orders.push({ id: this.orderId, status: this.orderStatus });
+      this.orders.push({ orderId: this.orderId, status: this.orderStatus });
     }
 
     this.orderId = '';
     this.orderStatus = 'pending';
   }
 
-  editOrder(order: Order): void {
-    this.orderId = order.id;
+  editOrder(order: any): void {
+    this.orderId = order.orderId;
     this.orderStatus = order.status;
   }
 

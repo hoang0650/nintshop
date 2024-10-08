@@ -55,10 +55,6 @@ export class ProductApiService {
     return this.http.get(`https://sale-nest-api.onrender.com/api/upload/image/${imageId}`, { responseType: 'blob' });
   }
 
-  getImageUrl(imageId: string): string {
-    return `https://sale-nest-api.onrender.com/api/upload/image/${imageId}`;
-  }
-
   // Call this method after checkin/checkout to notify subscribers
   notifyProductDataUpdated() {
     this.productDataUpdated$.next(null);

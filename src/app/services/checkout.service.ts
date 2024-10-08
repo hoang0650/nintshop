@@ -15,7 +15,16 @@ export class CheckoutService {
     return this.http.post(this.apiUrl, orderData);
   }
 
-  getOrders(query: string): Observable<any[]> {
+  getOrder(query: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}?search=${query}`);
+  }
+
+  // Order operations
+  getOrders(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/all`);
+  }
+
+  updateOrderStatus(id: string, status: any['status']): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/orders/${id}`, { status });
   }
 }

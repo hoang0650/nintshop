@@ -16,7 +16,7 @@ export class OrderTrackingComponent {
     // Logic để gọi API và lấy thông tin đơn hàng
     if (this.orderId) {
       // Giả sử bạn có một dịch vụ để gọi API
-      this.checkoutService.getOrders(this.orderId).subscribe(
+      this.checkoutService.getOrder(this.orderId).subscribe(
         (response) => {
           this.orderDetails = response;
           this.errorMessage = '';

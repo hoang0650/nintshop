@@ -2,13 +2,12 @@ import { Review } from "./review";
 
 export interface Product {
     _id: string;
-    id: number;
     name: string;
+    type: string;
     description: string;
     price: number;
     quantity:number;
     variants: [{
-      name: String,
       size: String,
       color: String,
       stock: Number

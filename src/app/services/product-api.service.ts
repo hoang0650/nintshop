@@ -32,7 +32,7 @@ export class ProductApiService {
     return this.http.post<Product>(this.apiUrl, data);
   }
 
-  updateProduct(id: string, formData: FormData): Observable<Product> {
+  updateProduct(id: string, formData: any): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, formData);
   }
 
@@ -42,6 +42,21 @@ export class ProductApiService {
 
   getProductDataUpdated$() {
     return this.productDataUpdated$.asObservable();
+  }
+
+  uploadImages(imageFile: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    return this.http.post('https://sale-nest-api.onrender.com/api/upload/image', formData);
+  }
+
+  getImage(imageId: string): Observable<Blob> {
+    return this.http.get(`https://sale-nest-api.onrender.com/api/upload/image/${imageId}`, { responseType: 'blob' });
+  }
+
+  getImageUrl(imageId: string): string {
+    return `https://sale-nest-api.onrender.com/api/upload/image/${imageId}`;
   }
 
   // Call this method after checkin/checkout to notify subscribers

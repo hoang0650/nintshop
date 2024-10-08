@@ -14,6 +14,12 @@ interface Order {
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
+
+  imageSrc: string | ArrayBuffer | null = null;
+  imageId: string | null = null;
+  uploadMessage: string = '';
+  fetchMessage: string = '';
+  inputImageId: string = '';
  
   // Product variables
   products: Product[] = [];
@@ -34,10 +40,11 @@ export class AdminComponent implements OnInit {
   constructor(private fb: FormBuilder, private productService: ProductApiService) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
+      type: ['', Validators.required],
       price: [0, Validators.required],
       quantity: [0, Validators.required],
       description: ['', Validators.required],
-      image: [[]],
+      image: this.fb.array([]),
       variants: this.fb.array([this.createVariant()])
     });
   }
@@ -73,18 +80,40 @@ export class AdminComponent implements OnInit {
     this.variants.removeAt(index);
   }
 
-  onFilesSelected(event: Event) {
+  onFilesSelected(event: any) {
     const input = event.target as HTMLInputElement;
+    const file: File = event.target.files[0];
     if (input.files) {
       this.selectedFiles = Array.from(input.files);
-      this.imagePreviews = [];
-      this.selectedFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.imagePreviews.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      });
+      
+      // Call the upload service to upload the selected files
+      this.productService.uploadImages(file)
+        .subscribe(
+          response => {
+            this.imageId = response.imageId;
+            console.log('Files uploaded successfully:', response);
+          },
+          error => {
+            console.error('Error uploading files:', error);
+          }
+        );
+    }
+  }
+
+  getImageById() {
+    if (this.imageId) {
+      this.productService.getImage(this.imageId).subscribe(
+        (blob: Blob) => {
+          const reader = new FileReader();
+          reader.onload = (e: any) => this.imageSrc = e.target.result;
+          reader.readAsDataURL(blob);
+          this.fetchMessage = 'Image fetched successfully!';
+        },
+        error => {
+          console.error('Error fetching image', error);
+          this.fetchMessage = 'Error fetching image. Please try again.';
+        }
+      );
     }
   }
 
@@ -161,50 +190,16 @@ export class AdminComponent implements OnInit {
   }
 
   updateProduct(): void {
-    if (this.productForm.valid && this.editingProductId) {
-      const formData = new FormData();
-      const productData = this.productForm.value;
-  
-      // Append basic product information
-      formData.append('name', productData.name);
-      formData.append('price', productData.price.toString());
-      formData.append('quantity', productData.quantity.toString());
-      formData.append('description', productData.description);
-  
-      // Append variants as a JSON string
-      formData.append('variants', JSON.stringify(productData.variants));
-  
-      // Append new images
-      if (this.selectedFiles && this.selectedFiles.length > 0) {
-        this.selectedFiles.forEach((file, index) => {
-          formData.append(`newImages`, file, file.name);
-        });
-      }
-  
-      // Append existing image URLs that should be kept
-      if (this.selectedProduct && this.selectedProduct.image) {
-        this.selectedProduct.image.forEach((imageUrl, index) => {
-          if (!this.imagesToDelete || !this.imagesToDelete.includes(imageUrl)) {
-            formData.append(`existingImages`, imageUrl);
-          }
-        });
-      }
-  
-      this.productService.updateProduct(this.editingProductId, formData).subscribe(
-        (updatedProduct: Product) => {
-          const index = this.products.findIndex(p => p._id === this.editingProductId);
-          if (index !== -1) {
-            this.products[index] = updatedProduct;
-          }
-          this.stopEdit();
-          // Optionally, show a success message
-          console.log('Product updated successfully');
+    if (this.selectedProduct && this.productForm.valid) {
+      this.productService.updateProduct(this.selectedProduct._id!, this.productForm.value).subscribe(
+        () => {
+          this.loadProducts(); // Reload rooms to get the updated data
+          this.stopEdit();  // Stop editing and reset the form
         },
-        error => {
-          console.error('Error updating product:', error);
-          // Optionally, show an error message to the user
-        }
+        error => console.error('Error updating room:', error)
       );
+    } else {
+      console.error('Form is invalid or no room selected');
     }
   }
 

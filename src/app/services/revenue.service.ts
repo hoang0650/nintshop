@@ -14,7 +14,7 @@ export class RevenueService {
     return this.http.get(`${this.apiUrl}/${period}`);
   }
 
-  addRevenue(date: string, amount: number): Observable<any> {
-    return this.http.post(this.apiUrl, { date, amount });
+  addRevenue(data:any): Observable<any> {
+    return this.http.post(this.apiUrl, data);
   }
 }

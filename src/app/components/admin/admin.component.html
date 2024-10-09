@@ -40,8 +40,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="image">Images</label>
-                        <input class="form-control" id="image" formControlName="image" type="text" />
-                        <!-- <input class="form-control" id="image" type="file" (change)="onFilesSelected($event)" multiple /> -->
+                        <input class="form-control" id="image" type="file" (change)="onFilesSelected($event)" multiple />
                     </div>
                     <div class="mb-3">
                         <!-- Preview Images -->
@@ -63,7 +62,7 @@
                                     </button>
                                 </div>
                                 <div class="mb-2">
-                                    <label class="form-label" for="size">Name</label>
+                                    <label class="form-label" for="size">Size</label>
                                     <input class="form-control" id="size" formControlName="size" type="text" />
                                 </div>
                                 <div class="mb-2">
@@ -121,13 +120,7 @@
                                         {{ product.description }}
                                         <h5>Preview Images</h5>
                                         <div class="d-flex flex-wrap">
-                                            <!-- <div *ngFor="let image of product.image" class="m-2">
-                                                <img [src]="image" alt="product.name" width="100" height="100" class="img-thumbnail" />
-                                            </div> -->
-                                            <div *ngIf="imageSrc" class="mt-4 text-center">
-                                                <img [src]="imageSrc" alt="Uploaded Image" width="100" height="100" class="img-thumbnail">
-                                            </div>
-                                            <div *ngFor="let imageUrl of selectedProduct?.image">
+                                            <div *ngFor="let imageUrl of product.image">
                                                 <img [src]="imageUrl" alt="Product Image" width="100" height="100" />
                                                 <button type="button" class="btn btn-danger btn-sm" (click)="markImageForDeletion(imageUrl)">
                                                   <i class="fas fa-trash"></i> Delete
@@ -161,49 +154,57 @@
 
             <!-- Order Tab -->
             <div class="tab-pane fade" id="order-tab">
-                <h3 class="mb-4">Update Order Status</h3>
-
-                <!-- Form to update order status -->
-                <form (ngSubmit)="onSubmitOrder()">
-                    <div class="mb-3">
+                <div class="container mt-5">
+                    <h2 class="mb-4">Order Management</h2>
+                  
+                    <!-- Form to update order status -->
+                    <form [formGroup]="orderForm" (ngSubmit)="onSubmitOrder()" class="mb-5">
+                      <div class="mb-3">
                         <label for="orderId" class="form-label">Order ID</label>
-                        <input type="text" class="form-control" id="orderId" [(ngModel)]="orderId" name="orderId" required>
-                    </div>
-
-                    <div class="mb-3">
+                        <input type="text" class="form-control" id="orderId" formControlName="_id" readonly>
+                      </div>
+                  
+                      <div class="mb-3">
                         <label for="orderStatus" class="form-label">Order Status</label>
-                        <select class="form-select" [(ngModel)]="orderStatus" name="orderStatus" required>
-                            <option value="pending">Pending</option>
-                            <option value="shipped">Shipped</option>
-                            <option value="delivered">Delivered</option>
-                            <option value="cancelled">Cancelled</option>
+                        <select class="form-select" id="orderStatus" formControlName="status" required>
+                          <option *ngFor="let status of getStatusValues()" [value]="status">
+                            {{status | titlecase}}
+                          </option>
                         </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Update Status</button>
-                </form>
-
-                <!-- Order List -->
-                <h4 class="mt-5">Order List</h4>
-                <table class="table table-bordered mt-3">
-                    <thead>
+                      </div>
+                  
+                      <button type="submit" class="btn btn-primary" [disabled]="!orderForm.valid">Update Status</button>
+                    </form>
+                  
+                    <!-- Order List -->
+                    <h3>Order List</h3>
+                    <table class="table table-striped">
+                      <thead>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                          <th>Order ID</th>
+                          <th>Customer Name</th>
+                          <th>Status</th>
+                          <th>Total Price</th>
+                          <th>Created At</th>
+                          <th>Actions</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                      </thead>
+                      <tbody>
                         <tr *ngFor="let order of orders">
-                            <td>{{ order.orderId }}</td>
-                            <td>{{ order.status }}</td>
-                            <td>
-                                <button class="btn btn-secondary btn-sm" (click)="editOrder(order)">Edit Status</button>
-                            </td>
+                          <td>{{ order.orderId }}</td>
+                          <td>{{ order.fullName }}</td>
+                          <td>{{ order.status }}</td>
+                          <td>{{ order.totalPrice | currency: 'VND' }}</td>
+                          <td>{{ order.createdAt | date: 'dd/MM/yyyy' }}</td>
+                          <td>
+                            <button class="btn btn-sm btn-primary" (click)="editOrder(order)">Edit Status</button>
+                          </td>
                         </tr>
-                    </tbody>
-                </table>
+                      </tbody>
+                    </table>
+                  </div>
             </div>
+            
         </div>
     </div>
 </div>

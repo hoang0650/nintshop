@@ -3,7 +3,22 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Product } from '../../interfaces/product';
 import { ProductApiService } from '../../services/product-api.service';
 import { CheckoutService } from '../../services/checkout.service';
+// Define the enum for order status
+enum OrderStatus {
+  Pending = 'pending',
+  Completed = 'completed',
+  Delivered = 'delivered',
+  Cancelled = 'cancelled'
+}
 
+interface Order {
+  _id: string;
+  orderId: string;
+  fullName: string;
+  status: OrderStatus;
+  totalPrice: number;
+  createdAt: Date;
+}
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -29,9 +44,9 @@ export class AdminComponent implements OnInit {
   imagesToDelete: string[] = [];
 
   // Order variables
-  orderId: string = '';
-  orderStatus: string = 'pending';
-  orders: any;
+  orders: Order[] = [];
+  orderForm: FormGroup;
+  OrderStatus = OrderStatus; // Make enum available in the template
 
   constructor(private fb: FormBuilder, private productService: ProductApiService, private checkoutService: CheckoutService) {
     this.productForm = this.fb.group({
@@ -43,17 +58,16 @@ export class AdminComponent implements OnInit {
       image: this.fb.array([]),
       variants: this.fb.array([this.createVariant()])
     });
+    this.orderForm = this.fb.group({
+      _id: ['', Validators.required],
+      orderId: ['', Validators.required],
+      status: [OrderStatus.Pending, Validators.required]
+    });
   }
 
   ngOnInit(): void {
     this.loadProducts();
-    this.checkoutService.getOrders().subscribe(
-      data => {
-        console.log('data',data);
-        
-        this.orders = data
-      }
-    )
+    this.loadOrders();
   }
 
   get variants(): FormArray {
@@ -232,24 +246,45 @@ export class AdminComponent implements OnInit {
     this.variants.push(this.createVariant());
   }
 
-  onSubmitOrder(): void {
-    const order = this.orders.find((o:any) => o.orderId === this.orderId);
-    if (order) {
-      order.status = this.orderStatus;
-      this.checkoutService.updateOrderStatus(this.orders._id,this.orderStatus).subscribe(
-        data => {console.log("Successfully",data)}
-      )
-    } else {
-      this.orders.push({ orderId: this.orderId, status: this.orderStatus });
-    }
-
-    this.orderId = '';
-    this.orderStatus = 'pending';
+  loadOrders() {
+    this.checkoutService.getOrders().subscribe(
+      data => {
+        console.log('data',data);
+        
+        this.orders = data
+      }
+    )
   }
 
-  editOrder(order: any): void {
-    this.orderId = order.orderId;
-    this.orderStatus = order.status;
+  onSubmitOrder() {
+    if (this.orderForm.valid) {
+      const { _id, status } = this.orderForm.value;
+      this.checkoutService.updateOrderStatus(_id, status).subscribe(
+        (updatedOrder: Order) => {
+          const index = this.orders.findIndex(order => order._id === updatedOrder._id);
+          if (index !== -1) {
+            this.orders[index] = updatedOrder;
+          }
+          this.orderForm.reset({ status: OrderStatus.Pending });
+          console.log('Order status updated successfully');
+        },
+        (error) => {
+          console.error('Error updating order status:', error);
+        }
+      );
+    }
+  }
+
+  editOrder(order: Order) {
+    this.orderForm.patchValue({
+      _id: order._id,
+      orderId: order.orderId,
+      status: order.status
+    });
+  }
+
+  getStatusValues(): string[] {
+    return Object.values(OrderStatus);
   }
 
   onExpandChange(productId: string): void {

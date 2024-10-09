@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CheckoutService } from '../../services/checkout.service';
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-order-tracking',
   templateUrl: './order-tracking.component.html',
@@ -10,7 +11,7 @@ export class OrderTrackingComponent {
   orderDetails: any; // Có thể là kiểu dữ liệu bạn muốn
   errorMessage: string = '';
 
-  constructor(private checkoutService:CheckoutService) {}
+  constructor(private checkoutService:CheckoutService, private messageService: MessageService) {}
 
   trackOrder() {
     // Logic để gọi API và lấy thông tin đơn hàng
@@ -22,12 +23,12 @@ export class OrderTrackingComponent {
           this.errorMessage = '';
         },
         (error) => {
+          this.messageService.addMessage('warning', 'Không tìm thấy đơn hàng với mã này!');
           this.orderDetails = null;
-          this.errorMessage = 'Không tìm thấy đơn hàng với mã này.';
         }
       );
     } else {
-      this.errorMessage = 'Vui lòng nhập mã đơn hàng.';
+      this.messageService.addMessage('danger', 'Vui lòng nhập mã đơn hàng!');
       this.orderDetails = null;
     }
   }

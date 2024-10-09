@@ -70,6 +70,7 @@ import { ForgotComponent } from './components/forgot/forgot.component';
 import { OtpComponent } from './components/otp/otp.component';
 import { BalanceComponent } from './components/balance/balance.component';
 import { SafePipe } from './pipes/safe.pipe';
+import { MessageComponent } from './components/message/message.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -119,6 +120,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     OtpComponent,
     BalanceComponent,
     SafePipe,
+    MessageComponent,
  
   ],
   imports: [

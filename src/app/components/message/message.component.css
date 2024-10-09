@@ -1,0 +1,10 @@
+.message-container {
+    position: fixed;
+    top: 30%;
+    left: 70%;
+    transform: translate(-40%, -60%);
+    z-index: 1050;
+    /* Above other content */
+    width: 40%;
+    /* Adjust the width as needed */
+}

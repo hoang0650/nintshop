@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Product } from '../../interfaces/product';
 import { ProductApiService } from '../../services/product-api.service';
 import { CheckoutService } from '../../services/checkout.service';
+import { MessageService } from '../../services/message.service';
 // Define the enum for order status
 enum OrderStatus {
   Pending = 'pending',
@@ -48,7 +49,7 @@ export class AdminComponent implements OnInit {
   orderForm: FormGroup;
   OrderStatus = OrderStatus; // Make enum available in the template
 
-  constructor(private fb: FormBuilder, private productService: ProductApiService, private checkoutService: CheckoutService) {
+  constructor(private messageService: MessageService,private fb: FormBuilder, private productService: ProductApiService, private checkoutService: CheckoutService) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
@@ -191,9 +192,11 @@ export class AdminComponent implements OnInit {
     this.productService.createProduct(productData).subscribe(
       (newProduct: Product) => {
         this.products.push(newProduct);
+        this.messageService.addMessage('success', 'This is a success message!');
         this.resetForm();
       },
       error => {
+        this.messageService.addMessage('danger', 'This is an error message!');
         console.error('Error creating product:', error);
       }
     );
@@ -203,12 +206,14 @@ export class AdminComponent implements OnInit {
     if (this.selectedProduct && this.productForm.valid) {
       this.productService.updateProduct(this.selectedProduct._id!, this.productForm.value).subscribe(
         () => {
+          this.messageService.addMessage('success', 'This is a success message!');
           this.loadProducts(); // Reload rooms to get the updated data
           this.stopEdit();  // Stop editing and reset the form
         },
         error => console.error('Error updating room:', error)
       );
     } else {
+      this.messageService.addMessage('danger', 'This is an error message!');
       console.error('Form is invalid or no room selected');
     }
   }
@@ -223,9 +228,11 @@ export class AdminComponent implements OnInit {
   deleteProduct(id: string): void {
     this.productService.deleteProduct(id).subscribe(
       () => {
+        this.messageService.addMessage('success', 'This is a success message!');
         this.products = this.products.filter(p => p._id !== id);
       },
       error => {
+        this.messageService.addMessage('danger', 'This is an error message!');
         console.error('Error deleting product:', error);
       }
     );
@@ -265,10 +272,12 @@ export class AdminComponent implements OnInit {
           if (index !== -1) {
             this.orders[index] = updatedOrder;
           }
+          this.messageService.addMessage('success', 'This is a success message!');
           this.orderForm.reset({ status: OrderStatus.Pending });
           console.log('Order status updated successfully');
         },
         (error) => {
+          this.messageService.addMessage('danger', 'This is an error message!');
           console.error('Error updating order status:', error);
         }
       );

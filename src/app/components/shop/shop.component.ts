@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
@@ -19,7 +20,7 @@ export class ShopComponent implements OnInit{
 
   products: any[] = []; // Giả sử đây là danh sách sản phẩm từ service
   filteredProducts: any[] = [];
-  constructor(private route: ActivatedRoute,public productService: ProductService,private cartService: CartService) { }
+  constructor(private messageService: MessageService, private route: ActivatedRoute,public productService: ProductService,private cartService: CartService) { }
 
   ngOnInit(): void {
     // Lấy danh sách sản phẩm và lọc sản phẩm khi có thay đổi queryParams
@@ -141,7 +142,7 @@ export class ShopComponent implements OnInit{
   // Hàm thêm sản phẩm vào giỏ hàng
   addToCart(product: any) {
     this.cartService.addToCart(product);
-    alert('Đã thêm sản phẩm vào giỏ hàng!');
+    this.messageService.addMessage('success', 'Bạn đã thêm giỏ hàng thành công!');
   }
 
   applyPagination() {

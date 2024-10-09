@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr'; // Thêm thư viện thông báo nếu cần
-
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -22,7 +22,8 @@ export class CartComponent implements OnInit {
     private router: Router, 
     public cartService: CartService, 
     private userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +59,7 @@ export class CartComponent implements OnInit {
 
   // Xóa sản phẩm khỏi giỏ hàng
   removeItem(name: string) {
+    this.messageService.addMessage('success', 'Bạn đã xóa sản phẩm thành công!');
     this.cartService.removeFromCart(name);
   }
 

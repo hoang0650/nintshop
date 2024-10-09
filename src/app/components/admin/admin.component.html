@@ -83,128 +83,136 @@
 
                 <!-- Product List -->
                 <h3 class="mt-5">Product List</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let product of products">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" (click)="onExpandChange(product._id)">
-                                        <i class="fas" [ngClass]="{'fa-chevron-down': expandedProductId !== product._id, 'fa-chevron-up': expandedProductId === product._id}"></i>
-                                    </button>
-                                </td>
-                                <td>{{ product.name }}</td>
-                                <td>{{ product.price }}</td>
-                                <td>{{ product.quantity }}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-info" (click)="startEdit(product._id)" *ngIf="editingProductId !== product._id">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                    <button class="btn btn-sm btn-danger ml-2" (click)="deleteProduct(product._id)" *ngIf="editingProductId !== product._id">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                </td>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
                             </tr>
-                            <tr *ngIf="expandedProductId === product._id">
-                                <td colspan="6">
-                                    <div class="p-3">
-                                        <h5>Description</h5>
-                                        {{ product.description }}
-                                        <h5>Preview Images</h5>
-                                        <div class="d-flex flex-wrap">
-                                            <div *ngFor="let imageUrl of product.image">
-                                                <img [src]="imageUrl" alt="Product Image" width="100" height="100" />
-                                                <button type="button" class="btn btn-danger btn-sm" (click)="markImageForDeletion(imageUrl)">
-                                                  <i class="fas fa-trash"></i> Delete
-                                                </button>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let product of products">
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" (click)="onExpandChange(product._id)">
+                                            <i class="fas" [ngClass]="{'fa-chevron-down': expandedProductId !== product._id, 'fa-chevron-up': expandedProductId === product._id}"></i>
+                                        </button>
+                                    </td>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.price }}</td>
+                                    <td>{{ product.quantity }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" (click)="startEdit(product._id)" *ngIf="editingProductId !== product._id">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-danger ml-2" (click)="deleteProduct(product._id)" *ngIf="editingProductId !== product._id">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="expandedProductId === product._id">
+                                    <td colspan="6">
+                                        <div class="p-3">
+                                            <h5>Description</h5>
+                                            {{ product.description }}
+                                            <h5>Preview Images</h5>
+                                            <div class="d-flex flex-wrap">
+                                                <div *ngFor="let imageUrl of product.image">
+                                                    <img [src]="imageUrl" alt="Product Image" width="100" height="100" />
+                                                    <button type="button" class="btn btn-danger btn-sm" (click)="markImageForDeletion(imageUrl)">
+                                                      <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
                                             </div>
+                                            <h5 class="mt-3">Variants</h5>
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Size</th>
+                                                        <th>Color</th>
+                                                        <th>Stock</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let variant of product.variants">
+                                                        <td>{{ variant.size }}</td>
+                                                        <td>{{ variant.color }}</td>
+                                                        <td>{{ variant.stock }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <h5 class="mt-3">Variants</h5>
-                                        <table class="table table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th>Size</th>
-                                                    <th>Color</th>
-                                                    <th>Stock</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let variant of product.variants">
-                                                    <td>{{ variant.size }}</td>
-                                                    <td>{{ variant.color }}</td>
-                                                    <td>{{ variant.stock }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Order Tab -->
             <div class="tab-pane fade" id="order-tab">
                 <div class="container mt-5">
                     <h2 class="mb-4">Order Management</h2>
-                  
+                    
                     <!-- Form to update order status -->
                     <form [formGroup]="orderForm" (ngSubmit)="onSubmitOrder()" class="mb-5">
-                      <div class="mb-3">
-                        <label for="orderId" class="form-label">Order ID</label>
-                        <input type="text" class="form-control" id="orderId" formControlName="_id" readonly>
-                      </div>
-                  
-                      <div class="mb-3">
-                        <label for="orderStatus" class="form-label">Order Status</label>
-                        <select class="form-select" id="orderStatus" formControlName="status" required>
-                          <option *ngFor="let status of getStatusValues()" [value]="status">
-                            {{status | titlecase}}
-                          </option>
-                        </select>
-                      </div>
-                  
-                      <button type="submit" class="btn btn-primary" [disabled]="!orderForm.valid">Update Status</button>
+                        <div class="mb-3">
+                            <label for="orderId" class="form-label">Order ID</label>
+                            <input type="text" class="form-control" id="orderId" formControlName="_id" readonly>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="orderStatus" class="form-label">Order Status</label>
+                            <select class="form-select" id="orderStatus" formControlName="status" required>
+                                <option *ngFor="let status of getStatusValues()" [value]="status">
+                                    {{status | titlecase}}
+                                </option>
+                            </select>
+                        </div>
+                    
+                        <button type="submit" class="btn btn-primary" [disabled]="!orderForm.valid">Update Status</button>
                     </form>
-                  
+                    
                     <!-- Order List -->
-                    <h3>Order List</h3>
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>Order ID</th>
-                          <th>Customer Name</th>
-                          <th>Status</th>
-                          <th>Total Price</th>
-                          <th>Created At</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let order of orders">
-                          <td>{{ order.orderId }}</td>
-                          <td>{{ order.fullName }}</td>
-                          <td>{{ order.status }}</td>
-                          <td>{{ order.totalPrice | currency: 'VND' }}</td>
-                          <td>{{ order.createdAt | date: 'dd/MM/yyyy' }}</td>
-                          <td>
-                            <button class="btn btn-sm btn-primary" (click)="editOrder(order)">Edit Status</button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                    <h3 class="mt-5">Order List</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Status</th>
+                                    <th>Total Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let order of orders">
+                                    <tr>
+                                        <td>{{ order._id }}</td>
+                                        <td>{{ order.orderId }}</td>
+                                        <td>{{ order.status }}</td>
+                                        <td>{{ order.totalPrice | currency }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info" (click)="editOrder(order)">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <!-- <button class="btn btn-sm btn-danger ml-2" (click)="deleteOrder(order._id)">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button> -->
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            
         </div>
     </div>
 </div>

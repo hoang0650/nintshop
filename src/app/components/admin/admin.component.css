@@ -1,11 +1,13 @@
-.nav-tabs .nav-link {
-    border-radius: 0;
+.table-responsive {
+    overflow-x: auto; /* Allows horizontal scrolling on smaller screens */
 }
 
-.table th, .table td {
-    vertical-align: middle;
+.table th,
+.table td {
+    white-space: nowrap; /* Prevents table cells from wrapping */
 }
 
-.table .btn {
-    margin-right: 5px;
+.table img {
+    max-width: 100%; /* Ensures images are responsive */
+    height: auto;
 }

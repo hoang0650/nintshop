@@ -14,6 +14,8 @@ export class ShopComponent implements OnInit{
   selectedCategory!: string;
   searchTerm: string = '';
   selectedSort: string = ''; // Khai báo thuộc tính selectedSort
+  itemsPerPage = 9; // Số lượng sản phẩm trên mỗi trang
+  currentPage = 1; // Trang hiện tạ
 
   products: any[] = []; // Giả sử đây là danh sách sản phẩm từ service
   filteredProducts: any[] = [];
@@ -25,7 +27,7 @@ export class ShopComponent implements OnInit{
       this.products = products;
       // Sao chép toàn bộ danh sách sản phẩm
       this.filteredProducts = [...this.products];
-      
+      this.applyPagination();
       // Lắng nghe thay đổi queryParams
       this.route.queryParams.subscribe(params => {
         this.selectedCategory = params['type'];
@@ -94,11 +96,11 @@ export class ShopComponent implements OnInit{
 
   // Xác định khoảng giá của sản phẩm
   getPriceRange(price: number): string {
-    if (price <= 100) return '0-100';
-    if (price > 100 && price <= 200) return '100-200';
-    if (price > 200 && price <= 300) return '200-300';
-    if (price > 300 && price <= 400) return '300-400';
-    if (price > 400 && price <= 500) return '400-500';
+    if (price <= 100000) return '1000-100000';
+    if (price > 100000 && price <= 500000) return '101000-500000';
+    if (price > 500000 && price <= 2000000) return '501000-2000000';
+    if (price > 2000000 && price <= 5000000) return '2010000-5000000';
+    if (price > 5000000 && price <= 50000000) return '5010000-50000000';
     return 'all';
   }
 
@@ -141,4 +143,21 @@ export class ShopComponent implements OnInit{
     this.cartService.addToCart(product);
     alert('Đã thêm sản phẩm vào giỏ hàng!');
   }
+
+  applyPagination() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    this.filteredProducts = this.products.slice(startIndex, startIndex + this.itemsPerPage);
+}
+
+changePage(page: number) {
+    if (page < 1 || page > this.totalPages().length) {
+        return;
+    }
+    this.currentPage = page;
+    this.applyPagination();
+}
+
+totalPages() {
+    return Array(Math.ceil(this.products.length / this.itemsPerPage)).fill(0).map((x, i) => i + 1);
+}
 }

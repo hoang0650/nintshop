@@ -1,0 +1,13 @@
+.table-responsive {
+    overflow-x: auto; /* Enables horizontal scrolling on small devices */
+}
+
+.table th,
+.table td {
+    white-space: nowrap; /* Prevents table cell content from wrapping */
+}
+
+.table img {
+    max-width: 100%; /* Ensures images are responsive */
+    height: auto; /* Maintain aspect ratio */
+}

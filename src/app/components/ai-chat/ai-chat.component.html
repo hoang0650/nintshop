@@ -1,47 +1,30 @@
-<div class="chat-container container">
-    <h2 class="mb-4">AI Chatbox</h2>
-    <div class="messages border p-3 mb-3" style="height: 300px; overflow-y: scroll;">
-        <div *ngFor="let message of messages" 
-             [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}" 
-             class="message p-2 mb-1 rounded">
-            {{ message.text }}
-        </div>
+<div class="chat-container">
+    <div class="chat-header">
+      <!-- <div class="language-selector">
+        <select [(ngModel)]="selectedLanguage">
+          <option *ngFor="let lang of availableLanguages" [value]="lang">{{lang}}</option>
+        </select>
+      </div> -->
     </div>
-    
-    <div class="input-container d-flex mb-3">
-        <input 
-            type="text" 
-            class="form-control me-2" 
-            [(ngModel)]="userInput" 
-            (keyup.enter)="sendMessage()" 
-            placeholder="Nhập tin nhắn..." 
-            aria-label="Nhập tin nhắn">
-        <button class="btn btn-primary" (click)="sendMessage()">Gửi</button>
+  
+    <div class="messages">
+      <div *ngFor="let message of messages" 
+           [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+        {{ message.text }}
+      </div>
     </div>
-    
-    <div class="file-upload mb-3">
-        <div class="input-group">
-            <input 
-                type="file" 
-                class="form-control" 
-                (change)="onFileSelected($event)" 
-                accept="image/*">
-            <button class="btn btn-success" (click)="uploadFile()">Upload for OCR</button>
-            <button class="btn btn-info" (click)="detectObjects()">Detect Objects</button>
-        </div>
+  
+    <div class="input-container">
+      <input [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Nhập tin nhắn...">
+      <button (click)="sendMessage()">Gửi</button>
     </div>
-    
-    <div *ngIf="ocrResult" class="result mb-3">
-        <h3>Kết quả OCR:</h3>
-        <div class="alert alert-light p-2 border">
-            {{ ocrResult }}
-        </div>
+  
+    <div class="train-container">
+      <input [(ngModel)]="folderPath" placeholder="Đường dẫn thư mục để train">
+      <button (click)="trainFromFolder()">Train từ Folder</button>
+  
+      <input [(ngModel)]="webUrl" placeholder="URL để train">
+      <button (click)="trainFromWeb()">Train từ Web</button>
     </div>
-    
-    <div *ngIf="objectDetectionResult" class="result mb-3">
-        <h3>Kết quả phát hiện đối tượng:</h3>
-        <div class="alert alert-light p-2 border">
-            <pre>{{ objectDetectionResult | json }}</pre>
-        </div>
-    </div>
-</div>
+  </div>
+  

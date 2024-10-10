@@ -53,7 +53,7 @@ export class AiChatComponent {
 
     this.messages.push({ text: this.userInput, isUser: true });
 
-    this.http.post('http://localhost:3000/api/ai/chat', { message: this.userInput, language: this.selectedLanguage })
+    this.http.post('https://sale-nest-api.onrender.com/api/ai/chat', { message: this.userInput, language: this.selectedLanguage })
       .subscribe(
         (response: any) => {
           this.messages.push({ text: response.response, isUser: false });
@@ -72,7 +72,7 @@ export class AiChatComponent {
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
 
-    this.http.post('http://localhost:3000/api/ai/train/folder', { folderPath: this.folderPath }, { headers })
+    this.http.post('https://sale-nest-api.onrender.com/api/ai/train/folder', { folderPath: this.folderPath }, { headers })
       .subscribe(
         (response: any) => {
           this.messages.push({ text: response.message, isUser: false });
@@ -91,7 +91,7 @@ export class AiChatComponent {
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
 
-    this.http.post('http://localhost:3000/api/ai/train/web', { url: this.webUrl }, { headers })
+    this.http.post('https://sale-nest-api.onrender.com/api/ai/train/web', { url: this.webUrl }, { headers })
       .subscribe(
         (response: any) => {
           this.messages.push({ text: response.message, isUser: false });

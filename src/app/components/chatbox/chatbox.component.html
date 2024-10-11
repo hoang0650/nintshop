@@ -4,14 +4,20 @@
 
 <div *ngIf="isChatVisible" class="chatbot-container mr-2">
     <div class="chatbot-header">
-        <h3>Chat Bot</h3>
+        <h3>Chat Box</h3>
         <button class="close-btn" (click)="toggleChat()">×</button>
     </div>
     <div class="chatbot-messages" id="chatMessages">
-        <div *ngFor="let message of messages" [ngClass]="{'user-message': message.sender === 'Bạn', 'bot-message': message.sender === 'Bot'}" class="message">
+        <div *ngFor="let message of messages" [ngClass]="{'user-message': message.sender === 'Bạn', 'bot-message': message.sender === 'Bot','support-message': message.sender === 'Hỗ trợ viên'}" class="message">
             <div class="sender">{{ message.sender }}:</div>
             <div class="text">{{ message.text }}</div>
             <a class="text" *ngIf="message.link" [href]="message.link" target="_blank">{{ message.displayText }}</a>
+        </div>
+        <!-- Typing indicator -->
+        <div *ngIf="isBotTyping" class="typing-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
     </div>
     <div class="chatbot-input">

@@ -25,6 +25,7 @@ import { LivestreamHomepageComponent } from './components/livestream-homepage/li
 import { ForgotComponent } from './components/forgot/forgot.component';
 import { OtpComponent } from './components/otp/otp.component';
 import { BalanceComponent } from './components/balance/balance.component';
+import { SupportChatComponent } from './components/support-chat/support-chat.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'order', component: OrderComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'notfound', component: NotfoundComponent },
+  { path: 'support-chat', component: SupportChatComponent },
   { path: 'ai-chat', canActivate: [adminGuard], component: AiChatComponent },
   { path: 'user-management',canActivate: [adminGuard], component: UserManagementComponent },
   { path: 'chart', canActivate: [adminGuard], component: RevenueChartComponent },

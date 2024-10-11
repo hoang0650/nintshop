@@ -1,0 +1,62 @@
+<div class="chat-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>Chat Support</h2>
+      </div>
+      <div class="friends-list">
+        <nz-list nzBordered>
+          <!-- Danh sách bạn bè hoặc người hỗ trợ -->
+          <nz-list-item *ngFor="let friend of friends" (click)="selectFriend(friend)">
+            <div class="friend-info">
+              <nz-avatar nzSize="large" [nzSrc]="friend.avatar" [ngClass]="{ 'online': friend.online }"></nz-avatar>
+              <div class="friend-details">
+                <span class="friend-name">{{ friend.name }}</span>
+                <span class="status-indicator" [ngClass]="{ 'online': friend.online, 'offline': !friend.online }"></span>
+              </div>
+            </div>
+          </nz-list-item>
+        </nz-list>
+        
+        <nz-divider></nz-divider>
+        
+        <nz-list nzBordered>
+          <!-- Danh sách nhóm hỗ trợ -->
+          <nz-list-item *ngFor="let group of groups" (click)="selectGroup(group)">
+            <nz-avatar nzIcon="team" nzSize="large"></nz-avatar>
+            <span class="group-name">{{ group.name }}</span>
+          </nz-list-item>
+        </nz-list>
+      </div>
+    </div>
+  
+    <!-- Chat Area -->
+    <div class="chat-area">
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <h2>{{ selectedChatName || 'Chọn người hỗ trợ' }}</h2>
+      </div>
+  
+      <!-- Chat Messages -->
+      <div class="chat-messages">
+        <nz-list>
+          <nz-list-item *ngFor="let message of messages">
+            <div class="message-container" [ngClass]="{'message-right': message.sender === 'Bạn', 'message-left': message.sender !== 'Bạn'}">
+              <div class="message-content" [ngClass]="{'message-right': message.sender === 'Bạn', 'message-left': message.sender !== 'Bạn'}">
+                <div class="message-text">
+                  <strong>{{ message.sender }}:</strong> {{ message.text }}
+                </div>
+              </div>
+            </div>
+          </nz-list-item>
+        </nz-list>
+      </div>
+  
+      <!-- Message Input -->
+      <div class="message-input">
+        <input nz-input [(ngModel)]="newMessage" placeholder="Nhập tin nhắn..." (keyup.enter)="sendMessage()" />
+        <button nz-button nzType="primary" (click)="sendMessage()">Gửi</button>
+      </div>
+    </div>
+  </div>
+  

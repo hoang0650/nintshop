@@ -28,6 +28,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -71,6 +72,7 @@ import { OtpComponent } from './components/otp/otp.component';
 import { BalanceComponent } from './components/balance/balance.component';
 import { SafePipe } from './pipes/safe.pipe';
 import { MessageComponent } from './components/message/message.component';
+import { SupportChatComponent } from './components/support-chat/support-chat.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -121,6 +123,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BalanceComponent,
     SafePipe,
     MessageComponent,
+    SupportChatComponent,
  
   ],
   imports: [
@@ -156,7 +159,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzDividerModule,
     NzButtonModule,
     NzIconModule,
-    NzSpinModule
+    NzSpinModule,
+    NzAvatarModule
   ],
   providers: [
     provideClientHydration(),

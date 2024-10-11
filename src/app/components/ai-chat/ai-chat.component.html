@@ -1,30 +1,90 @@
-<div class="chat-container">
-    <div class="chat-header">
-      <!-- <div class="language-selector">
-        <select [(ngModel)]="selectedLanguage">
-          <option *ngFor="let lang of availableLanguages" [value]="lang">{{lang}}</option>
-        </select>
-      </div> -->
-    </div>
+<div class="container mt-5">
+  <h1 class="text-center mb-5">AI Interaction Dashboard</h1>
   
-    <div class="messages">
-      <div *ngFor="let message of messages" 
-           [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
-        {{ message.text }}
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="h5 mb-0">AI Training</h2>
+        </div>
+        <div class="card-body">
+          <textarea class="form-control mb-3" rows="4" [(ngModel)]="trainingText" placeholder="Enter text for training"></textarea>
+          <button class="btn btn-primary w-100" (click)="trainAI()">Train AI</button>
+        </div>
       </div>
     </div>
-  
-    <div class="input-container">
-      <input [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Nhập tin nhắn...">
-      <button (click)="sendMessage()">Gửi</button>
-    </div>
-  
-    <div class="train-container">
-      <input [(ngModel)]="folderPath" placeholder="Đường dẫn thư mục để train">
-      <button (click)="trainFromFolder()">Train từ Folder</button>
-  
-      <input [(ngModel)]="webUrl" placeholder="URL để train">
-      <button (click)="trainFromWeb()">Train từ Web</button>
+    
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h2 class="h5 mb-0">AI Query</h2>
+        </div>
+        <div class="card-body">
+          <input class="form-control mb-3" [(ngModel)]="query" placeholder="Enter your query">
+          <button class="btn btn-success w-100" (click)="queryAI()">Query AI</button>
+        </div>
+      </div>
     </div>
   </div>
   
+  <div class="row">
+    <div class="col-12 mb-4">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <h2 class="h5 mb-0">AI Response</h2>
+        </div>
+        <div class="card-body">
+          <p class="mb-0" [ngClass]="{'text-muted': !response}">{{ response || 'AI response will appear here' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-warning">
+          <h2 class="h5 mb-0">Model Management</h2>
+        </div>
+        <div class="card-body">
+          <input class="form-control mb-3" [(ngModel)]="filename" placeholder="Enter filename">
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning flex-grow-1" (click)="saveModel()">Save Model</button>
+            <button class="btn btn-secondary flex-grow-1" (click)="loadModel()">Load Model</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-danger text-white">
+          <h2 class="h5 mb-0">Status</h2>
+        </div>
+        <div class="card-body">
+          <p class="mb-0" [ngClass]="{'text-success': !error, 'text-danger': error}">
+            {{ status }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-4">
+      <div class="card">
+        <div class="card-header bg-secondary text-white">
+          <h2 class="h5 mb-0">Trained Models</h2>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li *ngFor="let model of trainedModels" class="list-group-item d-flex justify-content-between align-items-center">
+              {{ model }}
+              <button class="btn btn-sm btn-outline-primary" (click)="loadModel(model)">Load</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

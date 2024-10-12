@@ -13,6 +13,8 @@ export class AiChatComponent {
   status = 'Ready';
   error = false;
   trainedModels: string[] = [];
+  webUrl = '';
+  selectedFiles: File[] = [];
 
   constructor(private aiService: AIService) {}
 
@@ -101,4 +103,57 @@ export class AiChatComponent {
       }
     );
   }
+
+  onFileSelected(event: Event) {
+    const element = event.target as HTMLInputElement;
+    this.selectedFiles = element.files ? Array.from(element.files) : [];
+  }
+
+  trainFromFiles() {
+    if (this.selectedFiles.length === 0) {
+      this.status = 'No files selected';
+      this.error = true;
+      return;
+    }
+
+    this.status = 'Training from files...';
+    this.error = false;
+    this.aiService.trainFromFolder(this.selectedFiles).subscribe(
+      response => {
+        console.log('Training from files successful', response);
+        this.status = 'Training from files completed successfully';
+        this.loadTrainedModels();
+      },
+      error => {
+        console.error('Training from files failed', error);
+        this.status = 'Training from files failed';
+        this.error = true;
+      }
+    );
+  }
+
+  trainFromWeb() {
+    if (!this.webUrl) {
+      this.status = 'No URL provided';
+      this.error = true;
+      return;
+    }
+
+    this.status = 'Training from web...';
+    this.error = false;
+    this.aiService.trainFromWeb(this.webUrl).subscribe(
+      response => {
+        console.log('Training from web successful', response);
+        this.status = 'Training from web completed successfully';
+        this.webUrl = '';
+        this.loadTrainedModels();
+      },
+      error => {
+        console.error('Training from web failed', error);
+        this.status = 'Training from web failed';
+        this.error = true;
+      }
+    );
+  }
+
 }

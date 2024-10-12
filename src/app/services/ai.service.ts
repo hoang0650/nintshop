@@ -25,6 +25,18 @@ export class AIService {
       .pipe(map(response => JSON.parse(response)));
   }
 
+  trainFromFolder(files: File[]): Observable<any> {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file));
+    return this.http.post(`${this.apiUrl}/train-folder`, formData, { headers: this.getHeaders(), responseType: 'text' })
+      .pipe(map(response => JSON.parse(response)));
+  }
+
+  trainFromWeb(url: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/train-web`, { url }, { headers: this.getHeaders(), responseType: 'text' })
+      .pipe(map(response => JSON.parse(response)));
+  }
+
   queryAI(query: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/query`, { query }, { headers: this.getHeaders(), responseType: 'text' })
       .pipe(map(response => JSON.parse(response)));

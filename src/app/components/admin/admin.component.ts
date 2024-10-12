@@ -91,40 +91,18 @@ export class AdminComponent implements OnInit {
     this.variants.removeAt(index);
   }
 
-  onFilesSelected(event: any) {
-    const input = event.target as HTMLInputElement;
-    const file: File = event.target.files[0];
-    if (input.files) {
-      this.selectedFiles = Array.from(input.files);
-      
-      // Call the upload service to upload the selected files
-      this.productService.uploadImages(file)
-        .subscribe(
-          response => {
-            this.imageId = response.imageId;
-            console.log('Files uploaded successfully:', response);
-          },
-          error => {
-            console.error('Error uploading files:', error);
-          }
-        );
-    }
-  }
-
-  getImageById() {
-    if (this.imageId) {
-      this.productService.getImage(this.imageId).subscribe(
-        (blob: Blob) => {
-          const reader = new FileReader();
-          reader.onload = (e: any) => this.imageSrc = e.target.result;
-          reader.readAsDataURL(blob);
-          this.fetchMessage = 'Image fetched successfully!';
-        },
-        error => {
-          console.error('Error fetching image', error);
-          this.fetchMessage = 'Error fetching image. Please try again.';
-        }
-      );
+  onFilesSelected(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const files = element.files;
+    if (files) {
+      this.imagePreviews = [];
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagePreviews.push(e.target.result);
+        };
+        reader.readAsDataURL(files[i]);
+      }
     }
   }
 

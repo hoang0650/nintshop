@@ -5,7 +5,7 @@
     <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-header bg-primary text-white">
-          <h2 class="h5 mb-0">AI Training</h2>
+          <h2 class="h5 mb-0">AI Training (Text)</h2>
         </div>
         <div class="card-body">
           <textarea class="form-control mb-3" rows="4" [(ngModel)]="trainingText" placeholder="Enter text for training"></textarea>
@@ -28,9 +28,35 @@
   </div>
   
   <div class="row">
-    <div class="col-12 mb-4">
+    <div class="col-md-6 mb-4">
       <div class="card">
         <div class="card-header bg-info text-white">
+          <h2 class="h5 mb-0">Train from Files</h2>
+        </div>
+        <div class="card-body">
+          <input type="file" class="form-control mb-3" (change)="onFileSelected($event)" multiple>
+          <button class="btn btn-info w-100" (click)="trainFromFiles()">Train from Files</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-warning">
+          <h2 class="h5 mb-0">Train from Web</h2>
+        </div>
+        <div class="card-body">
+          <input class="form-control mb-3" [(ngModel)]="webUrl" placeholder="Enter URL for training">
+          <button class="btn btn-warning w-100" (click)="trainFromWeb()">Train from Web</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-12 mb-4">
+      <div class="card">
+        <div class="card-header bg-secondary text-white">
           <h2 class="h5 mb-0">AI Response</h2>
         </div>
         <div class="card-body">
@@ -43,13 +69,13 @@
   <div class="row">
     <div class="col-md-6 mb-4">
       <div class="card">
-        <div class="card-header bg-warning">
+        <div class="card-header bg-danger text-white">
           <h2 class="h5 mb-0">Model Management</h2>
         </div>
         <div class="card-body">
           <input class="form-control mb-3" [(ngModel)]="filename" placeholder="Enter filename">
           <div class="d-flex gap-2">
-            <button class="btn btn-warning flex-grow-1" (click)="saveModel()">Save Model</button>
+            <button class="btn btn-danger flex-grow-1" (click)="saveModel()">Save Model</button>
             <button class="btn btn-secondary flex-grow-1" (click)="loadModel()">Load Model</button>
           </div>
         </div>
@@ -58,7 +84,7 @@
     
     <div class="col-md-6 mb-4">
       <div class="card">
-        <div class="card-header bg-danger text-white">
+        <div class="card-header bg-dark text-white">
           <h2 class="h5 mb-0">Status</h2>
         </div>
         <div class="card-body">
@@ -73,7 +99,7 @@
   <div class="row">
     <div class="col-12 mb-4">
       <div class="card">
-        <div class="card-header bg-secondary text-white">
+        <div class="card-header bg-primary text-white">
           <h2 class="h5 mb-0">Trained Models</h2>
         </div>
         <div class="card-body">

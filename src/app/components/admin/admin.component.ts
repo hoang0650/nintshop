@@ -4,6 +4,7 @@ import { Product } from '../../interfaces/product';
 import { ProductApiService } from '../../services/product-api.service';
 import { CheckoutService } from '../../services/checkout.service';
 import { MessageService } from '../../services/message.service';
+import { HttpClient } from '@angular/common/http';
 // Define the enum for order status
 enum OrderStatus {
   Pending = 'pending',
@@ -49,14 +50,13 @@ export class AdminComponent implements OnInit {
   orderForm: FormGroup;
   OrderStatus = OrderStatus; // Make enum available in the template
 
-  constructor(private messageService: MessageService,private fb: FormBuilder, private productService: ProductApiService, private checkoutService: CheckoutService) {
+  constructor(private http: HttpClient,private messageService: MessageService,private fb: FormBuilder, private productService: ProductApiService, private checkoutService: CheckoutService) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
       price: [0, Validators.required],
       quantity: [0, Validators.required],
       description: ['', Validators.required],
-      image: this.fb.array([]),
       variants: this.fb.array([this.createVariant()])
     });
     this.orderForm = this.fb.group({
@@ -94,15 +94,17 @@ export class AdminComponent implements OnInit {
   onFilesSelected(event: Event) {
     const element = event.target as HTMLInputElement;
     const files = element.files;
+    
     if (files) {
+      this.selectedFiles = Array.from(files);
       this.imagePreviews = [];
-      for (let i = 0; i < files.length; i++) {
+      this.selectedFiles.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.imagePreviews.push(e.target.result);
         };
-        reader.readAsDataURL(files[i]);
-      }
+        reader.readAsDataURL(file);
+      });
     }
   }
 
@@ -144,56 +146,91 @@ export class AdminComponent implements OnInit {
     this.variants.push(this.createVariant());
   }
 
+  // onSubmit() {
+  //   if (this.productForm.valid) {
+  //     if (this.editingProductId) {
+  //       this.updateProduct();
+  //     } else {
+  //       this.createProduct();
+  //     }
+  //   }
+  // }
   onSubmit() {
     if (this.productForm.valid) {
-      if (this.editingProductId) {
-        this.updateProduct();
+      const formData = new FormData();
+      formData.append('productData', JSON.stringify(this.productForm.value));
+      
+      this.selectedFiles.forEach((file, index) => {
+        formData.append('images', file, file.name);
+      });
+
+      if (this.isEditing && this.selectedProduct) {
+        this.updateProduct(this.selectedProduct._id, formData);
       } else {
-        this.createProduct();
+        this.createProduct(formData);
       }
     }
   }
 
-  loadProducts(): void {
-    this.productService.getProducts().subscribe(
-      (data: Product[]) => {
-        this.products = data;
-      },
-      error => {
-        console.error('Error fetching products:', error);
-      }
+  loadProducts() {
+    this.http.get<Product[]>('http://localhost:3000/api/products').subscribe(
+      data => this.products = data,
+      error => console.error('Error fetching products:', error)
     );
   }
 
-  createProduct(): void {
-    const productData = this.prepareProductData();
-    this.productService.createProduct(productData).subscribe(
-      (newProduct: Product) => {
-        this.products.push(newProduct);
-        this.messageService.addMessage('success', 'This is a success message!');
+  // createProduct(): void {
+  //   const productData = this.prepareProductData();
+  //   this.productService.createProduct(productData).subscribe(
+  //     (newProduct: Product) => {
+  //       this.products.push(newProduct);
+  //       this.messageService.addMessage('success', 'This is a success message!');
+  //       this.resetForm();
+  //     },
+  //     error => {
+  //       this.messageService.addMessage('danger', 'This is an error message!');
+  //       console.error('Error creating product:', error);
+  //     }
+  //   );
+  // }
+
+  // updateProduct(): void {
+  //   if (this.selectedProduct && this.productForm.valid) {
+  //     this.productService.updateProduct(this.selectedProduct._id!, this.productForm.value).subscribe(
+  //       () => {
+  //         this.messageService.addMessage('success', 'This is a success message!');
+  //         this.loadProducts();
+  //         this.stopEdit();
+  //       },
+  //       error => console.error('Error updating room:', error)
+  //     );
+  //   } else {
+  //     this.messageService.addMessage('danger', 'This is an error message!');
+  //     console.error('Form is invalid or no room selected');
+  //   }
+  // }
+
+  createProduct(formData: FormData) {
+    this.http.post<{message: string, product: Product}>('http://localhost:3000/api/products', formData).subscribe(
+      response => {
+        this.products.push(response.product);
         this.resetForm();
       },
-      error => {
-        this.messageService.addMessage('danger', 'This is an error message!');
-        console.error('Error creating product:', error);
-      }
+      error => console.error('Error creating product:', error)
     );
   }
 
-  updateProduct(): void {
-    if (this.selectedProduct && this.productForm.valid) {
-      this.productService.updateProduct(this.selectedProduct._id!, this.productForm.value).subscribe(
-        () => {
-          this.messageService.addMessage('success', 'This is a success message!');
-          this.loadProducts(); // Reload rooms to get the updated data
-          this.stopEdit();  // Stop editing and reset the form
-        },
-        error => console.error('Error updating room:', error)
-      );
-    } else {
-      this.messageService.addMessage('danger', 'This is an error message!');
-      console.error('Form is invalid or no room selected');
-    }
+  updateProduct(id: string, formData: FormData) {
+    this.http.put<{message: string, product: Product}>(`http://localhost:3000/api/products/${id}`, formData).subscribe(
+      response => {
+        const index = this.products.findIndex(p => p._id === id);
+        if (index !== -1) {
+          this.products[index] = response.product;
+        }
+        this.resetForm();
+      },
+      error => console.error('Error updating product:', error)
+    );
   }
 
   markImageForDeletion(imageUrl: string): void {

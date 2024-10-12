@@ -1,17 +1,12 @@
-import { Review } from "./review";
+import { Variant } from "./variant";
 
 export interface Product {
-    _id: string;
-    name: string;
-    type: string;
-    description: string;
-    price: number;
-    quantity:number;
-    variants: [{
-      size: String,
-      color: String,
-      stock: Number
-  }],
-    image?: string[];
-    reviews: Review[];  // Kết nối với review
-  }
+  _id: string;
+  name: string;
+  type: string;
+  price: number;
+  quantity: number;
+  description: string;
+  image: string[];
+  variants: Variant[];
+}

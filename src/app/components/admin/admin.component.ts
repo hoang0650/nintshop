@@ -173,7 +173,7 @@ export class AdminComponent implements OnInit {
   }
 
   loadProducts() {
-    this.http.get<Product[]>('http://localhost:3000/api/products').subscribe(
+    this.http.get<Product[]>('https://sale-nest-api.onrender.com/api/products').subscribe(
       data => this.products = data,
       error => console.error('Error fetching products:', error)
     );
@@ -211,7 +211,7 @@ export class AdminComponent implements OnInit {
   // }
 
   createProduct(formData: FormData) {
-    this.http.post<{message: string, product: Product}>('http://localhost:3000/api/products', formData).subscribe(
+    this.http.post<{message: string, product: Product}>('https://sale-nest-api.onrender.com/api/products', formData).subscribe(
       response => {
         this.products.push(response.product);
         this.resetForm();
@@ -221,7 +221,7 @@ export class AdminComponent implements OnInit {
   }
 
   updateProduct(id: string, formData: FormData) {
-    this.http.put<{message: string, product: Product}>(`http://localhost:3000/api/products/${id}`, formData).subscribe(
+    this.http.put<{message: string, product: Product}>(`https://sale-nest-api.onrender.com/api/products/${id}`, formData).subscribe(
       response => {
         const index = this.products.findIndex(p => p._id === id);
         if (index !== -1) {

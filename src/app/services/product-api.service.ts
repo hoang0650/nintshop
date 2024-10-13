@@ -10,8 +10,8 @@ import { Product } from '../interfaces/product';
 })
 export class ProductApiService {
   private productDataUpdated$ = new BehaviorSubject<any>(null);
-  // private apiUrl = 'https://sale-nest-api.onrender.com/api/products';
-  private apiUrl = 'http://localhost:3000/api/products';
+  private apiUrl = 'https://sale-nest-api.onrender.com/api/products';
+  // private apiUrl = 'http://localhost:3000/api/products';
 
   constructor(private http: HttpClient) { }
 

@@ -5,17 +5,12 @@
 
     <!-- Hiển thị danh sách đánh giá -->
     <div *ngFor="let review of reviews" class="media mb-4">
-      <img [src]="users?.avatar || 'assets/default-avatar.png'" alt="User Avatar" class="img-fluid rounded-circle mr-3 mt-1"
-        style="width: 45px;">
-      <div class="media-body">
+      <nz-avatar [nzSrc]="users?.avatar || 'assets/default-avatar.png'" nzShape="circle" nzSize="large"></nz-avatar>
+      <div class="media-body ml-3">
         <h6>{{ users.name }} 
           <small> - <i>{{ review.createdAt | date: 'mediumDate' }}</i></small>
         </h6>
-        <div class="text-primary mb-2">
-          <!-- Hiển thị các ngôi sao đánh giá -->
-          <i *ngFor="let star of [1, 2, 3, 4, 5]" class="fa"
-            [ngClass]="star <= review.rating ? 'fas fa-star' : 'far fa-star'"></i>
-        </div>
+        <nz-rate [ngModel]="review.rating" nzDisabled></nz-rate>
         <p>{{ review.comment }}</p>
       </div>
     </div>
@@ -29,27 +24,26 @@
     <!-- Chọn rating -->
     <div class="d-flex my-3 align-items-center">
       <p class="mb-0 mr-2">Your Rating * :</p>
-      
-      <!-- Hiển thị các ngôi sao để người dùng chọn rating -->
-      <small *ngFor="let star of [1, 2, 3, 4, 5]" class="fas"
-             [ngClass]="star <= newReview.rating ? 'fa-star' : 'fa-star-half-alt'"
-             (click)="setRating(star)">
-      </small>
+      <nz-rate [(ngModel)]="newReview.rating" (ngModelChange)="setRating($event)"></nz-rate>
     </div>
 
     <!-- Form -->
     <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
-      <div class="form-group">
-        <label for="message">Your Review *</label>
-        <textarea formControlName="comment" id="message" cols="30" rows="5" class="form-control"></textarea>
-        <div *ngIf="reviewForm.controls['comment'].invalid && reviewForm.controls['comment'].touched" class="text-danger">
-          Review is required.
-        </div>
-      </div>
+      <nz-form-item>
+        <nz-form-label [nzFor]="'message'">Your Review *</nz-form-label>
+        <nz-form-control>
+          <textarea formControlName="comment" id="message" cols="30" rows="5" nz-input></textarea>
+          <div *ngIf="reviewForm.controls['comment'].invalid && reviewForm.controls['comment'].touched" class="text-danger">
+            Review is required.
+          </div>
+        </nz-form-control>
+      </nz-form-item>
 
-      <div class="form-group mb-0">
-        <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-      </div>
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" [disabled]="reviewForm.invalid">Leave Your Review</button>
+        </nz-form-control>
+      </nz-form-item>
     </form>
   </div>
 </div>

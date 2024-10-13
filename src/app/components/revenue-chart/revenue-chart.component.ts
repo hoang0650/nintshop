@@ -1,7 +1,5 @@
-// src/app/components/revenue-chart/revenue-chart.component.ts
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { RevenueService } from '../../services/revenue.service';
 
 @Component({
   selector: 'app-revenue-chart',
@@ -20,36 +18,49 @@ export class RevenueChartComponent implements OnInit {
 
   public currentTab = 'daily';
 
-  constructor(private revenueService: RevenueService) {}
-
   ngOnInit(): void {
     this.updateChartData(this.currentTab); // Default to daily
   }
 
   updateChartData(period: string): void {
     this.currentTab = period;
-
-    this.revenueService.getRevenueByPeriod(period).subscribe((data) => {
-      const categories = data.revenues.map((revenue:any) => new Date(revenue.date).toLocaleDateString());
-      const amounts = data.revenues.map((revenue:any) => revenue.amount);
-
-      this.chartOptions = {
-        chart: { type: 'line' },
-        title: { text: `Doanh Thu Theo ${this.getTitle(period)}` },
-        xAxis: { categories },
-        yAxis: { title: { text: 'Doanh Thu' } },
-        series: [{ name: 'Doanh Thu', data: amounts, type: 'line' }]
-      };
-    });
-  }
-
-  getTitle(period: string): string {
     switch (period) {
-      case 'daily': return 'Ngày';
-      case 'weekly': return 'Tuần';
-      case 'monthly': return 'Tháng';
-      case 'yearly': return 'Năm';
-      default: return '';
+      case 'daily':
+        this.chartOptions = {
+          chart: { type: 'line' },
+          title: { text: 'Doanh Thu Theo Ngày' },
+          xAxis: { categories: ['Ngày 1', 'Ngày 2', 'Ngày 3', 'Ngày 4'] },
+          yAxis: { title: { text: 'Doanh Thu' } },
+          series: [{ name: 'Doanh Thu', data: [100, 200, 150, 300], type: 'line' }]
+        };
+        break;
+      case 'weekly':
+        this.chartOptions = {
+          chart: { type: 'line' },
+          title: { text: 'Doanh Thu Theo Tuần' },
+          xAxis: { categories: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'] },
+          yAxis: { title: { text: 'Doanh Thu' } },
+          series: [{ name: 'Doanh Thu', data: [400, 500, 600, 700], type: 'line' }]
+        };
+        break;
+      case 'monthly':
+        this.chartOptions = {
+          chart: { type: 'line' },
+          title: { text: 'Doanh Thu Theo Tháng' },
+          xAxis: { categories: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4'] },
+          yAxis: { title: { text: 'Doanh Thu' } },
+          series: [{ name: 'Doanh Thu', data: [1000, 1200, 1400, 1600], type: 'line' }]
+        };
+        break;
+      case 'yearly':
+        this.chartOptions = {
+          chart: { type: 'line' },
+          title: { text: 'Doanh Thu Theo Năm' },
+          xAxis: { categories: ['Năm 1', 'Năm 2', 'Năm 3', 'Năm 4'] },
+          yAxis: { title: { text: 'Doanh Thu' } },
+          series: [{ name: 'Doanh Thu', data: [5000, 6000, 7000, 8000], type: 'line' }]
+        };
+        break;
     }
   }
 }

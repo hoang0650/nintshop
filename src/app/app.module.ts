@@ -74,6 +74,7 @@ import { SafePipe } from './pipes/safe.pipe';
 import { MessageComponent } from './components/message/message.component';
 import { SupportChatComponent } from './components/support-chat/support-chat.component';
 
+
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
 export function HttpLoaderFactory(http: HttpClient) {
@@ -124,7 +125,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     SafePipe,
     MessageComponent,
     SupportChatComponent,
- 
   ],
   imports: [
     BrowserModule,

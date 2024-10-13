@@ -37,7 +37,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
             ],
             "scripts": []
           },
@@ -95,9 +96,7 @@
               }
             ],
             "styles": [
-              "css/style.css",
-              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "lib/owlcarousel/assets/owl.carousel.min.css"
+              "css/style.css"
             ],
             "scripts": [
               "mail/jqBootstrapValidation.min.js",

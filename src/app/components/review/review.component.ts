@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReviewService } from '../../services/review.service';
 import { UserService } from '../../services/user.service';
@@ -9,7 +9,7 @@ import { Review } from '../../interfaces/review';
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.css']
 })
-export class ReviewComponent implements OnInit {
+export class ReviewComponent implements OnInit, OnChanges {
   @Input() productId!: string; // Nhận ID sản phẩm từ component cha
   reviewForm: FormGroup;
   reviews: Review[] = [];
@@ -35,7 +35,14 @@ export class ReviewComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
     this.getReviews();
-    this.setProductId(); // Gán productId vào form sau khi nhận từ ngOnInit
+  }
+
+  // Nhận dữ liệu thay đổi từ component cha
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['productId'] && changes['productId'].currentValue) {
+      this.setProductId(changes['productId'].currentValue);
+      this.getReviews(); // Lấy lại danh sách review sau khi productId thay đổi
+    }
   }
 
   // Lấy thông tin người dùng
@@ -53,9 +60,10 @@ export class ReviewComponent implements OnInit {
   }
 
   // Gán productId vào form
-  setProductId(): void {
-    this.reviewForm.patchValue({ productId: this.productId });
+  setProductId(productId: string): void {
+    this.reviewForm.patchValue({ productId });
   }
+  
 
   // Cập nhật số sao khi người dùng chọn
   setRating(star: number): void {

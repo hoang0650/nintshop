@@ -41,4 +41,23 @@ export class DetailComponent implements OnInit {
   selectVariant(variant: any) {
     this.selectedVariant = variant;
   }
+
+  incrementClickCount(event: MouseEvent, productId: string) {
+    event.preventDefault(); // Ngăn chặn hành vi mặc định của link
+    this.productService.incrementClickCount(productId).subscribe(
+      response => {
+        console.log('Click count updated:', response.clickCount);
+        if (this.product) {
+          this.product.clickCount = response.clickCount;
+        }
+        // Chuyển hướng đến link tiếp thị liên kết
+        window.open(this.product.affiliateLink, '_blank');
+      },
+      error => {
+        console.error('Error updating click count:', error);
+        // Vẫn chuyển hướng đến link tiếp thị liên kết ngay cả khi có lỗi
+        window.open(this.product.affiliateLink, '_blank');
+      }
+    );
+  }
 }

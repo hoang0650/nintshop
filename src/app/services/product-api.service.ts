@@ -32,6 +32,10 @@ export class ProductApiService {
     return this.http.post<Product>(this.apiUrl, data);
   }
 
+  incrementClickCount(productId: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${productId}/clicks`, {});
+  }
+
   updateProduct(id: string, formData: any): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, formData);
   }

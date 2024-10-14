@@ -57,6 +57,7 @@ export class AdminComponent implements OnInit {
       price: [0, Validators.required],
       quantity: [0, Validators.required],
       description: ['', Validators.required],
+      tiktokAffiliateLink: ['', Validators.required],
       variants: this.fb.array([this.createVariant()])
     });
     this.orderForm = this.fb.group({

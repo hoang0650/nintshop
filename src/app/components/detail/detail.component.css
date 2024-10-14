@@ -1,3 +1,12 @@
 .product-description {
     white-space: pre-line; /* Giữ lại các ký tự ngắt dòng '\n' */
 }
+
+.btn-danger {
+    background-color: black;
+    border-color: black;
+}
+.btn-danger:hover {
+    background-color: #e61e43;
+    border-color: #e61e43;
+}

@@ -1,7 +1,6 @@
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-1">
     <div class="d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 100px;">
-        <!-- <h1 class="font-weight-semi-bold text-uppercase mb-3 mt-3">Our Shop</h1> -->
         <div class="d-inline-flex">
             <p class="m-0"><a routerLink="/home">Home</a></p>
             <p class="m-0 px-2">/</p>
@@ -10,7 +9,6 @@
     </div>
 </div>
 <!-- Page Header End -->
-
 
 <!-- Shop Detail Start -->
 <div class="container-fluid py-5">
@@ -47,18 +45,15 @@
                 <small class="pt-1">(50 Reviews)</small>
             </div>
             <h3 class="font-weight-semi-bold mb-4">{{ product?.price | number: '1.0-0'}} VNĐ</h3>
-            <!-- <div class="d-flex mb-4">
-                <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
-                <form>
-                    <div class="custom-control custom-radio custom-control-inline" *ngFor="let variant of product?.variants">
-                        <input type="radio" class="custom-control-input" [id]="'color-' + variant.color" name="color" (change)="selectVariant(variant)">
-                        <label class="custom-control-label" [for]="'color-' + variant?.color">{{ variant.color }}</label>
-                    </div>
-                </form>
-            </div> -->
 
             <div class="d-flex align-items-center mb-4 pt-2">
-                <button class="btn btn-primary px-3" (click)="addToCart(product)"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                <button class="btn btn-primary px-3 mr-2" (click)="addToCart(product)">
+                    <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                </button>
+                <a *ngIf="product?.affiliateLink" [href]="product?.affiliateLink" target="_blank" rel="noopener noreferrer" 
+                   class="btn btn-danger px-3">
+                    <i class="fab fa-tiktok mr-1"></i> Buy on TikTok Shop
+                </a>
             </div>
 
             <div class="d-flex pt-2">
@@ -100,4 +95,3 @@
     </div>
 </div>
 <!-- Shop Detail End -->
-

@@ -7,6 +7,7 @@ export interface Product {
   price: number;
   quantity: number;
   description: string;
+  tiktokAffiliateLink?: string;
   image: string[];
   variants: Variant[];
 }

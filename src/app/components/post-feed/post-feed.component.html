@@ -2,11 +2,13 @@
   <!-- Header: Avatar, Cover Photo, and Edit Cover Icon -->
   <div class="profile-header mb-4">
     <!-- Cover Photo -->
+    <!-- Cover Photo -->
     <div class="cover-photo position-relative">
       <img src="nintshop_img/001/avatar.png" alt="Cover Photo" class="img-fluid w-100" />
       <!-- Edit Cover Photo Icon -->
-      <button class="btn btn-outline-light position-absolute edit-cover-icon" title="Chỉnh sửa ảnh bìa">
+      <button type="file" (change)="updateAvatar($event)" class="btn btn-outline-light position-absolute edit-cover-icon" title="Chỉnh sửa ảnh bìa">
         <i class="fa fa-camera"></i>
+        <!-- <input type="file" (change)="updateAvatar($event)" style="display: none;"> -->
       </button>
     </div>
 
@@ -18,6 +20,11 @@
           <!-- Avatar -->
           <div class="avatar-container">
             <img src="nintshop_img/logo.jpg" alt="Avatar" class="rounded-circle img-thumbnail" style="min-width: 100px; max-width: 200px;">
+            <label class="btn btn-outline-light position-absolute" style="bottom: 0; right: 0;">
+              <i class="fa fa-camera"></i>
+              <!-- <input type="file" (change)="updateAvatar($event)" style="display: none;"> -->
+              <input type="file" (change)="updateAvatar($event)" style="display: none;">
+            </label>
           </div>
         </div>
         <div class="col-md-8">
@@ -34,8 +41,8 @@
             <!-- Followers Avatars -->
             <div class="mt-3">
               <div class="d-flex align-items-center">
-                <div *ngFor="let friend of friends" class="friend-avatar-container mr-2">
-                  <img [src]="friend.avatarUrl" alt="Follower Avatar" class="rounded-circle" width="50px"
+                <div *ngFor="let f of friend" class="friend-avatar-container mr-2">
+                  <img [src]="f.avatarUrl" alt="Follower Avatar" class="rounded-circle" width="50px"
                     height="50px" />
                 </div>
                 <a href="#" class="text-muted ml-2">Xem tất cả</a>
@@ -46,97 +53,70 @@
       </div>
     </div>
   </div>
-  <div class="row px-xl-5">
-    <div class="col">
-      <!-- Tabs for Product and Order -->
-      <ul class="nav nav-tabs justify-content-start border-secondary mb-4">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#product-tab">Product</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#image-tab">Image</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#friends-tab">Friend</a>
-        </li>
-      </ul>
-    </div>
 
-    <!-- Body Content -->
-    <div class="tab-content">
-      <!-- Product Tab -->
-      <div class="tab-pane fade show active" id="product-tab">
-        <!-- Body Content -->
-        <div class="row">
-          <!-- Left Side: Information and Image Gallery -->
-          <div class="col-md-4">
-            <!-- Info Section -->
-            <div class="card mb-4">
-              <div class="card-body">
-                <h5 class="card-title">Thông tin cửa hàng</h5>
-                <p class="card-text">Thông tin mô tả cửa hàng...</p>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Địa chỉ: 123 ABC, TP. HCM</li>
-                  <li class="list-group-item">Số điện thoại: 0987654321</li>
-                  <li class="list-group-item">Email: example&#64;shop.com</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Side: Post Feed -->
-          <div class="col-md-8">
-            <app-new-post (postCreated)="addPost($event)"></app-new-post>
-            <!-- Post Feed (PostCard Components) -->
-            <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-pane fade show" id="image-tab">
-        <!-- Image Gallery Section -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Hình ảnh</h5>
-            <div class="row">
-              <div class="col-6 mb-3">
-                <img src="nintshop_img/005/014-Pikachu.png" class="img-fluid" alt="Product Image 1">
-              </div>
-              <div class="col-6 mb-3">
-                <img src="nintshop_img/005/019-Ash&Pikachu.png" class="img-fluid" alt="Product Image 2">
-              </div>
-              <div class="col-6">
-                <img src="nintshop_img/005/008-Lucario.png" class="img-fluid" alt="Product Image 3">
-              </div>
-              <div class="col-6">
-                <img src="nintshop_img/005/001-Articuno.png" class="img-fluid" alt="Product Image 4">
-              </div>
+  <!-- Tabs for Product and Order -->
+  <nz-tabset>
+    <nz-tab nzTitle="Product">
+      <div class="row">
+        <!-- Left Side: Information and Image Gallery -->
+        <div class="col-md-4">
+          <!-- Info Section -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Thông tin cửa hàng</h5>
+              <p class="card-text">Thông tin mô tả cửa hàng...</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Địa chỉ: 123 ABC, TP. HCM</li>
+                <li class="list-group-item">Số điện thoại: 0987654321</li>
+                <li class="list-group-item">Email: example&#64;shop.com</li>
+              </ul>
             </div>
           </div>
         </div>
+
+        <!-- Right Side: Post Feed -->
+        <div class="col-md-8">
+          <app-new-post (postCreated)="addPost($event)"></app-new-post>
+          <!-- Post Feed (PostCard Components) -->
+          <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
+        </div>
       </div>
+    </nz-tab>
 
-      <div class="tab-pane fade show" id="friends-tab">
-        <!-- <div class="card-body">
-          <h5 class="card-title">Bạn bè</h5>
-          <div class="row">
-            <div class="col-6 mb-3" *ngFor="let friend of friends">
-              Phần 1: Avatar
-              <div class="mb-3" *ngFor="let friend of friends">
-                <img src="{{friend.avatarUrl}}" alt="Friend Avatar" class="rounded-circle" width="100px" height="100px" />
-              </div>
-              Phần 2: Tên và Địa chỉ
-              <h5 class="card-title font-weight-bold">{{ friend.name }}</h5>
-              <p class="card-text">{{ friend.location }}</p>
-              Phần 3: Nút Thêm Bạn Bè
-              <button class="btn btn-primary">Thêm bạn</button>
-            </div>
+    <nz-tab nzTitle="Image">
+      <nz-card nzTitle="Hình ảnh">
+        <nz-row>
+          <nz-col nzSpan="12">
+            <img src="nintshop_img/005/014-Pikachu.png" class="img-fluid" alt="Product Image 1" />
+          </nz-col>
+          <nz-col nzSpan="12">
+            <img src="nintshop_img/005/019-Ash&Pikachu.png" class="img-fluid" alt="Product Image 2" />
+          </nz-col>
+        </nz-row>
+        <nz-row>
+          <nz-col nzSpan="12">
+            <img src="nintshop_img/005/008-Lucario.png" class="img-fluid" alt="Product Image 3" />
+          </nz-col>
+          <nz-col nzSpan="12">
+            <img src="nintshop_img/005/001-Articuno.png" class="img-fluid" alt="Product Image 4" />
+          </nz-col>
+        </nz-row>
+      </nz-card>
+    </nz-tab>
 
-
-          </div>
-        </div> -->
-
-      </div>
-    </div>
-  </div>
+    <nz-tab nzTitle="Friend">
+      <nz-card nzTitle="Bạn bè">
+        <nz-row *ngFor="let friend of friends">
+          <nz-col nzSpan="6">
+            <nz-avatar [nzSrc]="friend.avatarUrl" nzSize="large"></nz-avatar>
+          </nz-col>
+          <nz-col nzSpan="18">
+            <h5>{{ friend.name }}</h5>
+            <p>{{ friend.location }}</p>
+            <button nz-button nzType="primary">Thêm bạn</button>
+          </nz-col>
+        </nz-row>
+      </nz-card>
+    </nz-tab>
+  </nz-tabset>
 </div>

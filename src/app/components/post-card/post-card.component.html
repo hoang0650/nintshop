@@ -1,29 +1,61 @@
 <div class="card mb-4">
-    <div class="card-body">
-        <img src="nintshop_img/002/avatar.png" alt="Post Image" class="img-fluid mb-3 w-100">
-      <!-- <img *ngIf="post.image" [src]="post.image" alt="Post Image" class="img-fluid mb-3"> -->
-      <h5 class="card-title">{{ post.title }}</h5>
-      <p class="card-text">{{ post.content }}</p>
+  <div class="card-body">
+    <!-- Post Image -->
+    <img src="nintshop_img/002/avatar.png" alt="Post Image" class="img-fluid rounded mb-3 w-100">
+    
+    <!-- Post Title -->
+    <h5 class="card-title">{{ post.title }}</h5>
+    
+    <!-- Post Content -->
+    <p class="card-text">{{ post.content }}</p>
+  </div>
+
+  <div class="card-footer d-flex justify-content-between align-items-center">
+    <!-- Like, Comment, and Share buttons -->
+    <div class="actions">
+      <button nz-button nzType="primary" nzShape="round" class="mr-2" (click)="likePost(post)">
+        <i nz-icon nzType="like" nzTheme="outline"></i> Thích
+      </button>
+      <button nz-button nzType="default" nzShape="round" class="mr-2" (click)="toggleComments(post)">
+        <i nz-icon nzType="message" nzTheme="outline"></i> Bình luận
+      </button>
+      <button nz-button nzType="default" nzShape="round" (click)="sharePost(post)">
+        <i nz-icon nzType="share-alt" nzTheme="outline"></i> Chia sẻ
+      </button>
     </div>
-  
-    <div class="card-footer d-flex justify-content-between">
-      <!-- Like, Comment, and Share buttons -->
-      <div class="actions">
-        <button class="btn btn-outline-primary mr-2" (click)="likePost(post)">
-          <i class="fa fa-thumbs-up"></i> Thích
-        </button>
-        <button class="btn btn-outline-secondary mr-2" (click)="commentOnPost(post)">
-          <i class="fa fa-comment"></i> Bình luận
-        </button>
-        <button class="btn btn-outline-secondary" (click)="sharePost(post)">
-          <i class="fa fa-share"></i> Chia sẻ
-        </button>
-      </div>
-      <!-- Post Likes and Comments Count -->
-      <div class="stats">
-        <span>{{ post.likes }} lượt thích</span> 
-        <!-- | <span>{{ post.comments.length }} bình luận</span> -->
-      </div>
+    
+    <!-- Post Likes and Comments Count -->
+    <div class="stats text-muted">
+      <span>{{ post.likes }} lượt thích</span>
     </div>
   </div>
-  
+
+  <!-- Comment Section (ngIf based on toggle) -->
+  <div class="comment-section mt-3" *ngIf="post.showComments">
+    <div class="comments-list">
+      <!-- Existing Comments -->
+      <nz-comment *ngFor="let comment of post.comments">
+        <nz-avatar nzIcon="user" nzShape="circle"></nz-avatar>
+        <nz-comment-content>
+          <p>{{ comment.content }}</p>
+        </nz-comment-content>
+        <nz-comment-action>
+          <span (click)="likeComment(comment)">
+            <i nz-icon nzType="like" nzTheme="outline"></i> {{ comment.likes }} Thích
+          </span>
+        </nz-comment-action>
+      </nz-comment>
+    </div>
+
+    <!-- Add New Comment -->
+    <div class="add-comment mt-3">
+      <nz-avatar nzIcon="user" nzShape="circle"></nz-avatar>
+      <nz-input-group nzSearch [nzAddOnAfter]="commentButton">
+        <input type="text" nz-input [(ngModel)]="newComment" placeholder="Viết bình luận...">
+      </nz-input-group>
+      <ng-template #commentButton>
+        <button nz-button nzType="primary" (click)="addComment(post)">Bình luận</button>
+      </ng-template>
+    </div>
+  </div>
+</div>

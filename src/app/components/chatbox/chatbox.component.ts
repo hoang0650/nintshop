@@ -41,13 +41,13 @@ export class ChatboxComponent {
     this.aiService.queryAI(this.newMessage).subscribe(
       response => {
         this.messages.push({ sender: 'Bạn', text: this.newMessage });
-        if (this.isSupportAgentAvailable) {
+        // if (this.isSupportAgentAvailable) {
           // Nếu hỗ trợ viên đang online, họ trả lời
-          this.messages.push({ sender: 'Hỗ trợ viên', text: 'Chào bạn! Tôi có thể giúp gì cho bạn?' });
-      } else {
+      //     this.messages.push({ sender: 'Hỗ trợ viên', text: 'Chào bạn! Tôi có thể giúp gì cho bạn?' });
+      // } else {
           // Nếu không, bot sẽ trả lời
-          this.messages.push({ sender: 'Bot', text: 'Hỗ trợ viên hiện không khả dụng, tôi có thể giúp gì?' });
-      }
+          // this.messages.push({ sender: 'Bot', text: 'Hỗ trợ viên hiện không khả dụng, tôi có thể giúp gì?' });
+      // }
         setTimeout(() => {
                 this.messages.push({ sender: 'Bot', text: response.response });
                 this.isBotTyping = false;

@@ -141,4 +141,44 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/apply-voucher`, { userId, voucherCode });
   }
 
+  getFriendLists(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${userId}`);
+  }
+
+  getUserPosts(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${userId}/posts`);
+  }
+
+  getFriends(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${userId}/friends`);
+  }
+
+  getBlockedUsers(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${userId}/blocked`);
+  }
+
+  addFriend(userId: string, friendId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${userId}/add-friend`, { friendId });
+  }
+
+  removeFriend(userId: string, friendId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${userId}/remove-friend`, { friendId });
+  }
+
+  blockUser(userId: string, blockedUserId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${userId}/block`, { blockedUserId });
+  }
+
+  updateAvatar(userId: string, avatarFile: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('avatar', avatarFile);
+    return this.http.put(`${this.apiUrl}/${userId}/avatar`, formData);
+  }
+
+  updateCoverPhoto(userId: string, coverPhotoFile: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('coverPhoto', coverPhotoFile);
+    return this.http.put(`${this.apiUrl}/${userId}/cover`, formData);
+  }
+
 }

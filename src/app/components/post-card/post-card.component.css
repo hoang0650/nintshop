@@ -1,13 +1,36 @@
-.card-footer {
-  background-color: #f8f9fa;
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+/* Comment Section Styles */
+.comment-section {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 15px;
 }
 
-.actions button {
-  width: auto;
+.add-comment {
+  display: flex;
+  align-items: center;
 }
 
-.stats {
-  font-size: 0.9rem;
-  color: #6c757d;
+.add-comment nz-avatar {
+  margin-right: 10px;
+}
+
+.add-comment nz-input-group {
+  flex: 1;
+}
+
+.comments-list nz-comment {
+  margin-bottom: 10px;
+}
+
+.nz-comment-content p {
+  font-size: 1rem;
+}
+
+.nz-comment-action span {
+  cursor: pointer;
+  color: #1890ff;
+  transition: color 0.3s ease;
+}
+
+.nz-comment-action span:hover {
+  color: #40a9ff;
 }

@@ -96,8 +96,8 @@
                     <div class="navbar-nav mr-auto py-0">
                         <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">{{ 'HOME' | translate }}</a>
                         <a routerLink="/shop" routerLinkActive="active"  class="nav-item nav-link">{{ 'SHOP' | translate }}</a>
-                        <a routerLink="/shop-page" routerLinkActive="active"  class="nav-item nav-link">{{ 'SHOP_PAGE' | translate }}</a>
-                        <a routerLink="/livestream-homepage" routerLinkActive="active"  class="nav-item nav-link">{{ 'LIVE' | translate }}</a>
+                        <a *ngIf="isAdmin" routerLink="/shop-page" routerLinkActive="active"  class="nav-item nav-link">{{ 'SHOP_PAGE' | translate }}</a>
+                        <a *ngIf="isAdmin" routerLink="/livestream-homepage" routerLinkActive="active"  class="nav-item nav-link">{{ 'LIVE' | translate }}</a>
                         <a routerLink="/order-tracking" routerLinkActive="active"  class="nav-item nav-link">{{ 'TRACKING' | translate }}</a>
                         <div class="nav-item dropdown" *ngIf="isAdmin">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ 'ADMIN' | translate }}</a>
@@ -118,8 +118,8 @@
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{infor.username}}</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a  class="dropdown-item" routerLink="/user-info">{{ 'USER_INFO' | translate }}</a>
-                                <a  class="dropdown-item" routerLink="/balance">{{ 'BALANCE' | translate }}</a>
+                                <a class="dropdown-item" routerLink="/user-info">{{ 'USER_INFO' | translate }}</a>
+                                <a *ngIf="isAdmin"  class="dropdown-item" routerLink="/balance">{{ 'BALANCE' | translate }}</a>
                             </div>
 
                         </div>

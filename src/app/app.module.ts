@@ -29,6 +29,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -160,7 +163,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzButtonModule,
     NzIconModule,
     NzSpinModule,
-    NzAvatarModule
+    NzAvatarModule,
+    NzTypographyModule,
+    NzImageModule,
+    NzCommentModule
   ],
   providers: [
     provideClientHydration(),

@@ -1,11 +1,35 @@
-<nz-card>
-  <nz-tabset>
-    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.title">
-      <div *ngIf="currentTab === tab.key">
-        <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
-          style="width: 100%; height: 400px; display: block;">
-        </highcharts-chart>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <!-- Card Bootstrap -->
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <!-- Tabs Bootstrap -->
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation" *ngFor="let tab of tabs">
+              <a class="nav-link" [class.active]="currentTab === tab.key" 
+                 (click)="updateChartData(tab.key)" id="{{tab.key}}-tab" 
+                 data-toggle="tab" href="#{{tab.key}}" role="tab">
+                {{tab.title}}
+              </a>
+            </li>
+          </ul>
+
+          <!-- Tab content -->
+          <div class="tab-content mt-3">
+            <div class="tab-pane fade show active">
+              <!-- Highcharts -->
+              <div class="chart-container">
+                <highcharts-chart 
+                  [Highcharts]="Highcharts" 
+                  [options]="chartOptions"
+                  style="width: 100%; height: 400px; display: block;">
+                </highcharts-chart>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </nz-tab>
-  </nz-tabset>
-</nz-card>
+    </div>
+  </div>
+</div>

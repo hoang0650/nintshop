@@ -32,6 +32,9 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -166,7 +169,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzAvatarModule,
     NzTypographyModule,
     NzImageModule,
-    NzCommentModule
+    NzCommentModule,
+    NzProgressModule,
+    NzStatisticModule,
+    NzToolTipModule
   ],
   providers: [
     provideClientHydration(),

@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductApiService } from '../../services/product-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../interfaces/product';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css'] // Đã sửa typo từ 'styleUrl' thành 'styleUrls'
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
   product: any;
   cartItems: any[] = [];
   selectedVariant: any;
-
+  private subscriptions: Subscription = new Subscription(); // Biến để lưu các subscriptions
   constructor(
     private productService: ProductApiService,
     private route: ActivatedRoute,
@@ -22,7 +23,7 @@ export class DetailComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.productService.getProductById(id).subscribe(
+      const detailSub = this.productService.getProductById(id).subscribe(
         (data: Product) => {
           this.product = data;
         },
@@ -30,7 +31,12 @@ export class DetailComponent implements OnInit {
           console.error('Error fetching product details:', error);
         }
       );
+      this.subscriptions.add(detailSub); // Thêm subscription vào danh sách
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe(); // Hủy tất cả các subscription
   }
 
   addToCart(product: any) {

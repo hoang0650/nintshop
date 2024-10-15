@@ -129,13 +129,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="navbar-nav ml-auto py-0" *ngIf="!isLoggedIn">
+                    <div class="navbar-nav ml-auto py-0" *ngIf="!infor">
                         <a routerLink="/login" routerLinkActive="active" class="nav-item nav-link">{{ 'LOGIN' |
                             translate }}</a>
                         <a routerLink="/register" routerLinkActive="active" class="nav-item nav-link">{{ 'SIGN_UP' |
                             translate }}</a>
                     </div>
-                    <div class="navbar-nav ml-auto py-0" *ngIf="isLoggedIn">
+                    <div class="navbar-nav ml-auto py-0" *ngIf="infor">
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{infor.username}}</a>
                             <div class="dropdown-menu rounded-0 m-0">
@@ -185,13 +185,13 @@
                     translate }}</a>
             </div>
         </div>
-        <div class="navbar-nav ml-auto py-0" *ngIf="!isLoggedIn">
+        <div class="navbar-nav ml-auto py-0" *ngIf="!infor">
             <a routerLink="/login" routerLinkActive="active" class="nav-item nav-link">{{ 'LOGIN' |
                 translate }}</a>
             <a routerLink="/register" routerLinkActive="active" class="nav-item nav-link">{{ 'SIGN_UP' |
                 translate }}</a>
         </div>
-        <div class="navbar-nav ml-auto py-0" *ngIf="isLoggedIn">
+        <div class="navbar-nav ml-auto py-0" *ngIf="infor">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{infor.username}}</a>
                 <div class="dropdown-menu rounded-0 m-0">

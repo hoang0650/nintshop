@@ -50,7 +50,7 @@
                 <button *ngIf="!product?.affiliateLink" class="btn btn-primary px-3 mr-2" (click)="addToCart(product)">
                     <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
                 </button>
-                <a *ngIf="product?.affiliateLink" [href]="product?.affiliateLink" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id)" 
+                <a [href]="product?.affiliateLink" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id)" 
                    class="btn btn-danger px-3">
                     <i class="fab fa-tiktok mr-1"></i> Buy on TikTok Shop
                 </a>

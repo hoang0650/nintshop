@@ -5,13 +5,13 @@
 
     <!-- Hiển thị danh sách đánh giá -->
     <div *ngFor="let review of reviews" class="media mb-4">
-      <nz-avatar [nzSrc]="users?.avatar || 'assets/default-avatar.png'" nzShape="circle" nzSize="large"></nz-avatar>
+      <nz-avatar [nzSrc]="users?.avatar || 'nintshop_img/default.png'" nzShape="circle" nzSize="large"></nz-avatar>
       <div class="media-body ml-3">
-        <h6>{{ users.username }} 
-          <small> - <i>{{ review.createdAt | date: 'mediumDate' }}</i></small>
+        <h6>{{ users?.username }} 
+          <small> - <i>{{ review?.createdAt | date: 'mediumDate' }}</i></small>
         </h6>
         <nz-rate [ngModel]="review.rating" nzDisabled></nz-rate>
-        <p>{{ review.comment }}</p>
+        <p>{{ review?.comment }}</p>
       </div>
     </div>
   </div>

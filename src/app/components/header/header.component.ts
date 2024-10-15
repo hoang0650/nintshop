@@ -1,16 +1,17 @@
-import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { LanguageService } from '../../services/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs'; // Import Subscription
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   cartItemCount: number = 0; // Biến để lưu số lượng sản phẩm trong giỏ hàng
   currentLanguage: string;
   products: any
@@ -23,6 +24,7 @@ export class HeaderComponent implements OnInit {
   searchTerm: string = '';
   filteredProducts: any
   public showDropdown = false;  // Biến để hiển thị hoặc ẩn dropdown
+  private subscriptions: Subscription = new Subscription(); // Subscription gốc để quản lý tất cả
   constructor(private router: Router,private eRef: ElementRef,public productService: ProductService, private cartService: CartService, private languageService: LanguageService, private translate: TranslateService, private userService: UserService) {
     this.currentLanguage = 'vi'; // Ngôn ngữ mặc định
     this.translate.setDefaultLang(this.currentLanguage);
@@ -31,25 +33,51 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isMobile()
-    // Lắng nghe sự thay đổi ngôn ngữ từ LanguageService
-    this.languageService.currentLanguage.subscribe(lang => {
-      this.currentLanguage = lang;
-      this.translate.use(lang); // Cập nhật ngôn ngữ cho dịch vụ dịch
-    });
-    this.cartService.cartItems$.subscribe(items => {
-      this.cartItemCount = this.cartService.getTotalItemCount();
-    });
-    this.userService.isLoggedIn.subscribe((status) => {
-      this.isLoggedIn = status
-      this.userInfor()
-    })
-    // Initialize with all products
-    this.productService.products$.subscribe(products => {
-      this.products = products;
-      this.filteredProducts = [...this.products]; // Sao chép danh sách ban đầu
-    });
+    this.isMobile();
+    
+    // Thêm subscription lắng nghe thay đổi ngôn ngữ
+    this.subscriptions.add(
+      this.languageService.currentLanguage.subscribe((lang) => {
+        this.currentLanguage = lang;
+        this.translate.use(lang); // Cập nhật ngôn ngữ cho dịch vụ dịch
+      })
+    );
+
+    // Thêm subscription cho giỏ hàng
+    this.subscriptions.add(
+      this.cartService.cartItems$.subscribe(() => {
+        this.cartItemCount = this.cartService.getTotalItemCount();
+      })
+    );
+
+    // Thêm subscription cho thông tin đăng nhập
+    this.subscriptions.add(
+      this.userService.getUserInfor().subscribe((data) => {
+        if (data && data.username) {
+          this.infor = data;
+          if (this.infor.role === 'admin') {
+            this.isAdmin = true;
+          }
+        } else {
+          console.error('No username found in user data');
+        }
+      })
+    );
+
+    // Thêm subscription cho danh sách sản phẩm
+    this.subscriptions.add(
+      this.productService.products$.subscribe((products) => {
+        this.products = products;
+        this.filteredProducts = [...this.products]; // Sao chép danh sách ban đầu
+      })
+    );
   }
+
+  ngOnDestroy(): void {
+    // Hủy tất cả các subscriptions khi component bị hủy
+    this.subscriptions.unsubscribe();
+  }
+
   categories = [
     { name: 'keychain', id: 1 },
     { name: 'sticker', id: 2 },

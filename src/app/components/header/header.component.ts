@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false
   isAdmin: boolean = false;
   isSticky: boolean = false;
+  isLeftSidebarOpen: boolean = false;
+  isRightSidebarOpen: boolean = false;
   infor: any;
   searchTerm: string = '';
   filteredProducts: any
@@ -29,6 +31,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isMobile()
     // Lắng nghe sự thay đổi ngôn ngữ từ LanguageService
     this.languageService.currentLanguage.subscribe(lang => {
       this.currentLanguage = lang;
@@ -106,6 +109,18 @@ export class HeaderComponent implements OnInit {
     } else {
       console.error(`Product with ID ${productId} not found`);
     }
+  }
+
+  isMobile(): boolean {
+    return window.matchMedia('(max-width: 557px)').matches;
+  }
+
+  toggleLeftSidebar(){
+    this.isLeftSidebarOpen = !this.isLeftSidebarOpen
+  }
+
+  toggleRightSidebar(){
+    this.isRightSidebarOpen = !this.isRightSidebarOpen
   }
 
  // Lắng nghe sự kiện click ở bất kỳ đâu trên trang

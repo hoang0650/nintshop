@@ -5,7 +5,7 @@
             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                 <p class="text-right">{{category.length}}</p>
                 <a class="cat-img position-relative overflow-hidden mb-3">
-                    <img class="img-fluid img-cover" src="{{category.img}}" alt="">
+                    <img class="img-fluid img-cover" [src]="category.img[0]" [alt]="category.name">
                 </a>
                 <h5 class="font-weight-semi-bold m-0">{{category.name}}</h5>
             </div>

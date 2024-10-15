@@ -2,7 +2,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
+interface Product {
+  type: string;
+  image: string;
+}
+
+interface Category {
+  name: string;
+  img: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +42,21 @@ export class ProductService {
   // Lấy danh sách sản phẩm theo query tìm kiếm
   getProducts(query: string): Observable<any[]> {
     return this.http.get<any[]>(`https://sale-nest-api.onrender.com/api/products?search=${query}`);
+  }
+
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Product[]>('https://sale-nest-api.onrender.com/api/products').pipe(
+      map(products => {
+        const categoryMap = new Map<string, string>();
+        products.forEach(product => {
+          if (!categoryMap.has(product.type)) {
+            categoryMap.set(product.type, product.image);
+          }
+        });
+        return Array.from(categoryMap, ([name, img]) => ({ name, img }));
+      })
+    );
   }
 
   // Cập nhật lại dữ liệu sản phẩm khi có thay đổi

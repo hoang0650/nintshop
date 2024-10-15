@@ -19,7 +19,24 @@ export class CartService {
 
   cartItems$ = this.cartItemsSubject.asObservable(); // Observable để theo dõi thay đổi của giỏ hàng
 
-  constructor() {}
+  constructor() {
+    this.loadCartFromLocalStorage(); // Khôi phục giỏ hàng khi khởi tạo dịch vụ
+  }
+
+  // Lưu giỏ hàng vào localStorage
+  private saveCartToLocalStorage() {
+    const cartItems = this.getCartItems();
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }
+
+  // Khôi phục giỏ hàng từ localStorage
+  private loadCartFromLocalStorage() {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      const cartItems = JSON.parse(storedCart);
+      this.cartItemsSubject.next(cartItems);
+    }
+  }
 
   // Lấy danh sách sản phẩm trong giỏ hàng
   getCartItems(): CartItem[] {
@@ -40,6 +57,7 @@ export class CartService {
     }
 
     this.cartItemsSubject.next([...currentItems]); // Cập nhật lại giỏ hàng
+    this.saveCartToLocalStorage(); // Lưu vào localStorage
   }
 
   // Cập nhật số lượng của một sản phẩm
@@ -50,6 +68,7 @@ export class CartService {
     if (itemToUpdate && quantity > 0) {
       itemToUpdate.quantity = quantity;
       this.cartItemsSubject.next([...currentItems]); // Cập nhật lại giỏ hàng
+      this.saveCartToLocalStorage(); // Lưu vào localStorage
     }
   }
 
@@ -57,6 +76,7 @@ export class CartService {
   removeFromCart(name: string) {
     const currentItems = this.getCartItems().filter(item => item.name !== name);
     this.cartItemsSubject.next([...currentItems]); // Cập nhật lại giỏ hàng
+    this.saveCartToLocalStorage(); // Lưu vào localStorage
   }
 
   // Xóa toàn bộ giỏ hàng
@@ -64,6 +84,7 @@ export class CartService {
     this.cartItemsSubject.next([]); // Xóa sản phẩm
     this.voucherCode = null; // Reset mã voucher
     this.discount = 0; // Reset giảm giá
+    localStorage.removeItem('cart'); // Xóa giỏ hàng khỏi localStorage
   }
 
   // Tính tổng số lượng sản phẩm trong giỏ hàng
@@ -85,7 +106,7 @@ export class CartService {
 
   // Lấy số tiền giảm giá hiện tại
   getCurrentDiscount(): number {
-    return this.discount*this.getCartItems().reduce((total, item) => total + item.price * item.quantity, 0)/100;
+    return this.discount * this.getCartItems().reduce((total, item) => total + item.price * item.quantity, 0) / 100;
   }
 
   // Kiểm tra xem có áp dụng mã voucher không

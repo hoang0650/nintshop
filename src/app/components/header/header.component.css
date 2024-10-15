@@ -1,12 +1,231 @@
-/* Để giữ navbar cố định ở top khi cuộn */
-.sticky-navbar {
+/* General Styles */
+.hide-topbar {
+    display: none;
+  }
+  
+  .sticky-navbar {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  
+  .dropdown-menu {
+    border-radius: 0;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    padding: 5px 7px;
+    border-radius: 50%;
+    background-color: #D19C97;
+    color: white;
+  }
+  
+  .bg-danger {
+    background-color: #dc3545 !important;
+  }
+  
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .cat-item {
+    transition: all 0.3s;
+  }
+  
+  .cat-item:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .cat-img {
+    overflow: hidden;
+  }
+  
+  .cat-img img {
+    transition: all 0.5s;
+  }
+  
+  .cat-img:hover img {
+    transform: scale(1.2);
+  }
+  
+  .text-primary {
+    color: #D19C97 !important;
+  }
+  
+  .bg-primary {
+    background-color: #D19C97 !important;
+  }
+  
+  .btn-primary {
+    background-color: #D19C97;
+    border-color: #D19C97;
+  }
+  
+  .btn-primary:hover {
+    background-color: #c28f88;
+    border-color: #c28f88;
+  }
+
+  .align-items-center {
+  display: flex;
+  justify-content: center; /* Căn đều các mục theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  height: 100%; /* Đảm bảo các mục chiếm toàn bộ chiều cao của dòng */
 }
 
-/* Ẩn top bar sau khi cuộn */
-.hide-topbar {
-    display: none;
+.sidebar-content .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px; /* Điều chỉnh padding nếu cần */
+  height: 100%; /* Đảm bảo chiều cao của thẻ */
 }
+
+  
+  /* Mobile Styles */
+  @media (max-width: 991px) {
+    .navbar-toggler {
+      border: none;
+      padding: 0;
+    }
+  
+    .navbar-toggler:focus {
+      outline: none;
+    }
+  
+    .navbar-brand {
+      margin-right: auto;
+    }
+  
+    .navbar-nav {
+      margin-top: 1rem;
+    }
+  
+    .navbar-nav .nav-item {
+      text-align: center;
+    }
+  
+    .dropdown-menu {
+      text-align: center;
+    }
+  }
+  
+  /* Sidebar Styles */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #fff;
+    z-index: 1001;
+    transition: all 0.3s ease-in-out;
+    overflow-y: auto;
+  }
+  
+  .left-sidebar {
+    left: -250px;
+  }
+  
+  .right-sidebar {
+    right: -250px;
+  }
+  
+  .sidebar.active {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .left-sidebar.active {
+    left: 0;
+  }
+  
+  .right-sidebar.active {
+    right: 0;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .left-sidebar .close-btn {
+    right: 10px;
+  }
+  
+  .right-sidebar .close-btn {
+    left: 10px;
+  }
+  
+  .sidebar-content {
+    padding: 20px;
+  }
+  
+  .sidebar-content .nav-link {
+    padding: 10px 0;
+    color: #333;
+    transition: all 0.2s;
+  }
+  
+  .sidebar-content .nav-link:hover {
+    color: #D19C97;
+  }
+  
+  /* Overlay */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  .sidebar-overlay.active {
+    display: block;
+  }
+  
+  /* Adjustments for desktop */
+  @media (min-width: 992px) {
+    .sidebar {
+      display: none;
+    }
+  
+    .sidebar-overlay {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 991px) {
+  .navbar {
+    justify-content: space-between;
+  }
+
+  .navbar-brand {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .navbar-toggler,
+  .btn.border {
+    flex-basis: 48px; /* Adjust as needed */
+  }
+}
+
+  

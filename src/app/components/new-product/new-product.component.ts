@@ -8,6 +8,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 export class NewProductComponent {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   isMobile: boolean = false;
+  deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
   products = [
     {
       name: 'Product 1',

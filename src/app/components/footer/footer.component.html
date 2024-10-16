@@ -14,37 +14,37 @@
         <div class="col-lg-8 col-md-12">
             <div class="row">
                 <div class="col-md-4 mb-5">
-                    <h5 class="font-weight-bold text-dark mb-4">Working hours</h5>
+                    <h5 class="font-weight-bold text-dark mb-4">{{ 'WORK_HOURS' | translate}}</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-dark mb-2" href=""><strong>Monday - Saturday:</strong></a>
+                        <a class="text-dark mb-2" href=""><strong>{{ 'MONDAY' | translate}} - {{ 'SATURDAY' | translate}}:</strong></a>
                         <a class="text-dark mb-2" href=""><i class="fa fa-angle-right mr-2"></i>08.00 hour - 20.00 hour</a>
-                        <a class="text-dark mb-2" href=""><strong>Sunday:</strong></a>
-                        <a class="text-dark mb-2" href=""><i class="fa fa-angle-right mr-2"></i>Off</a>
+                        <a class="text-dark mb-2" href=""><strong>{{ 'SUNDAY' | translate}}:</strong></a>
+                        <a class="text-dark mb-2" href=""><i class="fa fa-angle-right mr-2"></i>{{ 'OFF' | translate}}</a>
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
-                    <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                    <h5 class="font-weight-bold text-dark mb-4">{{ 'Quick_Links' | translate}}</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-dark mb-2" routerLink="/home"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-dark mb-2" routerLink="/shop"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-dark mb-2" routerLink="/cart"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-dark mb-2" routerLink="/checkout"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-dark mb-2" routerLink="/contact"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-dark mb-2" routerLink="/home"><i class="fa fa-angle-right mr-2"></i>{{ 'HOME' | translate}}</a>
+                        <a class="text-dark mb-2" routerLink="/shop"><i class="fa fa-angle-right mr-2"></i>{{ 'SHOP' | translate}}</a>
+                        <a class="text-dark mb-2" routerLink="/cart"><i class="fa fa-angle-right mr-2"></i>{{ 'CART' | translate}}</a>
+                        <a class="text-dark mb-2" routerLink="/checkout"><i class="fa fa-angle-right mr-2"></i>{{ 'CHECK_OUT' | translate}}</a>
+                        <a class="text-dark mb-2" routerLink="/contact"><i class="fa fa-angle-right mr-2"></i>{{ 'CONTACT' | translate}}</a>
                         <!-- <a class="text-dark mb-2" routerLink="/support-chat"><i class="fa fa-angle-right mr-2"></i>Support</a> -->
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
-                    <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
+                    <h5 class="font-weight-bold text-dark mb-4">{{ 'Newsletter' | translate}}</h5>
                     <form action="">
                         <div class="form-group">
-                            <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
+                            <input type="text" class="form-control border-0 py-4" placeholder="{{ 'Your_Name' | translate}}" required="required" />
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
+                            <input type="email" class="form-control border-0 py-4" placeholder="{{ 'Your_Email' | translate}}"
                                 required="required" />
                         </div>
                         <div>
-                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
+                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">{{ 'Subscribe_Now' | translate}}</button>
                         </div>
                     </form>
                 </div>
@@ -54,10 +54,9 @@
     <div class="row border-top border-light mx-xl-5 py-4">
         <div class="col-md-6 px-xl-0">
             <p class="mb-md-0 text-center text-md-left text-dark">
-                &copy; <a class="text-dark font-weight-semi-bold" href="#">nintshop.com</a>. All Rights Reserved. Designed
-                by
+                &copy; <a class="text-dark font-weight-semi-bold" href="#">nintshop.com</a>. {{ 'COPY_RIGHT' | translate}}. {{ 'DESIGNED' | translate}}
                 <a class="text-dark font-weight-semi-bold">Phan Hoang</a><br>
-                Distributed By <a target="_blank">PHGroup</a>
+                {{ 'DEVELOPED' | translate}} <a target="_blank">PHGroup</a>
             </p>
         </div>
         <div class="col-md-6 px-xl-0 text-center text-md-right">

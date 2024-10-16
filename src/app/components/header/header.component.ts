@@ -6,12 +6,22 @@ import { UserService } from '../../services/user.service';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs'; // Import Subscription
+interface Subcategory {
+  id: number;
+  name: string;
+}
+interface Category {
+  id: number;
+  name: string;
+  subcategories: Subcategory[];
+}
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  activeCategory: Category | null = null;
   cartItemCount: number = 0; // Biến để lưu số lượng sản phẩm trong giỏ hàng
   currentLanguage: string;
   products: any
@@ -78,11 +88,54 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  categories = [
-    { name: 'keychain', id: 1 },
-    { name: 'sticker', id: 2 },
-    // Các category khác
+  categories: Category[] = [
+    {
+      id: 1,
+      name: 'keychain',
+      subcategories: [
+        { id: 101, name: 'Mobile Phones' },
+        { id: 102, name: 'Laptops' },
+        { id: 103, name: 'Cameras' }
+      ]
+    },
+    {
+      id: 2,
+      name: 'sticker',
+      subcategories: [
+        { id: 201, name: 'Men\'s Clothing' },
+        { id: 202, name: 'Women\'s Clothing' }
+      ]
+    },
   ];
+
+  // Show subcategories on hover
+  onCategoryHover(category: Category): void {
+    this.activeCategory = category;
+  }
+
+  // Hide subcategories when mouse leaves
+  onCategoryLeave(): void {
+    this.activeCategory = null;
+  }
+
+  onCategoryClick(category: any) {
+    // Nếu category đã được chọn, click sẽ bỏ chọn
+    if (this.activeCategory === category) {
+      this.activeCategory = null;
+    } else {
+      // Chọn category và mở subcategories
+      this.activeCategory = category;
+    }
+  }
+
+  onSubcategoryClick(subcategory: any) {
+    console.log('Selected subcategory:', subcategory);
+    // Xử lý khi click vào subcategory
+  }
+  // categories = [
+  //   { name: 'keychain', id: 1 },
+  //   { name: 'sticker', id: 2 },
+  // ];
 
   onCategorySelect(category: any) {
     // Chuyển hướng tới ShopComponent với type là category đã chọn

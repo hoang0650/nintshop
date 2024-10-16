@@ -85,7 +85,7 @@
 
 .product-image-container {
   position: relative;
-  height: 180px;
+  height: auto;
   overflow: hidden;
 }
 

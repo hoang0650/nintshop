@@ -43,7 +43,7 @@
             <form action="">
                 <div class="input-group" data-toggle="collapse" href="#top-search">
                     <input type="text" class="form-control" (click)="toggleDropdown()" [(ngModel)]="searchTerm"
-                        (input)="onSearchChange($event)" placeholder="Search products..." name="search">
+                        (input)="onSearchChange($event)" placeholder="{{ 'Search_Products' | translate }}" name="search">
                     <div class="input-group-append">
                         <span class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
@@ -76,20 +76,41 @@
 <!-- Navbar Start -->
 <div class="container-fluid" [ngClass]="{'sticky-navbar': isSticky}">
     <div class="row border-top px-xl-5">
-        <div class="col-lg-3 d-none d-lg-block">
-            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
-                data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                <h6 class="m-0">{{ 'CATEGORY' | translate }}</h6>
-                <i class="fa fa-angle-down text-dark"></i>
+        <div class="col-lg-3 d-none d-lg-block position-relative">
+            <!-- Category Toggle Button -->
+            <a class="btn category-toggle shadow-none d-flex align-items-center justify-content-between text-white w-100"
+               data-toggle="collapse" href="#navbar-vertical"
+               style="height: 65px; padding: 0 30px;">
+              <h6 class="m-0">{{ 'CATEGORY' | translate }}</h6>
+              <i class="fa fa-angle-down text-dark"></i>
             </a>
-            <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
-                id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
-                <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                    <a class="nav-item nav-link" *ngFor="let category of categories"
-                        (click)="onCategorySelect(category)">{{ category.name }}</a>
+          
+            <!-- Vertical Navbar for Categories -->
+            <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
+                 id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+              <div class="navbar-nav w-100 overflow-auto" style="height: 410px;">
+                <a class="nav-item nav-link category-link" 
+                   *ngFor="let category of categories"
+                   (click)="onCategoryClick(category)">
+                  {{ category.name }}
+                </a>
+              </div>
+          
+              <!-- Horizontal Subcategories Display -->
+              <div *ngIf="activeCategory" class="subcategories-container position-absolute">
+                <div class="d-flex justify-content-start flex-wrap">
+                  <div *ngFor="let subcategory of activeCategory.subcategories"
+                       class="subcategory-item" 
+                       (click)="onCategorySelect(subcategory)">
+                    <h6 class="subcategory-name">{{ subcategory.name }}</h6>
+                  </div>
                 </div>
+              </div>
             </nav>
-        </div>
+          </div>
+          
+          
+       
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <button type="button" class="navbar-toggler d-lg-none order-0" (click)="toggleLeftSidebar()">

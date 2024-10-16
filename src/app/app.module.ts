@@ -79,6 +79,7 @@ import { BalanceComponent } from './components/balance/balance.component';
 import { SafePipe } from './pipes/safe.pipe';
 import { MessageComponent } from './components/message/message.component';
 import { SupportChatComponent } from './components/support-chat/support-chat.component';
+import { CategoryListComponent } from './components/category-list/category-list.component';
 
 
 registerLocaleData(en);
@@ -131,6 +132,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SafePipe,
     MessageComponent,
     SupportChatComponent,
+    CategoryListComponent,
   ],
   imports: [
     BrowserModule,

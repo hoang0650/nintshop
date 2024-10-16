@@ -1,0 +1,16 @@
+<div class="container">
+    <h1 class="title">Shop by Category</h1>
+    <div class="categories-grid">
+      <div class="category-card" *ngFor="let category of categories">
+        <div class="card-content">
+          <img [src]="category.image" [alt]="category.name" class="category-image" />
+          <div class="category-info">
+            <h3 class="category-name">{{ category.name }}</h3>
+            <p class="item-count">{{ category.itemCount }} items</p>
+            <button class="shop-now-btn">Shop Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

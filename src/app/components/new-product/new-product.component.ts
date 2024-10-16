@@ -7,6 +7,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 })
 export class NewProductComponent {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  isMobile: boolean = false;
   products = [
     {
       name: 'Product 1',
@@ -117,6 +118,15 @@ export class NewProductComponent {
       reviews: 200
     }
   ];
+
+  ngOnInit() {
+    this.checkIfMobile();
+  }
+
+  checkIfMobile() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
   scrollLeft() {
     const container = this.scrollContainer.nativeElement;
     container.scrollBy({
@@ -131,5 +141,9 @@ export class NewProductComponent {
       left: 200, // Số pixel để cuộn
       behavior: 'smooth' // Hiệu ứng cuộn mượt mà
     });
+  }
+
+  onScroll() {
+    // You can add logic here to handle scroll events if needed
   }
 }

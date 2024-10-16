@@ -1,38 +1,61 @@
-<div class="deals-container">
-    <button class="scroll-button left" (click)="scrollLeft()">&lt;</button>
-    <div class="deals-list" #scrollContainer>
-      <div class="deal-item" *ngFor="let product of products">
-        <nz-card>
-          <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" nz-tooltip nzTooltipTitle="{{ product.name }}"/>
-          <div class="product-pricing">
-            <div class="discounted-price">{{ product.discountedPrice | currency }}</div>
-            <div class="original-price">{{ product.originalPrice | currency }}</div>
-            <div class="discount-percentage">{{ product.discountPercentage }}% Off</div>
-          </div>
-          <div class="sales-info">
-            <div class="progress-container">
-              <div class="progress">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  [style.width]="product.soldPercent + '%'"
-                  [attr.aria-valuenow]="product.soldPercent"
-                  aria-valuemin="0"
-                  aria-valuemax="100">
-                  {{ product.soldPercent }}%
-                </div>
-              </div>
-            </div>
-            <div class="sold-quantity">{{ product.sold }} sold</div>
-          </div>
-          <nz-countdown [nzFormat]="'HH:mm:ss'" [nzValue]="product.dealEndTime"></nz-countdown>
-          <div class="product-rating">
-            <nz-rate [ngModel]="product.rating" [nzAllowHalf]="true" nzDisabled></nz-rate>
-            <div class="review-count">{{ product.reviews }} reviews</div>
-          </div>
-        </nz-card>
-      </div>
+<div class="lightning-sale-container">
+  <div class="lightning-sale-header">
+    <div class="lightning-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+      </svg>
     </div>
-    <button class="scroll-button right" (click)="scrollRight()">&gt;</button>
+    <h2 class="lightning-title">Lightning Sale</h2>
   </div>
   
+  <div class="deals-container">
+    <button class="scroll-button left" (click)="scrollLeft()" [class.hidden]="isMobile">
+      <i nz-icon nzType="left" nzTheme="outline"></i>
+    </button>
+    
+    <div class="deals-list" #scrollContainer (scroll)="onScroll()">
+      <div class="deal-item" *ngFor="let product of products">
+        <div class="product-card">
+          <div class="product-image-container">
+            <img [src]="product.imageUrl" [alt]="product.name" class="product-image" nz-tooltip [nzTooltipTitle]="product.name"/>
+            <div class="discount-badge">{{ product.discountPercentage }}% OFF</div>
+          </div>
+          <div class="product-details">
+            <!-- <h3 class="product-name">{{ product.name }}</h3> -->
+            <div class="product-pricing">
+              <div class="discounted-price">{{ product.discountedPrice | currency }}</div>
+              <div class="original-price">{{ product.originalPrice | currency }}</div>
+            </div>
+            <div class="sales-info">
+              <div class="progress-container">
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    [style.width]="product.soldPercent + '%'"
+                    [attr.aria-valuenow]="product.soldPercent"
+                    aria-valuemin="0"
+                    aria-valuemax="100">
+                  </div>
+                </div>
+              </div>
+              <div class="sold-quantity">{{ product.sold }} sold</div>
+            </div>
+            <div class="countdown-container">
+              <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+              <nz-countdown [nzFormat]="'HH:mm:ss'" [nzValue]="product.dealEndTime"></nz-countdown>
+            </div>
+            <div class="product-rating">
+              <nz-rate [ngModel]="product.rating" [nzAllowHalf]="true" nzDisabled></nz-rate>
+              <span class="review-count">({{ product.reviews }})</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <button class="scroll-button right" (click)="scrollRight()" [class.hidden]="isMobile">
+      <i nz-icon nzType="right" nzTheme="outline"></i>
+    </button>
+  </div>
+</div>

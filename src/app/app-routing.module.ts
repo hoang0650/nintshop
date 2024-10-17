@@ -26,6 +26,9 @@ import { ForgotComponent } from './components/forgot/forgot.component';
 import { OtpComponent } from './components/otp/otp.component';
 import { BalanceComponent } from './components/balance/balance.component';
 import { SupportChatComponent } from './components/support-chat/support-chat.component';
+import { BlogComponent } from './components/blog/blog.component';
+import { BlogListComponent } from './components/blog-list/blog-list.component';
+import { BlogCreatorComponent } from './components/blog-creator/blog-creator.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -34,6 +37,9 @@ const routes: Routes = [
   { path: 'detail/:id', component: DetailComponent },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
+  { path: 'blog-creator', component: BlogCreatorComponent },
+  { path: 'blog/:id', component: BlogComponent },
+  { path: 'blog', component: BlogListComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: SignupComponent },

@@ -80,6 +80,12 @@ import { SafePipe } from './pipes/safe.pipe';
 import { MessageComponent } from './components/message/message.component';
 import { SupportChatComponent } from './components/support-chat/support-chat.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
+import { BlogComponent } from './components/blog/blog.component';
+import { RelatedPostComponent } from './components/related-post/related-post.component';
+import { RelatedProductsComponent } from './components/related-products/related-products.component';
+import { CommentBlogComponent } from './components/comment-blog/comment-blog.component';
+import { BlogListComponent } from './components/blog-list/blog-list.component';
+import { BlogCreatorComponent } from './components/blog-creator/blog-creator.component';
 
 
 registerLocaleData(en);
@@ -133,6 +139,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     MessageComponent,
     SupportChatComponent,
     CategoryListComponent,
+    BlogComponent,
+    RelatedPostComponent,
+    RelatedProductsComponent,
+    CommentBlogComponent,
+    BlogListComponent,
+    BlogCreatorComponent,
   ],
   imports: [
     BrowserModule,

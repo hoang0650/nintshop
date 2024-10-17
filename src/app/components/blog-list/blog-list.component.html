@@ -1,0 +1,23 @@
+<div class="blog-list-container">
+    <h1 class="blog-list-title">Bài viết mới nhất</h1>
+    <div class="blog-grid">
+        <article *ngFor="let post of blogs" class="blog-card">
+            <img [src]="post.imageUrl" [alt]="post.title" class="blog-card-image">
+            <div class="blog-card-content">
+                <h2 class="blog-card-title">{{ post.title }}</h2>
+                <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+                <div class="blog-card-meta">
+                    <span class="blog-card-author">{{ post.author }}</span>
+                    <span class="blog-card-date">{{ post.createdAt | date: 'dd/MM/yyyy' }}</span>
+                </div>
+                <a [routerLink]="['/blog', post._id]" class="blog-card-link">Đọc tiếp</a>
+            </div>
+        </article>
+    </div>
+    <div class="pagination">
+        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Trang trước</button>
+        <span class="pagination-info">Trang {{ currentPage }} / {{ totalPages }}</span>
+        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Trang
+            sau</button>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+.related-posts-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.related-post-link {
+    display: block;
+    padding: 10px 0;
+    color: #0066cc;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    transition: color 0.3s ease;
+}
+
+.related-post-link:hover {
+    color: #004499;
+}

@@ -1,12 +1,69 @@
 .product-description {
-    white-space: pre-line; /* Giữ lại các ký tự ngắt dòng '\n' */
+    white-space: pre-line;
+    /* Giữ lại các ký tự ngắt dòng '\n' */
 }
 
 .btn-danger {
     background-color: black;
     border-color: black;
 }
+
 .btn-danger:hover {
     background-color: #e61e43;
     border-color: #e61e43;
 }
+
+:host {
+    display: block;
+    font-family: 'Roboto', sans-serif;
+  }
+  .img-cover {
+    object-fit: cover;
+    height: 400px;
+  }
+  .img-thumbnail {
+    transition: border-color 0.2s ease-in-out;
+  }
+  .img-thumbnail:hover {
+    border-color: #007bff;
+  }
+  .image-list-container {
+    position: relative;
+    width: 100%;
+  }
+  .image-list-wrapper {
+    width: calc(100% - 80px);
+    margin: 0 auto;
+  }
+  .image-list {
+    display: flex;
+    transition: transform 0.3s ease;
+  }
+  .btn-outline-dark {
+    z-index: 10;
+  }
+  .variant-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  .variant-card:hover {
+    border-color: #007bff;
+  }
+  .variant-card.selected {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  .variant-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+  }
+  .variant-name {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    text-align: center;
+  }

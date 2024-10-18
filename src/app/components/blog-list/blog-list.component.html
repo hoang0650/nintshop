@@ -1,5 +1,24 @@
 <div class="blog-list-container">
     <h1 class="blog-list-title">Bài viết mới nhất</h1>
+    <div class="container mt-4 mb-4">
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Blog Categories</h5>
+                <div class="category-container">
+                  <button *ngFor="let category of suggestedCategories" 
+                          class="btn btn-outline-primary mr-2 mb-2"
+                          (click)="filterByCategory(category)">
+                    {{ category }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
     <div class="blog-grid">
         <article *ngFor="let post of blogs" class="blog-card">
             <img [src]="post.imageUrl" [alt]="post.title" class="blog-card-image">

@@ -17,23 +17,35 @@
             <div id="product-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner border">
                     <div class="carousel-item active">
-                        <img class="w-100 h-100 img-cover" src="{{product?.image[0]}}" alt="Image">
-                    </div>
-                    <div class="carousel-item" *ngFor="let img of product?.image.slice(1)">
-                        <img class="w-100 h-100 img-cover" [src]="img" alt="Image">
+                        <img class="w-100 h-100 img-cover" [src]="selectedImage" alt="Image">
                     </div>
                 </div>
-                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
-                    <i class="fa fa-2x fa-angle-left text-dark"></i>
-                </a>
-                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
-                    <i class="fa fa-2x fa-angle-right text-dark"></i>
-                </a>
+            </div>
+            <div class="position-relative mt-4">
+                <div class="image-list-container overflow-hidden" #imageListContainer>
+
+
+                    <div class="d-flex justify-content-between mt-2">
+                        <button class="btn btn-outline-dark" style="z-index: 100;" (click)="scrollImages('left')">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <div class="d-flex image-list" #imageList>
+                            <div *ngFor="let img of product?.image; let i = index" class="mr-2">
+                                <img [src]="img" alt="Thumbnail" class="img-thumbnail"
+                                    style="width: 160px; height: 80px; object-fit: cover; cursor: pointer;"
+                                    (click)="selectImage(i)" [class.border-primary]="selectedImage === img">
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-dark" style="z-index: 100;" (click)="scrollImages('right')">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="col-lg-7 pb-5">
-            <h3 class="font-weight-semi-bold">{{product?.name | json}}</h3>
+            <h3 class="font-weight-semi-bold">{{product?.name}}</h3>
             <div class="d-flex mb-3">
                 <div class="text-primary mr-2">
                     <small class="fas fa-star"></small>
@@ -46,25 +58,46 @@
             </div>
             <h3 class="font-weight-semi-bold mb-4">{{ product?.price | number: '1.0-0'}} VNĐ</h3>
 
-            <div class="d-flex align-items-center mb-4 pt-2">
-                <button *ngIf="!product?.affiliateLink" class="btn btn-primary px-3 mr-2" (click)="addToCart(product)">
-                    <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+            <div class="mb-4">
+                <p class="text-dark font-weight-medium mb-0 mr-3">Variants:</p>
+                <div class="d-flex flex-wrap">
+                  <div *ngFor="let variant of product?.variants; let i = index" class="m-2">
+                    <div class="variant-card" [class.selected]="selectedVariant === variant" (click)="selectVariant(variant)">
+                      <img [src]="variant.image" alt="Variant" class="variant-image">
+                      <p class="variant-name">{{variant.name}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center mb-4 pt-2 flex-wrap">
+                <button class="btn btn-primary px-3 mr-2 mb-2" (click)="addToCart(product)">
+                  <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
                 </button>
-                <a [href]="product?.affiliateLink" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id)" 
-                   class="btn btn-danger px-3">
-                    <i class="fab fa-tiktok mr-1"></i> Buy on TikTok Shop
+                <!-- (click)="incrementClickCount($event, product._id, 'tiktok')" -->
+                <a [href]="product.tiktokAffiliateLink" target="_blank" rel="noopener noreferrer" 
+                   class="btn btn-danger px-3 mr-2 mb-2">
+                  <i class="fab fa-tiktok mr-1"></i> Buy on TikTok Shop
                 </a>
-            </div>
+                <!-- <a [href]="" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id, 'shopee')" 
+                   class="btn btn-warning px-3 mr-2 mb-2">
+                  <i class="fas fa-shopping-bag mr-1"></i> Buy on Shopee
+                </a>
+                <a [href]="product?.temuLink" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id, 'temu')" 
+                   class="btn btn-info px-3 mb-2">
+                  <i class="fas fa-store mr-1"></i> Buy on Temu
+                </a> -->
+              </div>
 
             <div class="mt-3">
-                <!-- <p>Click count: {{ product?.clickCount || 0 }}</p> -->
                 <p>Views: {{ product?.viewCount || 0 }}</p>
             </div>
 
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                 <div class="d-inline-flex">
-                    <a class="text-dark px-2" href="https://www.facebook.com/profile.php?id=61566602871136" target="_blank">
+                    <a class="text-dark px-2" href="https://www.facebook.com/profile.php?id=61566602871136"
+                        target="_blank">
                         <i class="fab fa-facebook-f"></i>
                     </a>
                     <a class="text-dark px-2" href="">

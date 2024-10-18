@@ -18,11 +18,19 @@ import { BlogService } from '../../services/blog.service';
 export class BlogListComponent implements OnInit {
 
   blogs: any[] = [];
+  suggestedCategories = [
+    'All', 'Gaming', 'Music', 'Cooking', 'Art', 'Technology', 'Fitness', 'Travel', 'Comedy'
+  ];
+
 
   constructor(private blogService: BlogService) { }
 
   ngOnInit() {
     this.loadBlogs();
+  }
+  filterByCategory(category: string) {
+    console.log(`Filtering by category: ${category}`);
+    // Implement category filtering logic here
   }
 
   // blogPosts: BlogPost[] = [

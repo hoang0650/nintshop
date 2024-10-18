@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ProductApiService } from '../../services/product-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
@@ -10,9 +10,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./detail.component.css'] // Đã sửa typo từ 'styleUrl' thành 'styleUrls'
 })
 export class DetailComponent implements OnInit, OnDestroy {
+  @ViewChild('imageList') imageList!: ElementRef;
+  @ViewChild('imageListContainer') imageListContainer!: ElementRef;
   product: any;
   cartItems: any[] = [];
   selectedVariant: any;
+  currentImageIndex = 0;
+  selectedImage: string = ''
+  selectedColor: string = '';
   private subscriptions: Subscription = new Subscription(); // Biến để lưu các subscriptions
   constructor(
     private productService: ProductApiService,
@@ -26,6 +31,8 @@ export class DetailComponent implements OnInit, OnDestroy {
       const detailSub = this.productService.getProductById(id).subscribe(
         (data: Product) => {
           this.product = data;
+          this.selectedImage = this.product.image[0];
+          this.selectedColor = this.product.colors[0];
         },
         error => {
           console.error('Error fetching product details:', error);
@@ -47,6 +54,27 @@ export class DetailComponent implements OnInit, OnDestroy {
   selectVariant(variant: any) {
     this.selectedVariant = variant;
   }
+
+  selectImage(index: number) {
+    this.selectedImage = this.product.image[index];
+  }
+
+  setCurrentImage(index: number) {
+    this.currentImageIndex = index;
+  }
+
+  scrollImages(direction: 'left' | 'right') {
+    const container = this.imageListContainer.nativeElement;
+    const list = this.imageList.nativeElement;
+    const scrollAmount = container.clientWidth;
+
+    if (direction === 'left') {
+      list.style.transform = `translateX(${Math.min(0, list.getBoundingClientRect().left - container.getBoundingClientRect().left + scrollAmount)}px)`;
+    } else {
+      list.style.transform = `translateX(${Math.max(container.clientWidth - list.clientWidth, list.getBoundingClientRect().left - container.getBoundingClientRect().left - scrollAmount)}px)`;
+    }
+  }
+
 
   incrementClickCount(event: MouseEvent, productId: string) {
     event.preventDefault(); // Ngăn chặn hành vi mặc định của link

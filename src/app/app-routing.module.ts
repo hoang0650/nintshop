@@ -29,6 +29,7 @@ import { SupportChatComponent } from './components/support-chat/support-chat.com
 import { BlogComponent } from './components/blog/blog.component';
 import { BlogListComponent } from './components/blog-list/blog-list.component';
 import { BlogCreatorComponent } from './components/blog-creator/blog-creator.component';
+import { LightningSaleComponent } from './components/lightning-sale/lightning-sale.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -58,7 +59,8 @@ const routes: Routes = [
   { path: 'ai-chat', canActivate: [adminGuard], component: AiChatComponent },
   { path: 'user-management',canActivate: [adminGuard], component: UserManagementComponent },
   { path: 'chart', canActivate: [adminGuard], component: RevenueChartComponent },
-  { path: 'admin',canActivate: [adminGuard], component: AdminComponent }
+  { path: 'admin',canActivate: [adminGuard], component: AdminComponent },
+  { path: 'campain', canActivate: [adminGuard], component: LightningSaleComponent },
 ];
 
 @NgModule({

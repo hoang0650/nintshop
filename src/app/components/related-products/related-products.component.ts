@@ -18,6 +18,8 @@ export class RelatedProductsComponent implements OnInit {
       this.productService.getRelatedProducts(id).subscribe(
         (products) => {
           this.relatedProducts = products;
+          console.log('relatedProducts',this.relatedProducts);
+          
         },
         (error) => {
           console.error('Error fetching related products:', error);

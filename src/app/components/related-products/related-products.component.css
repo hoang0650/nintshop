@@ -1,0 +1,24 @@
+.related-carousel .ant-carousel .slick-slide {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .product-item {
+    margin: 15px;
+    max-width: 22%;
+  }
+  
+  .card {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-header img {
+    height: 250px;
+    object-fit: cover;
+  }
+  

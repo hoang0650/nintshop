@@ -28,6 +28,11 @@ export class ProductApiService {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
+  // Gọi API lấy các sản phẩm liên quan
+  getRelatedProducts(productId: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/related-products/${productId}`);
+  }
+
   createProduct(data: Product): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, data);
   }

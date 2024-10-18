@@ -35,6 +35,7 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -186,7 +187,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzCommentModule,
     NzProgressModule,
     NzStatisticModule,
-    NzToolTipModule
+    NzToolTipModule,
+    NzCarouselModule
   ],
   providers: [
     provideClientHydration(),

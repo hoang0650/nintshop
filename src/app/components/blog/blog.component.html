@@ -5,12 +5,12 @@
             <!-- Blog post -->
             <article class="blog-post">
                 <h1>Tiêu đề bài viết</h1>
-                <p class="post-date">Ngày đăng: 17 tháng 10, 2024</p>
+                <p class="post-date">Ngày đăng: {{blogs.createdAt}}</p>
                 <div class="post-content">
                     <p>Nội dung bài viết ở đây...</p>
                     <div class="video-container">
                         <iframe                  
-                          [src]="videoUrl | safe"
+                          [src]="blogs.videoUrl | safe"
                           frameborder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowfullscreen

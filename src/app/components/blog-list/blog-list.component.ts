@@ -84,7 +84,7 @@ export class BlogListComponent implements OnInit {
   //   }
   // ]
   currentPage = 1;
-  totalPages = 3; // Giả sử có 3 trang
+  totalPages = 100; // Giả sử có 3 trang
   loadBlogs() {
     this.blogService.getBlogs().subscribe(
       (data) => {

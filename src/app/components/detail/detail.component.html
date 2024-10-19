@@ -23,8 +23,6 @@
             </div>
             <div class="position-relative mt-4">
                 <div class="image-list-container overflow-hidden" #imageListContainer>
-
-
                     <div class="d-flex justify-content-between mt-2">
                         <button class="btn btn-outline-dark" style="z-index: 100;" (click)="scrollImages('left')">
                             <i class="fa fa-angle-left"></i>
@@ -75,11 +73,11 @@
                   <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
                 </button>
                 <!-- (click)="incrementClickCount($event, product._id, 'tiktok')" -->
-                <a [href]="product.tiktokAffiliateLink" target="_blank" rel="noopener noreferrer" 
+                <!-- <a [href]="product.tiktokAffiliateLink" target="_blank" rel="noopener noreferrer" 
                    class="btn btn-danger px-3 mr-2 mb-2">
                   <i class="fab fa-tiktok mr-1"></i> Buy on TikTok Shop
                 </a>
-                <!-- <a [href]="" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id, 'shopee')" 
+                <a [href]="" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id, 'shopee')" 
                    class="btn btn-warning px-3 mr-2 mb-2">
                   <i class="fas fa-shopping-bag mr-1"></i> Buy on Shopee
                 </a>
@@ -113,6 +111,8 @@
             </div>
         </div>
     </div>
+
+    <app-featured></app-featured>
 
     <div class="row px-xl-5">
         <div class="col">

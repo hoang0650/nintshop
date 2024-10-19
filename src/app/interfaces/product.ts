@@ -5,11 +5,11 @@ export interface Product {
   name: string;
   type: string;
   price: number;
-  discountPrice?: Number,
+  discountPrice: Number,
   quantity: number;
   description: string;
   tiktokAffiliateLink?: string;
-  sold?: number;
+  sold: number;
   image: string[];
   variants: Variant[];
   

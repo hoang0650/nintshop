@@ -4,20 +4,22 @@
         <div class="main-content">
             <!-- Blog post -->
             <article class="blog-post">
-                <h1>Tiêu đề bài viết</h1>
-                <p class="post-date">Ngày đăng: {{blogs.createdAt}}</p>
+                <h1>{{blog.title}}</h1>
+                <p class="author">Tác giả: {{ blog.author }}</p>
+                <p class="view-count">Lượt xem: {{ blog.viewCount }}</p>
+                <p class="post-date">Ngày đăng: {{blog.createdAt | date:'dd-MM-yyyy'}}</p>
+                <app-table-of-contents [sections]="blog.sections"></app-table-of-contents>
                 <div class="post-content">
-                    <p>Nội dung bài viết ở đây...</p>
-                    <div class="video-container">
-                        <iframe                  
-                          [src]="blogs.videoUrl | safe"
-                          frameborder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen
-                        ></iframe>
-                    </div>
-                    <!-- <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/xQyJnCH-qds | safe" allowfullscreen></iframe> -->
-                    <!-- <iframe class="embed-responsive-item" [src]="selectedEvent.videoUrl | safeUrl" allowfullscreen></iframe> -->
+                    <section *ngFor="let section of blog.sections; let i = index" [id]="'section-' + i">
+                        <h2>{{ section.title }}</h2>
+                        <div [innerHTML]="section.content"></div>
+                        <div *ngIf="section.videoUrl" class="video-container">
+                          <iframe [src]="getSafeUrl(section.videoUrl)" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div *ngIf="section.imageUrl" class="image-container">
+                          <img [src]="section.imageUrl" alt="Section image">
+                        </div>
+                    </section>
                 </div>
             </article>
 
@@ -39,9 +41,10 @@
                     <blockquote cite="https://www.facebook.com/profile.php?id=61566602871136"
                         class="fb-xfbml-parse-ignore">
                         <a href="https://www.facebook.com/profile.php?id=61566602871136">Phụ Kiện Giá Rẻ</a>
-                    </blockquote>
-                </div> -->
-                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61566602871136&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </blockquote> -->
+                <div class="fb-page">
+                    <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61566602871136&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                </div>
             </div>
 
             <!-- Related posts -->

@@ -7,8 +7,7 @@ import { Component } from '@angular/core';
 })
 export class CommentBlogComponent {
   comments = [
-    { author: 'Người dùng 1', content: 'Bình luận 1...' },
-    { author: 'Người dùng 2', content: 'Bình luận 2...' },
+    { author: 'Người dùng 1', content: 'Bình luận 1...' }
     // Thêm các bình luận khác
   ];
 }

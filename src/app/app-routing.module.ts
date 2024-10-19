@@ -64,7 +64,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,{ scrollPositionRestoration: 'top' })],
+  imports: [RouterModule.forRoot(routes,{ scrollPositionRestoration: 'enabled', // Scrolls back to the top after navigation
+    anchorScrolling: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

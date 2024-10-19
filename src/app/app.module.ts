@@ -88,6 +88,7 @@ import { CommentBlogComponent } from './components/comment-blog/comment-blog.com
 import { BlogListComponent } from './components/blog-list/blog-list.component';
 import { BlogCreatorComponent } from './components/blog-creator/blog-creator.component';
 import { LightningSaleComponent } from './components/lightning-sale/lightning-sale.component';
+import { TableOfContentsComponent } from './components/table-of-contents/table-of-contents.component';
 
 
 registerLocaleData(en);
@@ -148,6 +149,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BlogListComponent,
     BlogCreatorComponent,
     LightningSaleComponent,
+    TableOfContentsComponent,
   ],
   imports: [
     BrowserModule,

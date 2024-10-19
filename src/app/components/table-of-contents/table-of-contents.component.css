@@ -1,0 +1,21 @@
+.table-of-contents {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #495057;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  li {
+    margin-bottom: 8px;
+    color: #495057;
+    cursor: default;
+}

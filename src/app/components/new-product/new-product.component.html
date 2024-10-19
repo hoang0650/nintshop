@@ -8,7 +8,7 @@
     <h2 class="lightning-title">Lightning Sale</h2>
     <div class="countdown-container ml-2">
       <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
-      <nz-countdown [nzFormat]="'HH:mm:ss'" [nzValue]="deadline"></nz-countdown>
+      <nz-countdown class="ml-2" [nzFormat]="'HH:mm:ss'" [nzValue]="deadline"></nz-countdown>
     </div>
   </div>
   
@@ -22,13 +22,10 @@
         <div class="product-card">
           <div class="product-image-container">
             <img [src]="product.image[0]" [alt]="product.name" class="product-image" nz-tooltip [nzTooltipTitle]="product.name"/>
-            <!-- <div class="discount-badge">{{ product.discountPercentage }}% OFF</div> -->
           </div>
           <div class="product-details">
-            <!-- <h3 class="product-name">{{ product.name }}</h3> -->
             <div class="product-pricing">
-              <!-- <div class="discounted-price">{{ product?.discountPrice | currency }}</div> -->
-              <div class="original-price">{{ product.price | currency: 'vnd ' }}</div>
+              <div class="original-price">{{ product.price | currency: 'VND ':'symbol':'1.0-0' }}</div>
             </div>
             <div class="sales-info">
               <div class="progress-container">
@@ -37,22 +34,14 @@
                     class="progress-bar"
                     role="progressbar"
                     aria-valuemin="0"
-                    aria-valuemax="100">
+                    aria-valuemax="100"
+                    [style.width]="calculateSoldPercent(product) + '%'"
+                    [attr.aria-valuenow]="calculateSoldPercent(product)">
                   </div>
-                  <!-- [style.width]="product.soldPercent + '%'" -->
-                  <!-- [attr.aria-valuenow]="product.soldPercent" -->
                 </div>
               </div>
               <div class="sold-quantity">{{ product.sold }} sold</div>
             </div>
-            <!-- <div class="countdown-container">
-              <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
-              <nz-countdown [nzFormat]="'HH:mm:ss'" [nzValue]="product.dealEndTime"></nz-countdown>
-            </div> -->
-            <!-- <div class="product-rating">
-              <nz-rate [ngModel]="product.rating" [nzAllowHalf]="true" nzDisabled></nz-rate>
-              <span class="review-count">({{ product?.reviews }})</span>
-            </div> -->
           </div>
         </div>
       </div>

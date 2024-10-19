@@ -3,17 +3,19 @@ import { ActivatedRoute } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
 import { Subscription } from 'rxjs';
 import { Blog } from '../../interfaces/blog';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css'
 })
 export class BlogComponent implements OnInit, OnDestroy {
-  blogs: any
+  blog: any;
   private subscriptions: Subscription = new Subscription();
   constructor(
     private blogService: BlogService,
     private route: ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -21,7 +23,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     if (id) {
       const detailSub = this.blogService.getBlog(id).subscribe(
         (data: Blog) => {
-          this.blogs = data;
+          this.blog = data;
         },
         error => {
           console.error('Error fetching product details:', error);
@@ -33,6 +35,10 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe(); // Hủy tất cả các subscription
+  }
+
+  getSafeUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
 }

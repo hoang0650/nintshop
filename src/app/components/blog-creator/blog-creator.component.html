@@ -1,35 +1,70 @@
-<div class="blog-creator-container">
-    <h1 class="blog-creator-title">Tạo bài blog mới</h1>
-    <form [formGroup]="blogForm" (ngSubmit)="onSubmit()" class="blog-form">
-        <div class="form-group">
-            <label for="title">Tiêu đề</label>
-            <input type="text" id="title" formControlName="title">
-            <div *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched" class="error-message">
-                Tiêu đề phải có ít nhất 3 ký tự.
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="content">Nội dung</label>
-            <textarea id="content" formControlName="content" rows="6"></textarea>
-            <div *ngIf="blogForm.get('content')?.invalid && blogForm.get('content')?.touched" class="error-message">
-                Nội dung phải có ít nhất 10 ký tự.
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="author">Tác giả</label>
-            <input type="text" id="author" formControlName="author">
-            <div *ngIf="blogForm.get('author')?.invalid && blogForm.get('author')?.touched" class="error-message">
-                Vui lòng nhập tên tác giả.
-            </div>
-        </div>
-        <button type="submit" [disabled]="blogForm.invalid" class="submit-button">
-            Đăng bài
-        </button>
-    </form>
-    <div *ngIf="successMessage" class="success-message">
-        {{ successMessage }}
+<div class="blog-manager-container">
+    <h1 class="blog-manager-title">Quản lý Blog</h1>
+
+    <div class="blog-list-container">
+        <h2>Danh sách Blog</h2>
+        <ul class="blog-list">
+            <li *ngFor="let blog of blogs" class="blog-item">
+                <span>{{ blog.title }}</span>
+                <div class="blog-actions">
+                    <button (click)="editBlog(blog)" class="edit-button">Sửa</button>
+                    <button (click)="deleteBlog(blog._id)" class="delete-button">Xóa</button>
+                </div>
+            </li>
+        </ul>
     </div>
-    <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
+
+    <div class="blog-creator-container">
+        <h2 class="blog-creator-title">{{ isEditMode ? 'Sửa bài blog' : 'Tạo bài blog mới' }}</h2>
+        <form [formGroup]="blogForm" (ngSubmit)="onSubmit()" class="blog-form">
+            <div class="form-group">
+                <label for="title">Tiêu đề</label>
+                <input type="text" id="title" formControlName="title">
+                <div *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched" class="error-message">
+                    Tiêu đề phải có ít nhất 3 ký tự.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="author">Tác giả</label>
+                <input type="text" id="author" formControlName="author">
+                <div *ngIf="blogForm.get('author')?.invalid && blogForm.get('author')?.touched" class="error-message">
+                    Vui lòng nhập tên tác giả.
+                </div>
+            </div>
+            <div formArrayName="sections">
+                <h3>Các phần của bài viết</h3>
+                <button type="button" (click)="addSection()" class="add-section-button">Thêm phần mới</button>
+                <div *ngFor="let section of sections.controls; let i = index" [formGroupName]="i" class="section-form">
+                    <h4>Phần {{ i + 1 }}</h4>
+                    <div class="form-group">
+                        <label [for]="'sectionTitle' + i">Tiêu đề phần</label>
+                        <input type="text" [id]="'sectionTitle' + i" formControlName="title">
+                    </div>
+                    <div class="form-group">
+                        <label [for]="'sectionContent' + i">Nội dung phần</label>
+                        <textarea [id]="'sectionContent' + i" formControlName="content" rows="6"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label [for]="'sectionVideoUrl' + i">URL Video (tùy chọn)</label>
+                        <input type="text" [id]="'sectionVideoUrl' + i" formControlName="videoUrl">
+                    </div>
+                    <div class="form-group">
+                        <label [for]="'sectionImageUrl' + i">URL Hình ảnh (tùy chọn)</label>
+                        <input type="text" [id]="'sectionImageUrl' + i" formControlName="imageUrl">
+                    </div>
+                    <button type="button" (click)="removeSection(i)" class="remove-section-button">Xóa phần này</button>
+                </div>
+            </div>
+            <button type="submit" [disabled]="blogForm.invalid" class="submit-button">
+                {{ isEditMode ? 'Cập nhật' : 'Đăng bài' }}
+            </button>
+            <button type="button" (click)="resetForm()" class="reset-button">Hủy</button>
+        </form>
+        <div *ngIf="successMessage" class="success-message" role="alert">
+            {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="error-message" role="alert">
+            {{ errorMessage }}
+        </div>
     </div>
 </div>

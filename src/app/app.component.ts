@@ -35,5 +35,19 @@ export class AppComponent {
       // Có thể thực hiện các tác vụ liên quan đến ngôn ngữ ở đây nếu cần
     });
   }
+
+   // Function to scroll to the top of the page with smooth scroll effect
+   scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Handle role clicks, preventing scroll for admin
+  onRoleClick(role: string) {
+    if (role === 'admin') {
+      console.log('Admin role clicked, prevent scrolling');
+      return; // Do nothing to prevent scroll for admin role
+    }
+    // Other role clicks can trigger some other actions if necessary
+  }
   title = 'nintshop';
 }

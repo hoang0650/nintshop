@@ -1,0 +1,9 @@
+<nav class="table-of-contents">
+    <h2>Nội dung bài viết</h2>
+    <ul>
+      <li *ngFor="let section of sections; let i = index">
+        <a [routerLink]="[]" [fragment]="'section-' + i">{{ section.title }}</a>
+      </li>
+    </ul>
+</nav>
+  

@@ -1,16 +1,17 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductApiService } from '../../services/product-api.service';
 import { Product } from '../../interfaces/product';
 import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-related-products',
   templateUrl: './related-products.component.html',
-  styleUrl: './related-products.component.css'
+  styleUrls: ['./related-products.component.css']
 })
 export class RelatedProductsComponent implements OnInit {
   relatedProducts: Product[] = [];
 
-  constructor(private productService: ProductApiService, private route: ActivatedRoute,) {}
+  constructor(private productService: ProductApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -18,8 +19,7 @@ export class RelatedProductsComponent implements OnInit {
       this.productService.getRelatedProducts(id).subscribe(
         (products) => {
           this.relatedProducts = products;
-          console.log('relatedProducts',this.relatedProducts);
-          
+          console.log('relatedProducts', this.relatedProducts);
         },
         (error) => {
           console.error('Error fetching related products:', error);

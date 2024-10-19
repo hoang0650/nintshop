@@ -2,11 +2,15 @@
 <div *ngIf="isLoading" class="spinner">
   <nz-spin nzSimple></nz-spin>
 </div>
-  <!-- Header và Footer chỉ hiển thị khi không ở livestream -->
-  <div *ngIf="!isLoading">
-    <app-header *ngIf="showHeaderFooter"></app-header>
-    <router-outlet></router-outlet>
-    <app-footer *ngIf="showHeaderFooter"></app-footer>
-    <!-- Back to Top -->
-    <a class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-  </div>
+
+<!-- Header và Footer chỉ hiển thị khi không ở livestream -->
+<div *ngIf="!isLoading">
+  <app-header *ngIf="showHeaderFooter"></app-header>
+  <router-outlet></router-outlet>
+  <app-footer *ngIf="showHeaderFooter"></app-footer>
+
+  <!-- Back to Top Button with smooth scroll -->
+  <a class="btn btn-primary back-to-top" (click)="scrollToTop()">
+    <i class="fa fa-angle-double-up"></i>
+  </a>
+</div>

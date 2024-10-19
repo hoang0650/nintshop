@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Product } from '../../interfaces/product';
 import { ProductApiService } from '../../services/product-api.service';
 @Component({
@@ -9,7 +9,7 @@ import { ProductApiService } from '../../services/product-api.service';
 export class NewProductComponent {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   isMobile: boolean = false;
-  deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
+  deadline = new Date().getTime() + 1000 * 60 * 60 * 2; // 2 hours from now
   products: Product[] = [];
 
   constructor(private productService: ProductApiService) {}
@@ -125,6 +125,11 @@ export class NewProductComponent {
   //   }
   // ];
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkIfMobile();
+  }
+
   ngOnInit() {
     this.checkIfMobile();
     this.productService.getProducts().subscribe(
@@ -159,5 +164,11 @@ export class NewProductComponent {
 
   onScroll() {
     // You can add logic here to handle scroll events if needed
+  }
+
+  calculateSoldPercent(product: Product): number {
+    // Assuming a maximum of 100 items per product
+    const maxItems = 100;
+    return (product.sold / maxItems) * 100;
   }
 }

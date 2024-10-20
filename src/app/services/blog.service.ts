@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Blog } from '../interfaces/blog';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,23 +10,23 @@ export class BlogService {
   private apiUrl = 'https://sale-nest-api.onrender.com/api/blogs';
   constructor(private http: HttpClient) { }
 
-  getBlogs(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getBlogs(): Observable<Blog[]> {
+    return this.http.get<Blog[]>(this.apiUrl);
   }
 
-  getBlog(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  getBlogById(id: string): Observable<Blog> {
+    return this.http.get<Blog>(`${this.apiUrl}/${id}`);
   }
 
-  createBlog(blogData: any): Observable<any> {
-    return this.http.post(this.apiUrl, blogData);
+  createBlog(blog: FormData): Observable<Blog> {
+    return this.http.post<Blog>(this.apiUrl, blog);
   }
 
-  updateBlog(id: string, blogData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, blogData);
+  updateBlog(id: string, blog: FormData): Observable<Blog> {
+    return this.http.put<Blog>(`${this.apiUrl}/${id}`, blog);
   }
 
-  deleteBlog(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  deleteBlog(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

@@ -21,7 +21,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      const detailSub = this.blogService.getBlog(id).subscribe(
+      const detailSub = this.blogService.getBlogById(id).subscribe(
         (data: Blog) => {
           this.blog = data;
         },

@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BlogService {
-  private apiUrl = 'http://localhost:3000/api/blogs';
-  // private apiUrl = 'https://sale-nest-api.onrender.com/api/blogs';
+  // private apiUrl = 'http://localhost:3000/api/blogs';
+  private apiUrl = 'https://sale-nest-api.onrender.com/api/blogs';
   constructor(private http: HttpClient) { }
 
   getBlogs(): Observable<any[]> {

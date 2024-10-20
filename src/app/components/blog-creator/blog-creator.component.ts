@@ -15,6 +15,8 @@ export class BlogCreatorComponent {
   errorMessage: string = '';
   isEditMode: boolean = false;
   currentBlogId: string | null = null;
+  imagePreviews: string[] = [];
+  selectedFiles: File[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -24,6 +26,7 @@ export class BlogCreatorComponent {
   ) {
     this.blogForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
+      type: ['', Validators.required],
       author: ['', Validators.required],
       sections: this.fb.array([])
     });
@@ -98,9 +101,13 @@ export class BlogCreatorComponent {
 
   onSubmit() {
     if (this.blogForm.valid) {
-      const blogData = this.blogForm.value;
+      const formData = new FormData();
+      formData.append('productData', JSON.stringify(this.blogForm.value));
+      this.selectedFiles.forEach((file, index) => {
+        formData.append('images', file, file.name);
+      });
       if (this.isEditMode && this.currentBlogId) {
-        this.blogService.updateBlog(this.currentBlogId, blogData).subscribe(
+        this.blogService.updateBlog(this.currentBlogId, formData).subscribe(
           response => {
             this.successMessage = 'Bài blog đã được cập nhật thành công!';
             this.errorMessage = '';
@@ -113,7 +120,7 @@ export class BlogCreatorComponent {
           }
         );
       } else {
-        this.blogService.createBlog(blogData).subscribe(
+        this.blogService.createBlog(formData).subscribe(
           response => {
             this.successMessage = 'Bài blog đã được tạo thành công!';
             this.errorMessage = '';
@@ -149,6 +156,39 @@ export class BlogCreatorComponent {
           this.successMessage = '';
         }
       );
+    }
+  }
+
+  onFileSelected(event: any, controlName: string, sectionIndex?: number) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        if (sectionIndex !== undefined) {
+          const sectionImages = this.sections.at(sectionIndex).get('images') as FormArray;
+          sectionImages.push(this.fb.control(e.target.result));
+        } else {
+          this.blogForm.patchValue({ [controlName]: e.target.result });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onFilesSelected(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const files = element.files;
+
+    if (files) {
+      this.selectedFiles = Array.from(files);
+      this.imagePreviews = [];
+      this.selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagePreviews.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
     }
   }
 

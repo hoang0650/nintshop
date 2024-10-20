@@ -7,10 +7,9 @@
               <div class="card-body">
                 <h5 class="card-title">Blog Categories</h5>
                 <div class="category-container">
-                  <button *ngFor="let category of suggestedCategories" 
-                          class="btn btn-outline-primary mr-2 mb-2"
-                          (click)="filterByCategory(category)">
-                    {{ category }}
+                  <button *ngFor="let category of blogs" 
+                          class="btn btn-outline-primary mr-2 mb-2">
+                    {{ category.type }}
                   </button>
                 </div>
               </div>
@@ -24,7 +23,7 @@
             <img [src]="post.imageUrl" [alt]="post.title" class="blog-card-image">
             <div class="blog-card-content">
                 <h2 class="blog-card-title">{{ post.title }}</h2>
-                <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+                <p class="blog-card-excerpt">Lượt xem: {{ post.viewCount }}</p>
                 <div class="blog-card-meta">
                     <span class="blog-card-author">{{ post.author }}</span>
                     <span class="blog-card-date">{{ post.createdAt | date: 'dd/MM/yyyy' }}</span>

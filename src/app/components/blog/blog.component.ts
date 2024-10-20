@@ -10,7 +10,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrl: './blog.component.css'
 })
 export class BlogComponent implements OnInit, OnDestroy {
-  blog: any;
+  blog: any ;
   private subscriptions: Subscription = new Subscription();
   constructor(
     private blogService: BlogService,

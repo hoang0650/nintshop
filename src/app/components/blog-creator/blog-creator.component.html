@@ -25,6 +25,13 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="type">Phân loại Blog</label>
+                <input type="text" id="type" formControlName="type">
+                <div *ngIf="blogForm.get('type')?.invalid && blogForm.get('type')?.touched" class="error-message">
+                    Vui lòng nhập phân loại Blog
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="author">Tác giả</label>
                 <input type="text" id="author" formControlName="author">
                 <div *ngIf="blogForm.get('author')?.invalid && blogForm.get('author')?.touched" class="error-message">
@@ -50,7 +57,7 @@
                     </div>
                     <div class="form-group">
                         <label [for]="'sectionImageUrl' + i">URL Hình ảnh (tùy chọn)</label>
-                        <input type="text" [id]="'sectionImageUrl' + i" formControlName="imageUrl">
+                        <input type="file" [id]="'sectionImageUrl' + i" formControlName="imageUrl" (change)="onFileSelected($event, 'sectionImages', i)" accept="image/*" multiple>
                     </div>
                     <button type="button" (click)="removeSection(i)" class="remove-section-button">Xóa phần này</button>
                 </div>

@@ -2,7 +2,7 @@ export interface BlogSection {
     title: string;
     content: string;
     videoUrl?: string;
-    images?: string[];
+    images?: string;
   }
   
   export interface Blog {

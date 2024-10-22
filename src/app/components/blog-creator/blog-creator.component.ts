@@ -52,7 +52,7 @@ export class BlogCreatorComponent {
       title: ['', Validators.required],
       content: ['', Validators.required],
       videoUrl: [''],
-      images: [[]]
+      images: ['']
     }));
   }
 

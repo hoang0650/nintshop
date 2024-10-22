@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
           <label for="imageUrl">Ảnh đại diện bài viết</label>
-          <input type="file" id="imageUrl" (change)="onFileSelected($event, 'main')" accept="image/*">
+          <input type="text" id="imageUrl">
           <img *ngIf="imagePreviews['main']" [src]="imagePreviews['main']" alt="Ảnh đại diện bài viết" class="preview-image">
         </div>
         <div formArrayName="sections">
@@ -62,7 +62,7 @@
             </div>
             <div class="form-group">
               <label [for]="'sectionImages' + i">Hình ảnh phần (tùy chọn)</label>
-              <input type="file" [id]="'sectionImages' + i" (change)="onFileSelected($event, 'section', i)" accept="image/*">
+              <input type="text" [id]="'sectionImages' + i">
               <img *ngIf="imagePreviews['section_' + i]" [src]="imagePreviews['section_' + i]" alt="Ảnh minh họa" class="preview-image">
             </div>
             <button type="button" (click)="removeSection(i)" class="remove-section-button">Xóa phần này</button>

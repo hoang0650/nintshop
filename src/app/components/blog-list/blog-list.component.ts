@@ -40,6 +40,12 @@ export class BlogListComponent implements OnInit {
     );
   }
 
+  get uniqueCategories() {
+    return this.blogs
+      .map(blog => blog.type) // Lấy tất cả type
+      .filter((type, index, self) => self.indexOf(type) === index); // Lọc để giữ duy nhất
+  }
+
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;

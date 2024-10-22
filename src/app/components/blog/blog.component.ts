@@ -11,6 +11,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 })
 export class BlogComponent implements OnInit, OnDestroy {
   blog: any ;
+  relatedPosts:any;
   private subscriptions: Subscription = new Subscription();
   constructor(
     private blogService: BlogService,
@@ -30,6 +31,16 @@ export class BlogComponent implements OnInit, OnDestroy {
         }
       );
       this.subscriptions.add(detailSub); // Thêm subscription vào danh sách
+    }
+    if (id) {
+      this.blogService.getRelatedProducts(id).subscribe(
+        (products) => {
+          this.relatedPosts = products;
+        },
+        (error) => {
+          console.error('Error fetching related products:', error);
+        }
+      );
     }
   }
 
@@ -53,12 +64,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     return window.location.href;
   }
 
-  relatedPosts = [
-    // Dữ liệu mẫu cho bài viết liên quan
-    { slug: 'bai-viet-1', title: 'Bài viết 1', author: 'Tác giả 1', imageUrl: 'nintshop_img/001/001-Pikachu.png' },
-    { slug: 'bai-viet-2', title: 'Bài viết 2', author: 'Tác giả 2', imageUrl: 'nintshop_img/001/001-Pikachu.png' },
-    // Thêm các bài viết khác...
-  ];
+ 
 
   limit = 5; // Số bài viết hiển thị ban đầu
 

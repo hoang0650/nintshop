@@ -18,6 +18,11 @@ export class BlogService {
     return this.http.get<Blog>(`${this.apiUrl}/${id}`);
   }
 
+  // Gọi API lấy các sản phẩm liên quan
+  getRelatedProducts(postId: string): Observable<Blog[]> {
+    return this.http.get<Blog[]>(`${this.apiUrl}/related-posts/${postId}`);
+  }
+
   createBlog(blog: Blog): Observable<Blog> {
     return this.http.post<Blog>(this.apiUrl, blog);
   }

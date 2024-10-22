@@ -20,7 +20,7 @@
 
     <div class="blog-grid">
         <article *ngFor="let post of blogs" class="blog-card">
-            <img [src]="post.imageUrl" [alt]="post.title" class="blog-card-image">
+            <img [src]="post?.imageUrl" [alt]="post?.title" class="blog-card-image">
             <div class="blog-card-content">
                 <h2 class="blog-card-title overflow-hidden">{{ post.title }}</h2>
                 <p class="blog-card-excerpt">Lượt xem: {{ post.viewCount }}</p>

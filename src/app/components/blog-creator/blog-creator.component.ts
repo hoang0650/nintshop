@@ -11,7 +11,7 @@ export class BlogCreatorComponent {
   blogs: Blog[] = [];
   blogForm!: FormGroup;
   isEditMode = false;
-  selectedBlogId: string | null = null;
+  selectedBlogId: string ='';
   imagePreviews: { [key: string]: string } = {};
   successMessage = '';
   errorMessage = '';
@@ -51,8 +51,6 @@ export class BlogCreatorComponent {
     this.sections.push(this.fb.group({
       title: ['', Validators.required],
       content: ['', Validators.required],
-      videoUrl: [''],
-      images: ['']
     }));
   }
 
@@ -75,17 +73,15 @@ export class BlogCreatorComponent {
     }
   }
 
-  editBlog(blog: Blog): void {
+  editBlog(id:string, blog: Blog): void {
     this.isEditMode = true;
-    this.selectedBlogId = blog._id || null;
+    this.selectedBlogId = id ;
     this.blogForm.patchValue(blog);
     this.sections.clear();
     blog.sections.forEach(section => {
       this.sections.push(this.fb.group({
         title: [section.title, Validators.required],
         content: [section.content, Validators.required],
-        videoUrl: [section.videoUrl],
-        images: [section.images || []]
       }));
     });
   }
@@ -101,38 +97,33 @@ export class BlogCreatorComponent {
   }
 
   onSubmit(): void {
-    if (this.blogForm.invalid) {
-      return;
-    }
+    if (this.blogForm.invalid) return;
 
-    const formData = new FormData();
-    formData.append('blogData', JSON.stringify(this.blogForm.value));
-    const imageUrl = this.blogForm.get('imageUrl')?.value;
-
-    if (this.isEditMode && this.selectedBlogId) {
-      this.blogService.updateBlog(this.selectedBlogId, formData).subscribe(
-        () => {
+    const blogData = this.blogForm.value;
+    if (this.isEditMode) {
+      this.blogService.updateBlog(this.selectedBlogId,blogData).subscribe(
+        response => {
+          this.successMessage = 'Cập nhật bài blog thành công!';
           this.loadBlogs();
           this.resetForm();
-          this.successMessage = 'Blog updated successfully';
         },
-        (error) => this.errorMessage = 'Error updating blog'
+        error => this.errorMessage = 'Có lỗi khi cập nhật blog'
       );
     } else {
-      this.blogService.createBlog(formData).subscribe(
-        () => {
+      this.blogService.createBlog(blogData).subscribe(
+        response => {
+          this.successMessage = 'Tạo bài blog thành công!';
           this.loadBlogs();
           this.resetForm();
-          this.successMessage = 'Blog created successfully';
         },
-        (error) => this.errorMessage = 'Error creating blog'
+        error => this.errorMessage = 'Có lỗi khi tạo blog'
       );
     }
   }
 
   resetForm(): void {
     this.isEditMode = false;
-    this.selectedBlogId = null;
+    this.selectedBlogId = '';
     this.blogForm.reset();
     this.sections.clear();
     this.imagePreviews = {};

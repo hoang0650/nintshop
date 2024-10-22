@@ -18,11 +18,11 @@ export class BlogService {
     return this.http.get<Blog>(`${this.apiUrl}/${id}`);
   }
 
-  createBlog(blog: FormData): Observable<Blog> {
+  createBlog(blog: Blog): Observable<Blog> {
     return this.http.post<Blog>(this.apiUrl, blog);
   }
 
-  updateBlog(id: string, blog: FormData): Observable<Blog> {
+  updateBlog(id: string, blog: Blog): Observable<Blog> {
     return this.http.put<Blog>(`${this.apiUrl}/${id}`, blog);
   }
 

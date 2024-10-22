@@ -1,19 +1,133 @@
 .comments-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    margin-top: 20px;
 }
 
 .comment {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 40px; /* Kích thước avatar */
+    height: 40px;
+    border-radius: 50%; /* Để avatar tròn */
+    margin-right: 10px;
+}
+
+.comment-info {
+    flex-grow: 1; /* Để tên người dùng và ngày được căn lề cho đẹp */
 }
 
 .comment-author {
     font-weight: bold;
-    margin-bottom: 5px;
+    margin: 0;
+}
+
+.comment-date {
+    color: #888; /* Màu sắc cho ngày đăng */
+    font-size: 12px;
 }
 
 .comment-content {
-    color: #555;
+    margin: 10px 0; /* Khoảng cách giữa nội dung và footer */
 }
+
+.comment-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.like-button {
+    background-color: transparent;
+    border: none;
+    color: #007bff; /* Màu sắc cho nút Like */
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.like-count {
+    font-size: 14px;
+    color: #666; /* Màu sắc cho số lượt Like */
+}
+
+.replies {
+    margin-left: 50px; /* Khoảng cách cho các phản hồi */
+}
+
+.reply {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.reply-info {
+    margin-left: 10px;
+}
+
+.reply-author {
+    font-weight: bold;
+    margin: 0;
+}
+
+.reply-content {
+    margin: 5px 0;
+}
+
+.reply-date {
+    color: #888;
+    font-size: 12px;
+}
+
+.reply-input {
+    display: flex;
+    margin-top: 10px;
+}
+
+.reply-input input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.reply-input button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.new-comment-input {
+    margin-top: 20px; /* Khoảng cách trên */
+    display: flex;     /* Hiển thị dưới dạng flex */
+}
+
+.new-comment-input input {
+    flex-grow: 1; /* Để ô nhập chiếm hết không gian */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.new-comment-input button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+

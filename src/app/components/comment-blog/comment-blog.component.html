@@ -1,6 +1,44 @@
-<div class="comments-list">
-    <div *ngFor="let comment of comments" class="comment">
-        <p class="comment-author">{{ comment.author }}</p>
-        <p class="comment-content">{{ comment.content }}</p>
+<div class="comments-section">
+    <h2>Bình luận ({{ comments.length }})</h2> <!-- Hiển thị số lượng bình luận -->
+    <div class="comments-list">
+        <div *ngFor="let comment of comments" class="comment">
+            <div class="comment-header">
+                <img class="avatar" [src]="comment.avatarUrl" alt="{{ comment.author }}'s avatar" />
+                <div class="comment-info">
+                    <p class="comment-author">{{ comment.author }}</p>
+                    <p class="comment-date">{{ comment.date | date: 'dd-MM-yyyy' }}</p>
+                </div>
+            </div>
+            <p class="comment-content">{{ comment.content }}</p>
+            <div class="comment-footer">
+                <button class="like-button" (click)="likeComment(comment)">👍 Like</button>
+                <span class="like-count">{{ comment.likes }} Likes</span>
+                <span class="reply-count" (click)="toggleReplies(comment)">{{ comment.replies.length }} Phản hồi</span>
+            </div>
+
+            <!-- Phản hồi -->
+            <div *ngIf="comment.showReplies">
+                <div class="replies">
+                    <div *ngFor="let reply of comment.replies" class="reply">
+                        <img class="avatar" [src]="reply.avatarUrl" alt="{{ reply.author }}'s avatar" />
+                        <div class="reply-info">
+                            <p class="reply-author">{{ reply.author }}</p>
+                            <p class="reply-content">{{ reply.content }}</p>
+                            <p class="reply-date">{{ reply.date | date: 'dd-MM-yyyy' }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="reply-input">
+                    <input type="text" [(ngModel)]="newReply[comment.id]" placeholder="Nhập phản hồi..." />
+                    <button (click)="addReply(comment)">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ô nhập bình luận mới -->
+    <div class="new-comment-input">
+        <input type="text" [(ngModel)]="newComment" placeholder="Nhập bình luận mới..." />
+        <button (click)="addComment()">Gửi</button>
     </div>
 </div>

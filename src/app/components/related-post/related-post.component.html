@@ -1,5 +1,15 @@
-<ul class="related-posts-list">
-    <li *ngFor="let post of relatedPosts">
-      <a href="#" class="related-post-link">{{ post.title }}</a>
-    </li>
+<div class="related-posts">
+  <h2>Bài viết liên quan</h2>
+  <ul class="related-post-list">
+      <li *ngFor="let post of relatedPosts; let i = index" [class.hidden]="i >= limit" class="related-post-item">
+          <a [routerLink]="['/blog', post.slug]" class="related-post-link">
+              <img [src]="post.imageUrl" alt="{{ post.title }}" class="related-post-thumbnail">
+              <div class="related-post-info">
+                  <p class="related-post-title">{{ post.title }}</p>
+                  <p class="related-post-author">Tác giả: {{ post.author }}</p>
+              </div>
+          </a>
+      </li>
   </ul>
+  <button *ngIf="limit < relatedPosts.length" (click)="showMore()" class="show-more-btn">Xem thêm</button>
+</div>

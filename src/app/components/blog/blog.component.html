@@ -1,23 +1,48 @@
 <div class="container">
     <div class="layout">
+        <!-- Thẻ SEO -->
+        <!-- <title>{{blog.title}} - Blog</title>
+        <meta name="description" content="{{getMetaDescription(blog)}}">
+        <meta name="author" content="{{blog.author}}">
+        <meta property="og:title" content="{{blog.title}}" />
+        <meta property="og:description" content="{{getMetaDescription(blog)}}" />
+        <meta property="og:image" content="{{blog.imageUrl}}" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="{{getCanonicalUrl()}}" />
+        <meta property="og:author" content="{{blog.author}}" />
+        <meta property="og:published_time" content="{{blog.createdAt}}" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{blog.title}}" />
+        <meta name="twitter:description" content="{{getMetaDescription(blog)}}" />
+        <meta name="twitter:image" content="{{blog.imageUrl}}" />
+        <link rel="canonical" href="{{getCanonicalUrl()}}" /> -->
+
         <!-- Main content area (2/3 width) -->
         <div class="main-content">
             <!-- Blog post -->
             <article class="blog-post">
-                <h1>{{blog.title}}</h1>
-                <p class="author">Tác giả: {{ blog.author }}</p>
-                <p class="view-count">Lượt xem: {{ blog.viewCount }}</p>
-                <p class="post-date">Ngày đăng: {{blog.createdAt | date:'dd-MM-yyyy'}}</p>
+                <h1>{{ blog.title }}</h1>
+                <div class="post-header">
+                    <p class="author">Tác giả: {{ blog.author }}</p>
+                    <div class="post-info">
+                        <p class="post-date">Ngày đăng: {{ blog.createdAt | date: 'dd-MM-yyyy' }}</p>
+                        <p class="view-count">Lượt xem: {{ blog.viewCount }}</p>
+                    </div>
+                </div>
+
                 <app-table-of-contents [sections]="blog.sections"></app-table-of-contents>
+
                 <div class="post-content">
                     <section *ngFor="let section of blog.sections; let i = index" [id]="'section-' + i">
                         <h2>{{ section.title }}</h2>
                         <div [innerHTML]="section.content"></div>
+
                         <div *ngIf="section.videoUrl" class="video-container">
-                          <iframe [src]="getSafeUrl(section.videoUrl)" frameborder="0" allowfullscreen></iframe>
+                            <iframe [src]="getSafeUrl(section.videoUrl)" frameborder="0" allowfullscreen></iframe>
                         </div>
+
                         <div *ngIf="section.imageUrl" class="image-container">
-                          <img [src]="section.imageUrl" alt="Section image">
+                            <img [src]="section.imageUrl" alt="Section image" />
                         </div>
                     </section>
                 </div>
@@ -25,32 +50,33 @@
 
             <!-- Comments section -->
             <div class="comments-section">
-                <h2>Bình luận</h2>
                 <app-comment-blog></app-comment-blog>
             </div>
         </div>
 
         <!-- Sidebar (1/3 width) -->
         <div class="sidebar">
-            <!-- Facebook fanpage -->
-            <div class="fanpage">
-                <h2>Follow Facebook</h2>
-                <!-- <div class="fb-page" data-href="https://www.facebook.com/profile.php?id=61566602871136"
-                    data-tabs="timeline" data-width="" data-height="" data-small-header="false"
-                    data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
-                    <blockquote cite="https://www.facebook.com/profile.php?id=61566602871136"
-                        class="fb-xfbml-parse-ignore">
-                        <a href="https://www.facebook.com/profile.php?id=61566602871136">Phụ Kiện Giá Rẻ</a>
-                    </blockquote> -->
-                <div class="fb-page">
-                    <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61566602871136&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                </div>
+            <!-- Banner or Image -->
+            <div class="banner">
+                <h2>Quảng cáo</h2>
+                <img src="nintshop_img/logo.jpg" alt="Quảng cáo" class="banner-image" />
             </div>
 
             <!-- Related posts -->
             <div class="related-posts">
                 <h2>Bài viết liên quan</h2>
-                <app-related-post></app-related-post>
+                <ul class="related-post-list">
+                    <li *ngFor="let post of relatedPosts" class="related-post-item">
+                        <a [routerLink]="['/blog', post.slug]" class="related-post-link">
+                            <img [src]="post.imageUrl" alt="{{ post.title }}" class="related-post-thumbnail" />
+                            <div class="related-post-info">
+                                <p class="related-post-title">{{ post.title }}</p>
+                                <p class="related-post-author">Tác giả: {{ post.author }}</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <button (click)="showMore()" class="show-more-btn">Xem thêm</button>
             </div>
         </div>
     </div>

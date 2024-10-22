@@ -1,83 +1,82 @@
 <div class="blog-manager-container">
-    <h1 class="blog-manager-title">Quản lý Blog</h1>
-  
-    <div class="blog-list-container">
-      <h2>Danh sách Blog</h2>
-      <ul class="blog-list">
-        <li *ngFor="let blog of blogs" class="blog-item">
-          <span>{{ blog.title }}</span>
-          <div class="blog-actions">
-            <button (click)="editBlog(blog)" class="edit-button">Sửa</button>
-            <button *ngIf="blog._id" (click)="deleteBlog(blog._id!)" class="delete-button">Xóa</button>
+  <h1 class="blog-manager-title">Quản lý Blog</h1>
+
+  <div class="blog-list-container">
+    <h2>Danh sách Blog</h2>
+    <ul class="blog-list">
+      <li *ngFor="let blog of blogs" class="blog-item">
+        <span>{{ blog.title }}</span>
+        <div class="blog-actions">
+          <button (click)="editBlog(blog._id,blog)" class="edit-button">Sửa</button>
+          <button *ngIf="blog._id" (click)="deleteBlog(blog._id!)" class="delete-button">Xóa</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="blog-creator-container">
+    <h2 class="blog-creator-title">{{ isEditMode ? 'Sửa bài blog' : 'Tạo bài blog mới' }}</h2>
+    <form [formGroup]="blogForm" (ngSubmit)="onSubmit()" class="blog-form">
+      <div class="form-group">
+        <label for="title">Tiêu đề</label>
+        <input type="text" id="title" formControlName="title">
+        <div *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched" class="error-message">
+          Tiêu đề phải có ít nhất 3 ký tự.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="type">Phân loại Blog</label>
+        <input type="text" id="type" formControlName="type">
+        <div *ngIf="blogForm.get('type')?.invalid && blogForm.get('type')?.touched" class="error-message">
+          Vui lòng nhập phân loại Blog
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="author">Tác giả</label>
+        <input type="text" id="author" formControlName="author">
+        <div *ngIf="blogForm.get('author')?.invalid && blogForm.get('author')?.touched" class="error-message">
+          Vui lòng nhập tên tác giả.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="imageUrl">Ảnh đại diện bài viết</label>
+        <input type="text" id="imageUrl" formControlName="imageUrl">
+        <div *ngIf="blogForm.get('imageUrl')?.invalid && blogForm.get('imageUrl')?.touched" class="error-message">
+          Vui lòng link ảnh đại diện.
+        </div>
+      </div>
+      <div formArrayName="sections">
+        <h3>Các phần của bài viết</h3>
+        <button type="button" (click)="addSection()" class="add-section-button">Thêm phần mới</button>
+        <div *ngFor="let section of sections.controls; let i = index" [formGroupName]="i" class="section-form">
+          <h4>Phần {{ i + 1 }}</h4>
+          <div class="form-group">
+            <label [for]="'sectionTitle' + i">Tiêu đề phần</label>
+            <input type="text" [id]="'sectionTitle' + i" formControlName="title">
           </div>
-        </li>
-      </ul>
+          <div class="form-group">
+            <label [for]="'sectionContent' + i">Nội dung phần</label>
+            <editor [id]="'sectionContent' + i" formControlName="content"
+              apiKey="svjwnw0epdbm6nlw5r643hpcztdphaqa7hyed3k5u87wkj8l" [init]="{ plugins: ['anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount'],toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat', tinycomments_mode: 'embedded',
+              tinycomments_author: 'Author name',
+              mergetags_list: [
+              { value: 'First.Name', title: 'First Name' },
+              { value: 'Email', title: 'Email' },
+          ]}"></editor>
+          </div>
+          <button type="button" (click)="removeSection(i)" class="remove-section-button">Xóa phần này</button>
+        </div>
+      </div>
+      <button type="submit" [disabled]="blogForm.invalid" class="submit-button">
+        {{ isEditMode ? 'Cập nhật' : 'Đăng bài' }}
+      </button>
+      <button type="button" (click)="resetForm()" class="reset-button">Hủy</button>
+    </form>
+    <div *ngIf="successMessage" class="success-message" role="alert">
+      {{ successMessage }}
     </div>
-  
-    <div class="blog-creator-container">
-      <h2 class="blog-creator-title">{{ isEditMode ? 'Sửa bài blog' : 'Tạo bài blog mới' }}</h2>
-      <form [formGroup]="blogForm" (ngSubmit)="onSubmit()" class="blog-form">
-        <div class="form-group">
-          <label for="title">Tiêu đề</label>
-          <input type="text" id="title" formControlName="title">
-          <div *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched" class="error-message">
-            Tiêu đề phải có ít nhất 3 ký tự.
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="type">Phân loại Blog</label>
-          <input type="text" id="type" formControlName="type">
-          <div *ngIf="blogForm.get('type')?.invalid && blogForm.get('type')?.touched" class="error-message">
-            Vui lòng nhập phân loại Blog
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="author">Tác giả</label>
-          <input type="text" id="author" formControlName="author">
-          <div *ngIf="blogForm.get('author')?.invalid && blogForm.get('author')?.touched" class="error-message">
-            Vui lòng nhập tên tác giả.
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="imageUrl">Ảnh đại diện bài viết</label>
-          <input type="text" id="imageUrl">
-          <img *ngIf="imagePreviews['main']" [src]="imagePreviews['main']" alt="Ảnh đại diện bài viết" class="preview-image">
-        </div>
-        <div formArrayName="sections">
-          <h3>Các phần của bài viết</h3>
-          <button type="button" (click)="addSection()" class="add-section-button">Thêm phần mới</button>
-          <div *ngFor="let section of sections.controls; let i = index" [formGroupName]="i" class="section-form">
-            <h4>Phần {{ i + 1 }}</h4>
-            <div class="form-group">
-              <label [for]="'sectionTitle' + i">Tiêu đề phần</label>
-              <input type="text" [id]="'sectionTitle' + i" formControlName="title">
-            </div>
-            <div class="form-group">
-              <label [for]="'sectionContent' + i">Nội dung phần</label>
-              <textarea [id]="'sectionContent' + i" formControlName="content" rows="6"></textarea>
-            </div>
-            <div class="form-group">
-              <label [for]="'sectionVideoUrl' + i">URL Video (tùy chọn)</label>
-              <input type="text" [id]="'sectionVideoUrl' + i" formControlName="videoUrl">
-            </div>
-            <div class="form-group">
-              <label [for]="'sectionImages' + i">Hình ảnh phần (tùy chọn)</label>
-              <input type="text" [id]="'sectionImages' + i">
-              <img *ngIf="imagePreviews['section_' + i]" [src]="imagePreviews['section_' + i]" alt="Ảnh minh họa" class="preview-image">
-            </div>
-            <button type="button" (click)="removeSection(i)" class="remove-section-button">Xóa phần này</button>
-          </div>
-        </div>
-        <button type="submit" [disabled]="blogForm.invalid" class="submit-button">
-          {{ isEditMode ? 'Cập nhật' : 'Đăng bài' }}
-        </button>
-        <button type="button" (click)="resetForm()" class="reset-button">Hủy</button>
-      </form>
-      <div *ngIf="successMessage" class="success-message" role="alert">
-        {{ successMessage }}
-      </div>
-      <div *ngIf="errorMessage" class="error-message" role="alert">
-        {{ errorMessage }}
-      </div>
+    <div *ngIf="errorMessage" class="error-message" role="alert">
+      {{ errorMessage }}
     </div>
   </div>
+</div>

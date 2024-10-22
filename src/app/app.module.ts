@@ -13,6 +13,7 @@ import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxEchartsModule } from 'ngx-echarts'; // Import NgxEchartsModule
 import { HighchartsChartModule } from 'highcharts-angular';
+import { QuillModule } from 'ngx-quill';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzRateModule } from 'ng-zorro-antd/rate';
@@ -165,6 +166,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxEchartsModule.forRoot({ echarts: () => import('echarts') }),
     HighchartsChartModule,
     ReactiveFormsModule,
+    QuillModule.forRoot(),
     FormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right', // You can customize position here

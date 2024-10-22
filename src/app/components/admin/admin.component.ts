@@ -215,7 +215,7 @@ export class AdminComponent implements OnInit {
   }
 
   updateProduct(id: string, formData: FormData) {
-    this.http.put<{ message: string, product: Product }>(`http://localhost:3000/api/products/${id}`, formData).subscribe(
+    this.http.put<{ message: string, product: Product }>(`https://sale-nest-api.onrender.com/api/products/${id}`, formData).subscribe(
       response => {
         const index = this.products.findIndex(p => p._id === id);
         if (index !== -1) {

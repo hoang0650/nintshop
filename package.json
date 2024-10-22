@@ -25,6 +25,8 @@
     "highcharts-angular": "^4.0.1",
     "ng-zorro-antd": "^18.1.1",
     "ngx-echarts": "^18.0.0",
+    "ngx-quill": "^26.0.8",
+    "ngx-quill-upload": "^2.0.0",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.8.0",

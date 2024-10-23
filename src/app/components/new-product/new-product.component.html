@@ -1,4 +1,5 @@
-<div class="lightning-sale-container">
+<div class="lightning-sale-container" *ngFor="let campaign of campaigns">
+  <!-- Phần header của chiến dịch -->
   <div class="lightning-sale-header">
     <div class="lightning-icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -8,24 +9,28 @@
     <h2 class="lightning-title">Lightning Sale</h2>
     <div class="countdown-container ml-2">
       <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
-      <nz-countdown class="ml-2" [nzFormat]="'HH:mm:ss'" [nzValue]="deadline"></nz-countdown>
+      {{campaign.startDate | date:'short'}} - {{campaign.endDate | date:'short'}}
     </div>
   </div>
-  
+
+  <!-- Phần danh sách sản phẩm -->
   <div class="deals-container">
     <button class="scroll-button left" (click)="scrollLeft()" [class.hidden]="isMobile">
       <i nz-icon nzType="left" nzTheme="outline"></i>
     </button>
-    
+
     <div class="deals-list" #scrollContainer (scroll)="onScroll()">
-      <div class="deal-item" *ngFor="let product of products">
+      <!-- Lặp qua các sản phẩm trong chiến dịch -->
+      <div class="deal-item" *ngFor="let item of campaign?.products">
         <div class="product-card">
           <div class="product-image-container">
-            <img [src]="product.image[0]" [alt]="product.name" class="product-image" nz-tooltip [nzTooltipTitle]="product.name"/>
+            <img [src]="item.product.image[0]" [alt]="item.product.name" class="product-image" nz-tooltip [nzTooltipTitle]="item.product.name"/>
+            <!-- <div class="discount-badge">{{ item.discountPercentage }}% OFF</div> -->
           </div>
           <div class="product-details">
             <div class="product-pricing">
-              <div class="original-price">{{ product.price | currency: 'VND ':'symbol':'1.0-0' }}</div>
+              <!-- <div class="discounted-price">{{ item.product.price - item.product.price* item.discountPercentage | currency }}</div> -->
+              <div class="original-price">{{ item.product.price | currency: 'VND':'symbol':'1.0-0' }}</div>
             </div>
             <div class="sales-info">
               <div class="progress-container">
@@ -35,18 +40,19 @@
                     role="progressbar"
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    [style.width]="calculateSoldPercent(product) + '%'"
-                    [attr.aria-valuenow]="calculateSoldPercent(product)">
+                    [style.width]="calculateSoldPercent(item.product.sold, item.discountPrice) + '%'"
+                    [attr.aria-valuenow]="calculateSoldPercent(item.product.sold, item.discountPrice)">
                   </div>
                 </div>
               </div>
-              <div class="sold-quantity">{{ product.sold }} sold</div>
+              <div class="sold-quantity">{{ item.product.sold }} sold</div>
             </div>
+            <nz-countdown class="ml-2" [nzFormat]="'HH:mm:ss'" [nzValue]="campaign.endDate.getTime()"></nz-countdown>
           </div>
         </div>
       </div>
     </div>
-    
+
     <button class="scroll-button right" (click)="scrollRight()" [class.hidden]="isMobile">
       <i nz-icon nzType="right" nzTheme="outline"></i>
     </button>

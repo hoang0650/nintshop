@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs'; // Import Subscription
 interface Subcategory {
   id: number;
   name: string;
+  description: string;
 }
 interface Category {
   id: number;
@@ -91,19 +92,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
   categories: Category[] = [
     {
       id: 1,
-      name: 'keychain',
+      name: 'KEYCHAIN',
       subcategories: [
-        { id: 101, name: 'Mobile Phones' },
-        { id: 102, name: 'Laptops' },
-        { id: 103, name: 'Cameras' }
+        { id: 101, name: 'Móc khóa Pokemon', description: 'keychain' },
+        { id: 102, name: 'Móc Khóa Capibara',description: 'keychain'}
       ]
     },
     {
       id: 2,
-      name: 'sticker',
+      name: 'STICKER',
       subcategories: [
-        { id: 201, name: 'Men\'s Clothing' },
-        { id: 202, name: 'Women\'s Clothing' }
+        { id: 201, name: 'Hình dán Capybara', description :'sticker'},
+      ]
+    },
+    {
+      id: 3,
+      name: 'REAL_ESTATE',
+      subcategories: [
+        { id: 301, name: 'Căn hộ', description:'Bất Động Sản' },
+        { id: 302, name: 'Nhà phố', description:'Bất Động Sản' }
       ]
     },
   ];
@@ -132,14 +139,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     console.log('Selected subcategory:', subcategory);
     // Xử lý khi click vào subcategory
   }
-  // categories = [
-  //   { name: 'keychain', id: 1 },
-  //   { name: 'sticker', id: 2 },
-  // ];
 
   onCategorySelect(category: any) {
     // Chuyển hướng tới ShopComponent với type là category đã chọn
-    this.router.navigate(['/shop'], { queryParams: { type: category.name } });
+    this.router.navigate(['/shop'], { queryParams: { type: category.description } });
   }
 
   selectLanguage(language: string): void {

@@ -65,10 +65,27 @@
   align-items: center;
   margin-bottom: 10px;
 }
-.original-price {
-  font-size: 16px;
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
   font-weight: bold;
-  color: #f5222d;
+}
+.discounted-price {
+  color: #ff4d4f;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.original-price {
+  color: #999;
+  text-decoration: line-through;
+  margin-right: 10px;
 }
 .sales-info {
   display: flex;

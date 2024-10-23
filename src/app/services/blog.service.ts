@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Blog } from '../interfaces/blog';
+import { Comment, Reply } from '../interfaces/comment';
 @Injectable({
   providedIn: 'root'
 })
@@ -33,5 +34,20 @@ export class BlogService {
 
   deleteBlog(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // Phương thức lấy bình luận của một blog
+  getComments(id: string): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.apiUrl}/${id}/comments`);
+  }
+
+  // Phương thức thêm bình luận vào một blog
+  addComment(id: string, comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>(`${this.apiUrl}/${id}/comments`, comment);
+  }
+
+  // Phương thức thêm phản hồi vào bình luận
+  addReply(id: string, commentId: string, reply: Reply): Observable<Reply> {
+    return this.http.post<Reply>(`${this.apiUrl}/${id}/comments/${commentId}/replies`, reply);
   }
 }

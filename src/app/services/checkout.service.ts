@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CheckoutService {
-  private apiUrl = 'https://sale-nest-api.onrender.com/api/orders';
-  // private apiUrl = 'http://localhost:3000/api/orders'
+  // private apiUrl = 'https://sale-nest-api.onrender.com/api/orders';
+  private apiUrl = 'http://localhost:3000/api/orders'
 
   constructor(private http: HttpClient) {}
 

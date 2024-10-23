@@ -91,7 +91,7 @@
                 <div class="navbar-nav w-100 overflow-auto" style="height: 410px;">
                     <a class="nav-item nav-link category-link" *ngFor="let category of categories"
                         (click)="onCategoryClick(category)">
-                        {{ category.name }}
+                        {{ category.name  | translate}}
                     </a>
                 </div>
 

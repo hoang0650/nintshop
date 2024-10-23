@@ -14,9 +14,8 @@
 .main-content {
   flex: 2;
   min-width: 300px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border-radius: 8px;
-  padding: 20px;
 }
 
 /* Bố cục sidebar */

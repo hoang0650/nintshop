@@ -1,133 +1,200 @@
+.comments-section {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.comments-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
 .comments-list {
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .comment {
     display: flex;
-    flex-direction: column;
-    padding: 15px;
-    border-bottom: 1px solid #eaeaea;
-}
-
-.comment-header {
-    display: flex;
-    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
 .avatar {
-    width: 40px; /* Kích thước avatar */
-    height: 40px;
-    border-radius: 50%; /* Để avatar tròn */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     margin-right: 10px;
 }
 
-.comment-info {
-    flex-grow: 1; /* Để tên người dùng và ngày được căn lề cho đẹp */
+.comment-details {
+    flex: 1;
 }
 
-.comment-author {
-    font-weight: bold;
-    margin: 0;
-}
-
-.comment-date {
-    color: #888; /* Màu sắc cho ngày đăng */
-    font-size: 12px;
-}
-
-.comment-content {
-    margin: 10px 0; /* Khoảng cách giữa nội dung và footer */
-}
-
-.comment-footer {
+.comment-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.like-button {
-    background-color: transparent;
-    border: none;
-    color: #007bff; /* Màu sắc cho nút Like */
-    cursor: pointer;
-    font-size: 14px;
+.comment-author {
+    font-weight: bold;
+    color: #007bff;
 }
 
-.like-count {
-    font-size: 14px;
-    color: #666; /* Màu sắc cho số lượt Like */
+.date {
+    font-size: 0.9rem;
+    color: #999;
+}
+
+.content {
+    margin: 5px 0;
+    color: #555;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.reply-button,
+.send-button,
+.send-comment-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.reply-button:hover,
+.send-button:hover,
+.send-comment-button:hover {
+    background-color: #0056b3;
+}
+
+.like-button {
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.reply-count {
+    margin-left: 15px;
+    color: #555;
 }
 
 .replies {
-    margin-left: 50px; /* Khoảng cách cho các phản hồi */
+    margin-left: 60px;
+    margin-top: 10px;
 }
 
 .reply {
     display: flex;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
+    margin-top: 5px;
 }
 
-.reply-info {
-    margin-left: 10px;
+.reply-content {
+    flex: 1;
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .reply-author {
     font-weight: bold;
-    margin: 0;
-}
-
-.reply-content {
-    margin: 5px 0;
+    color: #007bff;
 }
 
 .reply-date {
-    color: #888;
-    font-size: 12px;
+    font-size: 0.9rem;
+    color: #999;
+}
+
+.reply-text {
+    margin: 5px 0;
+    color: #555;
 }
 
 .reply-input {
-    display: flex;
+    display: flex; /* Sử dụng flexbox để hiển thị theo hàng ngang */
+    align-items: center; /* Căn giữa các thành phần */
     margin-top: 10px;
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
 }
 
-.reply-input input {
-    flex-grow: 1;
-    padding: 8px;
+.reply-textarea {
+    flex: 1; /* Để textarea chiếm không gian còn lại */
+    padding: 10px; /* Tăng padding để dễ gõ hơn */
     border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
+    border-radius: 5px;
+    margin-right: 10px; /* Khoảng cách giữa textarea và nút gửi */
+    resize: none; /* Ngăn người dùng thay đổi kích thước */
 }
 
-.reply-input button {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.send-button {
+    padding: 10px 15px; /* Tăng padding cho nút */
+    border-radius: 5px;
+    background-color: #007bff; /* Màu nền cho nút */
+    color: #fff; /* Màu chữ cho nút */
+    border: none; /* Không có đường viền */
+    cursor: pointer; /* Con trỏ chuột thay đổi khi di chuột qua nút */
 }
 
-.new-comment-input {
-    margin-top: 20px; /* Khoảng cách trên */
-    display: flex;     /* Hiển thị dưới dạng flex */
+.send-button:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
 }
 
-.new-comment-input input {
-    flex-grow: 1; /* Để ô nhập chiếm hết không gian */
-    padding: 8px;
+.new-comment {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.author-input,
+.comment-input {
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    resize: vertical;
 }
 
-.new-comment-input button {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+@media (max-width: 768px) { /* Chỉ áp dụng cho màn hình nhỏ hơn 768px */
+    .reply-input {
+        flex-direction: column; /* Đặt theo chiều dọc cho di động */
+    }
+
+    .reply-textarea {
+        margin-right: 0; /* Bỏ khoảng cách giữa textarea và nút gửi trên di động */
+        margin-bottom: 10px; /* Thêm khoảng cách dưới cho textarea */
+    }
+
+    .send-button {
+        width: 100%; /* Chiếm toàn bộ chiều rộng trên di động */
+    }
 }
+
+@media (min-width: 457px) { /* Chỉ áp dụng cho màn hình lớn hơn 768px */
+    .reply-input {
+        flex-direction: row; /* Đặt theo chiều ngang cho các thiết bị lớn hơn */
+    }
+
+    .send-button {
+        flex-direction: row; /* Nút có kích thước tự động */
+        width: auto;
+    }
+}
+
+
 

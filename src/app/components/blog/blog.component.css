@@ -207,3 +207,8 @@ h2 {
       flex: 1 1 100%;
   }
 }
+figcaption {
+  text-align: center;
+  color: darkgray;
+  font-size: 13px;
+}

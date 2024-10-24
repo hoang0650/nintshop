@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
 import { Subscription } from 'rxjs';
 import { Blog } from '../../interfaces/blog';
+import { SeoService } from '../../services/seo.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-blog',
@@ -16,6 +17,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   constructor(
     private blogService: BlogService,
     private route: ActivatedRoute,
+    private seoService: SeoService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -25,6 +27,11 @@ export class BlogComponent implements OnInit, OnDestroy {
       const detailSub = this.blogService.getBlogById(id).subscribe(
         (data: Blog) => {
           this.blog = data;
+          this.seoService.updateTitle(this.blog.title);
+          this.seoService.updateMetaTags([
+            { name: 'description', content: 'Tin tức 24h về bóng đá, thể thao, giải trí. Tin tức online 24 giờ, tình hình Việt Nam(VN), thế giới. Đọc truyện, tin tức và xem video bóng đá tổng hợp 24h tại Nintshop.' },
+            { name: 'keywords', content: 'tin tức 24h, tin tuc 24h, nintshop, nintshop.com, tin tuc trong ngay, dang tin bat dong san, dang tin bds, đọc truyện, bóng đá, thời trang, cười, tin tức trong ngày, đăng tin bất động sản, đăng tin bđs, tintuc, doc truyen, 24h, tin nhanh , the thao, tin nhanh, thoi trang, thời sự, bong da, bao cong an, bao an ninh, thoi su, giai tri, giải trí, bao' }
+          ]);
         },
         error => {
           console.error('Error fetching product details:', error);
@@ -42,34 +49,21 @@ export class BlogComponent implements OnInit, OnDestroy {
         }
       );
     }
+    
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe(); // Hủy tất cả các subscription
   }
 
-  getMetaDescription(blog: Blog): string {
-    // Tạo meta description dựa trên nội dung của các section hoặc tiêu đề
-    if (!blog || !blog.sections || blog.sections.length === 0) return '';
-    const firstSection = blog.sections[0].content;
-    const plainText = firstSection.replace(/<[^>]+>/g, ''); // Loại bỏ các thẻ HTML
-    return plainText.length > 150 ? plainText.substring(0, 150) + '...' : plainText;
-  }
-
-  getSafeUrl(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
-  getCanonicalUrl(): string {
-    return window.location.href;
-  }
-
- 
-
   limit = 5; // Số bài viết hiển thị ban đầu
 
   showMore() {
     this.limit += 5; // Hiển thị thêm 5 bài viết nữa mỗi lần nhấn "Xem thêm"
+  }
+
+  getSafeUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
 }

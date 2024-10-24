@@ -6,6 +6,7 @@ import { UserService } from '../../services/user.service';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs'; // Import Subscription
+
 interface Subcategory {
   id: number;
   name: string;
@@ -166,13 +167,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onCategory(){
 
   }
-  
 
   logOut() {
     localStorage.removeItem('access_token')
+    window.location.href = '/login';
     this.userService.logout()
     this.isLoggedIn = false
-
   }
 
   userInfor() {

@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
       this.messageService.addMessage('success', 'This is an success message!');
       localStorage.setItem('access_token',response.token);
       this.userService.loggedIn.next(true)
-      this.router.navigate(['home'])
+      window.location.href = '/home';
 
     },error=>{
       this.messageService.addMessage('danger', 'Invalid username or password!');

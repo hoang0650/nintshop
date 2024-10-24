@@ -123,7 +123,7 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-pane-1">
                     <h4 class="mb-3">Product Description</h4>
-                    <div [innerHTML] class="product-description">{{product?.description}}</div>
+                    <div [innerHTML]="product?.description" class="product-description"></div>
                 </div>
                 <div class="tab-pane fade" id="tab-pane-3">
                     <app-review [productId]="product?._id"></app-review>

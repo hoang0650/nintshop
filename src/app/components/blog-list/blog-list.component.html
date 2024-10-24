@@ -1,42 +1,61 @@
 <div class="blog-list-container">
-    <h1 class="blog-list-title">Bài viết mới nhất</h1>
-    <div class="container mt-4 mb-4">
-        <div class="row justify-content-center">
-          <div class="col-10">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Blog Categories</h5>
-                <div class="category-container">
-                  <button *ngFor="let category of uniqueCategories" 
-                          class="btn btn-outline-primary mr-2 mb-2">
-                    {{ category }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-    </div>
+  <h1 class="blog-list-title">Bài viết mới nhất</h1>
 
-    <div class="blog-grid">
-        <article *ngFor="let post of blogs" class="blog-card">
-            <img [src]="post?.imageUrl" [alt]="post?.title" class="blog-card-image">
-            <div class="blog-card-content">
-                <h2 class="blog-card-title overflow-hidden">{{ post.title }}</h2>
-                <p class="blog-card-excerpt">Lượt xem: {{ post.viewCount }}</p>
-                <div class="blog-card-meta">
-                    <span class="blog-card-author">{{ post.author }}</span>
-                    <span class="blog-card-date">{{ post.createdAt | date: 'dd/MM/yyyy' }}</span>
-                </div>
-                <a [routerLink]="['/blog', post._id]" class="blog-card-link">Đọc tiếp</a>
-            </div>
-        </article>
+  <!-- Thanh tìm kiếm -->
+  <div class="search-bar mb-4">
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        class="form-control"
+        placeholder="Tìm kiếm theo tiêu đề, tác giả hoặc danh mục..."
+      />
+      <div class="input-group-append">
+        <button class="btn btn-primary" (click)="onSearch()">Tìm kiếm</button>
+      </div>
     </div>
-    <div class="pagination">
-        <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Trang trước</button>
-        <span class="pagination-info">Trang {{ currentPage }} / {{ totalPages }}</span>
-        <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Trang
-            sau</button>
+  </div>
+
+  <!-- Danh mục -->
+  <div class="category-container mb-4">
+    <h5 class="text-center">Danh mục</h5>
+    <div class="d-flex flex-wrap justify-content-center">
+      <button
+        *ngFor="let category of uniqueCategories"
+        class="btn btn-outline-primary mr-2 mb-2"
+        (click)="filterByCategory(category)"
+      >
+        {{ category }}
+      </button>
     </div>
+  </div>
+
+  <!-- Grid bài viết -->
+  <div class="blog-grid">
+    <article *ngFor="let post of filteredBlogs" class="blog-card">
+      <img
+        [src]="post?.imageUrl"
+        [alt]="post?.title"
+        class="blog-card-image"
+      />
+      <div class="blog-card-content">
+        <h2 class="blog-card-title">{{ post.title }}</h2>
+        <p class="blog-card-excerpt">Lượt xem: {{ post.viewCount }}</p>
+        <div class="blog-card-meta">
+          <span class="blog-card-author">{{ post.author }}</span>
+          <span class="blog-card-date">{{ post.createdAt | date: 'dd/MM/yyyy' }}</span>
+        </div>
+        <a [routerLink]="['/blog', post._id]" class="blog-card-link">Đọc tiếp</a>
+      </div>
+    </article>
+  </div>
+
+  <!-- Phân trang -->
+  <nz-pagination
+    [(nzPageIndex)]="currentPage"
+    [nzTotal]="totalBlogs"
+    [nzPageSize]="pageSize"
+    (nzPageIndexChange)="onPageChange($event)"
+    class="pagination"
+  ></nz-pagination>
 </div>

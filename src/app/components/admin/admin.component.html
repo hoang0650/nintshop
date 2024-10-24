@@ -40,12 +40,23 @@
                                     <td>{{ product.price }}</td>
                                     <td>{{ product.quantity }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-info" (click)="startEdit(product._id)" *ngIf="editingProductId !== product._id">
+                                        <!-- <button class="btn btn-sm btn-info" (click)="startEdit(product._id)" *ngIf="editingProductId !== product._id">
                                             <i class="fas fa-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-sm btn-danger ml-2" (click)="deleteProduct(product._id)" *ngIf="editingProductId !== product._id">
+                                        </button> -->
+                                        <!-- <button *appHasRole="'ADMIN'" class="btn btn-sm btn-danger ml-2" (click)="deleteProduct(product._id)" *ngIf="editingProductId !== product._id">
                                             <i class="fas fa-trash"></i> Delete
-                                        </button>
+                                        </button> -->
+                                        <ng-container *appHasRole="'WRITE'">
+                                            <button class="btn btn-sm btn-info" (click)="startEdit(product._id)" *ngIf="editingProductId !== product._id">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        </ng-container>
+                                        <ng-container *appHasRole="'ADMIN'">
+                                            <button class="btn btn-sm btn-danger ml-2" (click)="deleteProduct(product._id)" *ngIf="editingProductId !== product._id">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </ng-container>
+                                          
                                     </td>
                                 </tr>
                                 <tr *ngIf="expandedProductId === product._id">
@@ -181,8 +192,11 @@
                             <button type="button" class="btn btn-secondary mt-2" (click)="addVariant()">Add Variant</button>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">{{isEditing ? 'Update Product' : 'Create Product'}}</button>
-                    <button *ngIf="isEditing" type="button" class="btn btn-secondary ml-2" (click)="stopEdit()">Cancel</button>
+                    <ng-container *appHasRole="'WRITE'">
+                        <button type="submit" class="btn btn-primary">{{isEditing ? 'Update Product' : 'Create Product'}}</button>
+                        <button *ngIf="isEditing" type="button" class="btn btn-secondary ml-2" (click)="stopEdit()">Cancel</button>
+                    </ng-container>
+
                 </form>
             </div>
 
@@ -209,11 +223,13 @@
                                         <td>{{ order._id }}</td>
                                         <td>{{ order.orderId }}</td>
                                         <td>{{ order.status }}</td>
-                                        <td>{{ order.totalPrice | currency }}</td>
+                                        <td>{{ order.totalPrice | number: '1.0-0' }} vnđ</td>
                                         <td>
-                                            <button class="btn btn-sm btn-info" (click)="editOrder(order)">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </button>
+                                            <ng-container *appHasRole="'WRITE'">
+                                                <button class="btn btn-sm btn-info" (click)="editOrder(order)">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                            </ng-container>
                                             <!-- <button class="btn btn-sm btn-danger ml-2" (click)="deleteOrder(order._id)">
                                                 <i class="fas fa-trash"></i> Delete
                                             </button> -->
@@ -241,7 +257,9 @@
                             </select>
                         </div>
                     
-                        <button type="submit" class="btn btn-primary" [disabled]="!orderForm.valid">Update Status</button>
+                        <ng-container *appHasRole="'WRITE'">
+                            <button type="submit" class="btn btn-primary" [disabled]="!orderForm.valid">Update Status</button>
+                        </ng-container>
                     </form>
                 </div>
             </div>

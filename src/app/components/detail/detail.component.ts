@@ -33,11 +33,12 @@ export class DetailComponent implements OnInit, OnDestroy {
       const detailSub = this.productService.getProductById(id).subscribe(
         (data: Product) => {
           this.product = data;
-          this.seoService.updateTitle(this.product.name);
-          this.seoService.updateMetaTags([
-            { name: 'description', content: 'Trang đăng tin bất động sản, mua sắm, thương mại hàng đầu tại nintshop.com.' },
-            { name: 'keywords', content: 'đăng tin bất động sản, đăng tin bđs, mua sắm, thương mại hàng đầu, tin tức 24h, tin tuc 24h, nintshop, nintshop.com, tin tuc trong ngay, dang tin bat dong san, dang tin bds, mua sam, thuong mai hang dau, đọc truyện, bóng đá, thời trang, cười, tin tức trong ngày,  tintuc, doc truyen, 24h, tin nhanh , the thao, tin nhanh, thoi trang, thời sự, bong da, bao cong an, bao an ninh, thoi su, giai tri, giải trí, bao' }
-          ]);
+          this.seoService.setSocialShareTags({
+            title: data.name,
+            description: 'Trang đăng tin bất động sản, mua sắm, thương mại hàng đầu tại nintshop.com.',
+            image: '',
+            url: 'www.nintshop.com',
+          });
           this.selectedImage = this.product.image[0];
           this.selectedColor = this.product.colors[0];
         },

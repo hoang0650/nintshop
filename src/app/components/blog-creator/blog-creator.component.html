@@ -7,8 +7,12 @@
       <li *ngFor="let blog of blogs" class="blog-item">
         <span>{{ blog.title }}</span>
         <div class="blog-actions">
-          <button (click)="editBlog(blog._id,blog)" class="edit-button">Sửa</button>
-          <button *ngIf="blog._id" (click)="deleteBlog(blog._id!)" class="delete-button">Xóa</button>
+          <ng-container *appHasRole="'WRITE'">
+            <button (click)="editBlog(blog._id,blog)" class="edit-button">Sửa</button>
+          </ng-container>
+          <ng-container *appHasRole="'ADMIN'">
+            <button *ngIf="blog._id" (click)="deleteBlog(blog._id!)" class="delete-button">Xóa</button>
+          </ng-container>
         </div>
       </li>
     </ul>
@@ -67,9 +71,11 @@
           <button type="button" (click)="removeSection(i)" class="remove-section-button">Xóa phần này</button>
         </div>
       </div>
-      <button type="submit" [disabled]="blogForm.invalid" class="submit-button">
-        {{ isEditMode ? 'Cập nhật' : 'Đăng bài' }}
-      </button>
+      <ng-container *appHasRole="'WRITE'">
+        <button type="submit" [disabled]="blogForm.invalid" class="submit-button">
+          {{ isEditMode ? 'Cập nhật' : 'Đăng bài' }}
+        </button>
+      </ng-container>
       <button type="button" (click)="resetForm()" class="reset-button">Hủy</button>
     </form>
     <div *ngIf="successMessage" class="success-message" role="alert">

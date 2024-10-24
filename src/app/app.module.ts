@@ -37,6 +37,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -90,6 +91,7 @@ import { BlogListComponent } from './components/blog-list/blog-list.component';
 import { BlogCreatorComponent } from './components/blog-creator/blog-creator.component';
 import { LightningSaleComponent } from './components/lightning-sale/lightning-sale.component';
 import { TableOfContentsComponent } from './components/table-of-contents/table-of-contents.component';
+import { HasRoleDirective } from './directives/has-role.directive';
 
 
 registerLocaleData(en);
@@ -151,6 +153,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BlogCreatorComponent,
     LightningSaleComponent,
     TableOfContentsComponent,
+    HasRoleDirective,
   ],
   imports: [
     BrowserModule,
@@ -194,7 +197,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzProgressModule,
     NzStatisticModule,
     NzToolTipModule,
-    NzCarouselModule
+    NzCarouselModule,
+    NzPaginationModule
   ],
   providers: [
     provideClientHydration(),

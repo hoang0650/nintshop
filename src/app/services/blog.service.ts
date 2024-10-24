@@ -15,6 +15,12 @@ export class BlogService {
     return this.http.get<Blog[]>(this.apiUrl);
   }
 
+  // Phương thức lấy blog có hỗ trợ phân trang và tìm kiếm
+  getBlogsWithPagination(page: number, limit: number, searchTerm: string = ''): Observable<any> {
+    const url = `${this.apiUrl}?page=${page}&limit=${limit}&search=${searchTerm}`;
+    return this.http.get<any>(url);
+  }
+
   getBlogById(id: string): Observable<Blog> {
     return this.http.get<Blog>(`${this.apiUrl}/${id}`);
   }

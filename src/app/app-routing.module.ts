@@ -14,7 +14,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { OrderComponent } from './components/order/order.component';
-import { adminGuard } from './guard/admin.guard';
+import { adminGuard,Permission  } from './guard/admin.guard';
 import { PostFeedComponent } from './components/post-feed/post-feed.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
@@ -34,33 +34,34 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'shop', component: ShopComponent },
-  { path: 'shop-page', canActivate: [adminGuard], component: PostFeedComponent },
+  { path: 'shop-page', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: PostFeedComponent },
   { path: 'detail/:id', component: DetailComponent },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
-  { path: 'blog-creator', canActivate: [adminGuard], component: BlogCreatorComponent },
+  { path: 'blog-creator', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: BlogCreatorComponent },
   { path: 'blog/:id', component: BlogComponent },
   { path: 'blog', component: BlogListComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: SignupComponent },
-  { path: 'balance', canActivate: [adminGuard], component: BalanceComponent },
+  { path: 'balance', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: BalanceComponent },
   { path: 'forgot-password', component: ForgotComponent },
   { path: 'reset-password', component: OtpComponent },
   { path: 'user-info', component: UserInfoComponent },
-  { path: 'livestream', canActivate: [adminGuard],  component: LivestreamComponent },
-  { path: 'livestream-homepage', canActivate: [adminGuard], component: LivestreamHomepageComponent },
+  { path: 'livestream', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE },  component: LivestreamComponent },
+  { path: 'livestream-homepage', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: LivestreamHomepageComponent },
   { path: 'qr-payment', component: QrCodeComponent },
   { path: 'order-tracking', component: OrderTrackingComponent },
   { path: 'order', component: OrderComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
-  { path: 'notfound', component: NotfoundComponent },
   { path: 'support-chat', component: SupportChatComponent },
-  { path: 'ai-chat', canActivate: [adminGuard], component: AiChatComponent },
-  { path: 'user-management',canActivate: [adminGuard], component: UserManagementComponent },
-  { path: 'chart', canActivate: [adminGuard], component: RevenueChartComponent },
-  { path: 'admin',canActivate: [adminGuard], component: AdminComponent },
-  { path: 'campain', canActivate: [adminGuard], component: LightningSaleComponent },
+  { path: 'ai-chat', canActivate: [adminGuard], data: { requiredPermission: Permission.ADMIN }, component: AiChatComponent },
+  { path: 'user-management',canActivate: [adminGuard], data: { requiredPermission: Permission.ADMIN }, component: UserManagementComponent },
+  { path: 'chart', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: RevenueChartComponent },
+  { path: 'admin',canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: AdminComponent },
+  { path: 'campain', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: LightningSaleComponent },
+  { path: 'notfound', component: NotfoundComponent },
+  { path: '**', redirectTo: 'notfound'}
 ];
 
 @NgModule({

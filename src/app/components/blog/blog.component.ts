@@ -27,11 +27,12 @@ export class BlogComponent implements OnInit, OnDestroy {
       const detailSub = this.blogService.getBlogById(id).subscribe(
         (data: Blog) => {
           this.blog = data;
-          this.seoService.updateTitle(this.blog.title);
-          this.seoService.updateMetaTags([
-            { name: 'description', content: 'Tin tức 24h về bóng đá, thể thao, giải trí. Tin tức online 24 giờ, tình hình Việt Nam(VN), thế giới. Đọc truyện, tin tức và xem video bóng đá tổng hợp 24h tại Nintshop.' },
-            { name: 'keywords', content: 'tin tức 24h, tin tuc 24h, nintshop, nintshop.com, tin tuc trong ngay, dang tin bat dong san, dang tin bds, đọc truyện, bóng đá, thời trang, cười, tin tức trong ngày, đăng tin bất động sản, đăng tin bđs, tintuc, doc truyen, 24h, tin nhanh , the thao, tin nhanh, thoi trang, thời sự, bong da, bao cong an, bao an ninh, thoi su, giai tri, giải trí, bao' }
-          ]);
+          this.seoService.setSocialShareTags({
+            title: this.blog.title,
+            description: this.blog.sections.map((item:any)=>item.content),
+            image: '',
+            url: 'www.nintshop.com',
+          });
         },
         error => {
           console.error('Error fetching product details:', error);

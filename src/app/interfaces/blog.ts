@@ -4,5 +4,7 @@ export interface Blog {
   type: string;
   author: string;
   imageUrl: string;
+  viewCount: number;
+  createdAt: Date;
   sections: { title: string; content: string }[];
 }

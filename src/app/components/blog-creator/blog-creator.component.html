@@ -19,28 +19,28 @@
     <form [formGroup]="blogForm" (ngSubmit)="onSubmit()" class="blog-form">
       <div class="form-group">
         <label for="title">Tiêu đề</label>
-        <input type="text" id="title" formControlName="title">
+        <input placeholder="Nhập tiêu đề bài viết" type="text" id="title" formControlName="title">
         <div *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched" class="error-message">
           Tiêu đề phải có ít nhất 3 ký tự.
         </div>
       </div>
       <div class="form-group">
         <label for="type">Phân loại Blog</label>
-        <input type="text" id="type" formControlName="type">
+        <input placeholder="Nhập phân loại blog" type="text" id="type" formControlName="type">
         <div *ngIf="blogForm.get('type')?.invalid && blogForm.get('type')?.touched" class="error-message">
           Vui lòng nhập phân loại Blog
         </div>
       </div>
       <div class="form-group">
         <label for="author">Tác giả</label>
-        <input type="text" id="author" formControlName="author">
+        <input placeholder="Nhập tên tác giả bài viết" type="text" id="author" formControlName="author">
         <div *ngIf="blogForm.get('author')?.invalid && blogForm.get('author')?.touched" class="error-message">
           Vui lòng nhập tên tác giả.
         </div>
       </div>
       <div class="form-group">
         <label for="imageUrl">Ảnh đại diện bài viết</label>
-        <input type="text" id="imageUrl" formControlName="imageUrl">
+        <input placeholder="Nhập link ảnh bài viết" type="text" id="imageUrl" formControlName="imageUrl">
         <div *ngIf="blogForm.get('imageUrl')?.invalid && blogForm.get('imageUrl')?.touched" class="error-message">
           Vui lòng link ảnh đại diện.
         </div>

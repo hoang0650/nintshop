@@ -113,19 +113,19 @@
                 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
                     <div class="mb-3">
                         <label class="form-label" for="name">Name</label>
-                        <input class="form-control" id="name" formControlName="name" type="text" />
+                        <input placeholder="Nhập vào tên sản phẩm" class="form-control" id="name" formControlName="name" type="text" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="type">Type</label>
-                        <input class="form-control" id="type" formControlName="type" type="text" />
+                        <input placeholder="Nhập vào phân loại sản phẩm" class="form-control" id="type" formControlName="type" type="text" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="price">Price</label>
-                        <input class="form-control" id="price" formControlName="price" type="number" />
+                        <input placeholder="Nhập vào giá sản phẩm" class="form-control" id="price" formControlName="price" type="number" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="quantity">Quantity</label>
-                        <input class="form-control" id="quantity" formControlName="quantity" type="number" />
+                        <input placeholder="Nhập vào số lượng" class="form-control" id="quantity" formControlName="quantity" type="number" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="description">Description</label>
@@ -139,8 +139,8 @@
           ]}"></editor>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="tiktokAffiliateLink">Tiktok Affiliate Link</label>
-                        <input class="form-control" id="tiktokAffiliateLink" formControlName="tiktokAffiliateLink" type="text"/>
+                        <label class="form-label" for="tiktokAffiliateLink">Link Social</label>
+                        <input placeholder="Nhập vào link tiktok/youtube/facebook" class="form-control" id="tiktokAffiliateLink" formControlName="tiktokAffiliateLink" type="text"/>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="image">Images</label>
@@ -167,15 +167,15 @@
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label" for="size">Size</label>
-                                    <input class="form-control" id="size" formControlName="size" type="text" />
+                                    <input placeholder="Nhập vào kích thước(Nếu có)" class="form-control" id="size" formControlName="size" type="text" />
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label" for="color">Color</label>
-                                    <input class="form-control" id="color" formControlName="color" type="text" />
+                                    <input placeholder="Nhập vào màu sắc(Nếu có)" class="form-control" id="color" formControlName="color" type="text" />
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label" for="stock">Stock</label>
-                                    <input class="form-control" id="stock" formControlName="stock" type="number" />
+                                    <input placeholder="Nhập vào số lượng(Nếu có)" class="form-control" id="stock" formControlName="stock" type="number" />
                                 </div>
                             </div>
                             <button type="button" class="btn btn-secondary mt-2" (click)="addVariant()">Add Variant</button>

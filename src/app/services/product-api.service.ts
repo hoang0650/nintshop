@@ -21,7 +21,13 @@ export class ProductApiService {
 
   // Lấy danh sách sản phẩm theo query tìm kiếm
   getProductsSearch(query: string): Observable<any[]> {
-    return this.http.get<any[]>(`https://sale-nest-api.onrender.com/api/products?search=${query}`);
+    return this.http.get<any[]>(`${this.apiUrl}?search=${query}`);
+  }
+
+  // Phương thức lấy blog có hỗ trợ phân trang và tìm kiếm
+  getProductsWithPagination(page: number, limit: number, searchTerm: string = ''): Observable<any> {
+    const url = `${this.apiUrl}/query?page=${page}&limit=${limit}&search=${searchTerm}`;
+    return this.http.get<any>(url);
   }
 
   getProductById(id: string): Observable<Product> {

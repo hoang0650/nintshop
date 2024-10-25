@@ -71,11 +71,9 @@
           <button type="button" (click)="removeSection(i)" class="remove-section-button">Xóa phần này</button>
         </div>
       </div>
-      <ng-container *appHasRole="'WRITE'">
         <button type="submit" [disabled]="blogForm.invalid" class="submit-button">
           {{ isEditMode ? 'Cập nhật' : 'Đăng bài' }}
         </button>
-      </ng-container>
       <button type="button" (click)="resetForm()" class="reset-button">Hủy</button>
     </form>
     <div *ngIf="successMessage" class="success-message" role="alert">

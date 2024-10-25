@@ -61,6 +61,7 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   showMore() {
     this.limit += 5; // Hiển thị thêm 5 bài viết nữa mỗi lần nhấn "Xem thêm"
+    window.location.href = '/blog';
   }
 
   getSafeUrl(url: string): SafeResourceUrl {

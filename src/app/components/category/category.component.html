@@ -21,7 +21,7 @@
   <div class="categories-grid">
     <div class="category-card" *ngFor="let category of categories" (click)="onCategorySelect(category)">
       <div class="card-content">
-        <img [src]="category.img[0]" [alt]="category.name" class="category-image" />
+        <img [src]="category.img[2]" [alt]="category.name" class="category-image" />
         <div class="category-info">
           <h3 class="category-name">{{ category.name }}</h3>
           <p class="item-count">{{ category.length }} items</p>

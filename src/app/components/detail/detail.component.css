@@ -1,5 +1,5 @@
 .product-description {
-    white-space: pre-line;
+    /* white-space: pre-line; */
     /* Giữ lại các ký tự ngắt dòng '\n' */
 }
 

@@ -70,10 +70,16 @@
             <li *ngFor="let item of cartItems" class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
                 <h6 class="my-0">{{ item.name }}</h6>
-                <small class="text-muted">Số lượng: {{ item.quantity }}</small>
+                <small class="text-muted">Số lượng: {{ item.quantity }}</small><br>
+                <small class="text-muted">Kích thước: {{ item.variants.size }}</small><br>
+                <small class="text-muted">Màu sắc/Loại: {{ item.variants.color }}</small>
               </div>
               <span class="text-muted">{{ item.price | number: '1.0-0' }}</span>
             </li>
+            <!-- <div>
+              <h6 class="my-0"> Kích thước:{{ item.variants.size }}</h6><br>
+              <h6 class="my-0">Màu sắc: {{ item.variants.color }}</h6>
+            </div> -->
           </ul>
           <hr class="mt-0">
           <div class="d-flex justify-content-between mb-3 pt-1">

@@ -1,11 +1,11 @@
 <!-- Products Start -->
+<app-message></app-message>
 <div class="container-fluid py-5">
   <div class="text-center mb-4">
     <h2 class="section-title px-5"><span class="px-2">Related Product</span></h2>
   </div>
   <div class="row px-xl-5">
     <div class="col">
-      <!-- Sử dụng nz-carousel cho các slide sản phẩm -->
       <nz-carousel [nzDots]="false" nzAutoplay nzEffect="scrollx">
         <div nz-carousel-content *ngFor="let slide of getSlides()">
           <div class="d-flex justify-content-around">
@@ -17,16 +17,14 @@
               <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                 <h6 class="text-truncate mb-3">{{ product.name }}</h6>
                 <div class="d-flex justify-content-center">
-                  <h6>{{ product.price | currency }}</h6>
-                  <!-- Nếu có giá cũ, bạn có thể mở comment dòng dưới -->
-                  <!-- <h6 class="text-muted ml-2"><del>{{ product.oldPrice | currency }}</del></h6> -->
+                  <h6>{{ product.price | number: '1.0-0' }} VNĐ</h6>
                 </div>
               </div>
               <div class="card-footer d-flex justify-content-between bg-light border">
-                <a href="#" class="btn btn-sm text-dark p-0">
+                <a (click)="navigateToProduct(product.id)" class="btn btn-sm text-dark p-0">
                   <i class="fas fa-eye text-primary mr-1"></i>View Detail
                 </a>
-                <a href="#" class="btn btn-sm text-dark p-0">
+                <a (click)="addToCart(product)" class="btn btn-sm text-dark p-0">
                   <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
                 </a>
               </div>

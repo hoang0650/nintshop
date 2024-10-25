@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartService } from '../../services/cart.service';
+import { CartService, CartItem } from '../../services/cart.service';
 import { UserService } from '../../services/user.service';
-import { ToastrService } from 'ngx-toastr'; // Thêm thư viện thông báo nếu cần
+import { ToastrService } from 'ngx-toastr';
 import { MessageService } from '../../services/message.service';
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -11,11 +12,12 @@ import { MessageService } from '../../services/message.service';
 })
 export class CartComponent implements OnInit {
   voucherCode: string = '';
-  voucherError: string | null = null; // Để hiển thị lỗi voucher nếu có
-  user: any; // Khởi tạo userId
-  discount: number = 0; // Lưu số tiền giảm giá từ voucher
-  cartItems: any[] = []; // Khởi tạo giỏ hàng là một mảng rỗng
-  totalPrice: number = 0; // Tổng tiền trước khi giảm giá
+  voucherError: string | null = null;
+  user: any;
+  discount: number = 0;
+  cartItems: CartItem[] = [];
+  hasVariants: boolean = false;
+  totalPrice: number = 0;
   isLoggedIn: boolean = false;
 
   constructor(
@@ -24,19 +26,18 @@ export class CartComponent implements OnInit {
     private userService: UserService,
     private toastr: ToastrService,
     private messageService: MessageService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    // Lấy giỏ hàng từ CartService
     this.cartService.cartItems$.subscribe(items => {
       this.cartItems = items;
-      this.totalPrice = this.getTotalPrice(); // Cập nhật tổng tiền mỗi khi giỏ hàng thay đổi
+      this.totalPrice = this.getTotalPrice();
+      this.checkForVariants(); // Kiểm tra lại khi giỏ hàng thay đổi
     });
 
-    // Gọi phương thức getUserInfo để lấy thông tin người dùng khi khởi tạo component
     this.userService.getUserInfor().subscribe({
       next: (userInfo) => {
-        this.user = userInfo; // Lưu userId từ thông tin người dùng        
+        this.user = userInfo;
         this.isLoggedIn = true;
       },
       error: () => {
@@ -45,47 +46,46 @@ export class CartComponent implements OnInit {
     });
   }
 
-  // Tăng số lượng sản phẩm
-  increaseQuantity(item: any) {
+  checkForVariants() {
+    this.hasVariants = this.cartItems.some(item => item.variants?.size || item.variants?.color);
+  }
+
+  increaseQuantity(item: CartItem) {
     this.cartService.updateQuantity(item.name, item.quantity + 1);
   }
 
-  // Giảm số lượng sản phẩm
-  decreaseQuantity(item: any) {
+  decreaseQuantity(item: CartItem) {
     if (item.quantity > 1) {
       this.cartService.updateQuantity(item.name, item.quantity - 1);
     }
   }
 
-  // Xóa sản phẩm khỏi giỏ hàng
   removeItem(name: string) {
     this.messageService.addMessage('success', 'Bạn đã xóa sản phẩm thành công!');
     this.cartService.removeFromCart(name);
   }
 
-  // Áp dụng mã voucher và tính số tiền giảm giá
   applyVoucher() {
     if (!this.isLoggedIn) {
       this.voucherError = 'Vui lòng đăng nhập để nhập mã voucher.';
       return;
     }
 
-    if(this.user.usedVouchers.length > 0 && (this.user.usedVouchers[length] ==='DISCOUNT10' || this.user.usedVouchers[length] ==='SUMMER20')){
-      this.voucherError = 'Mã vouvher của bạn đã được sử dụng.';
+    if (this.user.usedVouchers.includes(this.voucherCode)) {
+      this.voucherError = 'Mã voucher của bạn đã được sử dụng.';
       return;
     }
-    // Giả định bạn đã có sẵn các mã voucher và giá trị tương ứng
+
     const availableVouchers: { [code: string]: number } = {
-      'DISCOUNT10': 10,  // Giảm 10 đơn vị
-      'SUMMER20': 20,      // Giảm 20 đơn vị
+      'DISCOUNT10': 10,
+      'SUMMER20': 20,
     };
 
-    // Kiểm tra mã voucher có hợp lệ không
     if (this.voucherCode in availableVouchers) {
-      const discountAmount = availableVouchers[this.voucherCode]; // Lấy giá trị giảm giá từ mã voucher
-      this.cartService.applyVoucher(this.voucherCode, discountAmount); // Áp dụng giảm giá vào CartService
-      this.discount = discountAmount; // Cập nhật giảm giá trong component
-      this.voucherError = null; // Reset lỗi nếu có
+      const discountAmount = availableVouchers[this.voucherCode];
+      this.cartService.applyVoucher(this.voucherCode, discountAmount);
+      this.discount = discountAmount;
+      this.voucherError = null;
       this.toastr.success(`Voucher applied successfully! Discount: ${discountAmount}`);
     } else {
       this.voucherError = 'Mã voucher không hợp lệ. Vui lòng thử lại.';
@@ -93,17 +93,13 @@ export class CartComponent implements OnInit {
     }
   }
 
-  // Tính tổng giá trị giỏ hàng sau khi áp dụng giảm giá
-
-
-  getTotalPrice(): number{
+  getTotalPrice(): number {
     return this.cartService.getTotalPrice() - this.discount;
   }
 
-  // Chuyển sang trang thanh toán
   proceedToCheckout() {
-    const cartItemsString = JSON.stringify(this.cartItems); // Chuyển giỏ hàng thành chuỗi JSON
-    const discount = this.cartService.getCurrentDiscount()
+    const cartItemsString = JSON.stringify(this.cartItems);
+    const discount = this.cartService.getCurrentDiscount();
     const subtotal = this.cartService.getTotalPrice();
     this.router.navigate(['/checkout'], {
       queryParams: {

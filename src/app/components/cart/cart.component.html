@@ -21,11 +21,15 @@
                         <th>Products</th>
                         <th>Price</th>
                         <th>Quantity</th>
+                        <ng-container *ngIf="hasVariants">
+                            <th>Size</th>
+                            <th>Color</th>
+                        </ng-container>
                         <th>Total</th>
                         <th>Remove</th>
                     </tr>
                 </thead>
-                <tbody class="align-middle" *ngFor="let item of cartItems; let i = index">
+                <tbody class="align-middle" *ngFor="let item of cartItems">
                     <tr>
                         <td class="align-middle"><img src="{{item.image[0]}}" alt="" style="width: 50px;">{{ item.name }}</td>
                         <td class="align-middle">{{ item.price | number:'1.0-0' }}</td>
@@ -44,11 +48,16 @@
                                 </div>
                             </div>
                         </td>
+                        <ng-container *ngIf="item.variants">
+                            <td class="align-middle" *ngIf="item.variants.size">{{ item.variants.size }}</td>
+                            <td class="align-middle" *ngIf="item.variants.color">{{ item.variants.color }}</td>
+                        </ng-container>
                         <td class="align-middle">{{ item.price * item.quantity | number:'1.0-0' }}</td>
                         <td class="align-middle"><button class="btn btn-sm btn-primary" (click)="removeItem(item.name)"><i class="fa fa-times"></i></button></td>
                     </tr>
                 </tbody>
             </table>
+                
         </div>
         <div class="col-lg-4">
             <form class="mb-5" (ngSubmit)="applyVoucher()">

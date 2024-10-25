@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ProductApiService } from '../../services/product-api.service';
 import { ActivatedRoute } from '@angular/router';
-import { CartService } from '../../services/cart.service';
+import { CartService, CartItem } from '../../services/cart.service';
 import { Product } from '../../interfaces/product';
 import { Subscription } from 'rxjs';
 import { SeoService } from '../../services/seo.service';
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -14,6 +15,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   @ViewChild('imageList') imageList!: ElementRef;
   @ViewChild('imageListContainer') imageListContainer!: ElementRef;
   product: any;
+  relatedProducts: any[]=[];
   cartItems: any[] = [];
   selectedVariant: any;
   currentImageIndex = 0;
@@ -23,6 +25,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   constructor(
     private productService: ProductApiService,
     private route: ActivatedRoute,
+    private messageService: MessageService,
     private cartService: CartService,
     private seoService: SeoService
   ) {}
@@ -41,6 +44,8 @@ export class DetailComponent implements OnInit, OnDestroy {
           });
           this.selectedImage = this.product.image[0];
           this.selectedColor = this.product.colors[0];
+          // Lấy danh sách sản phẩm liên quan
+          this.getRelatedProducts(id);
         },
         error => {
           console.error('Error fetching product details:', error);
@@ -54,13 +59,43 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe(); // Hủy tất cả các subscription
   }
 
-  addToCart(product: any) {
-    this.cartService.addToCart(product);
-    alert('Đã thêm sản phẩm vào giỏ hàng!');
+  getRelatedProducts(productId: string) {
+    this.productService.getRelatedProducts(productId).subscribe(
+      (products: Product[]) => {
+        this.relatedProducts = products; // Cập nhật danh sách sản phẩm liên quan
+      },
+      error => {
+        console.error('Error fetching related products:', error);
+      }
+    );
   }
 
-  selectVariant(variant: any) {
+  addToCart(product: any) {
+    if (this.selectedVariant) {
+      const item: CartItem = {
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        quantity: 1,
+        image: product.image[0],
+        variants: { ...this.selectedVariant }
+      };
+      this.cartService.addToCart(item);
+      this.messageService.addMessage('success', 'Bạn đã thêm giỏ hàng thành công!');
+    } else {
+      alert('Vui lòng chọn một variant trước khi thêm vào giỏ hàng.');
+    }
+  }
+
+  selectVariant(variant: { size: string; color: string }) {
     this.selectedVariant = variant;
+    if (this.product) {
+      const variantIndex = this.product.variants.indexOf(variant);
+      const imageIndex = variantIndex + 1;
+      if (imageIndex < this.product.image.length) {
+        this.selectedImage = this.product.image[imageIndex];
+      }
+    }
   }
 
   selectImage(index: number) {

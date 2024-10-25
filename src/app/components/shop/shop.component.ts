@@ -108,7 +108,7 @@ export class ShopComponent implements OnInit{
     if (price > 100000 && price <= 500000) return '101000-500000';
     if (price > 500000 && price <= 2000000) return '501000-2000000';
     if (price > 2000000 && price <= 5000000) return '2010000-5000000';
-    if (price > 5000000 && price <= 50000000) return '5010000-50000000';
+    if (price > 5000000 && price <= 50000000) return '5010000-50000000000';
     return 'all';
   }
 

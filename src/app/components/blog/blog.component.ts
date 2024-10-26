@@ -30,7 +30,7 @@ export class BlogComponent implements OnInit, OnDestroy {
           this.seoService.setSocialShareTags({
             title: this.blog.title,
             description: this.blog.sections.map((item:any)=>item.content),
-            image: '',
+            image: 'https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0',
             url: 'www.nintshop.com',
           });
         },

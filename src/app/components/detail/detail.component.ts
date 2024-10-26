@@ -39,7 +39,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           this.seoService.setSocialShareTags({
             title: data.name,
             description: data.description,
-            image: '',
+            image: 'https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0',
             url: 'www.nintshop.com',
           });
           this.selectedImage = this.product.image[0];

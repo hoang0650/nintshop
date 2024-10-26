@@ -1,50 +1,42 @@
 import { Injectable } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeoService {
+  private currentTitle: string = '';
+
   constructor(
     private title: Title,
-    private meta: Meta,
-    private router: Router
-  ) {
-    this.listenToRouteChanges();
-  }
+    private meta: Meta
+  ) {}
 
-  private listenToRouteChanges() {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      const currentRoute = this.router.routerState.snapshot.root;
-      let title = this.getTitle(currentRoute);
-      this.setSocialShareTags({
-        title: title,
-        description: this.getMetaTagContent('description'),
-        image: this.getMetaTagContent('og:image'),
-        url: window.location.href,
-      });
-    });
-  }
-
-  private getTitle(route: any): string {
-    let title = route.snapshot.data['title'];
-    if (route.firstChild) {
-      title = this.getTitle(route.firstChild) || title;
-    }
-    return title || 'Default Title';
-  }
-
-  private getMetaTagContent(name: string): string {
-    const tag = this.meta.getTag(`name="${name}"`) || this.meta.getTag(`property="${name}"`);
-    return tag ? tag.content : '';
-  }
-
-  updateTitle(title: string) {
+  setTitle(title: string) {
+    this.currentTitle = title;
     this.title.setTitle(title);
+    this.meta.updateTag({ property: 'og:title', content: title });
+    this.meta.updateTag({ name: 'twitter:title', content: title });
+  }
+
+  getTitle(): string {
+    return this.currentTitle || this.title.getTitle();
+  }
+
+  private getMetaTagContent(tagName: string): string {
+    // Check for 'name' attribute
+    const nameTag = this.meta.getTag(`name="${tagName}"`);
+    if (nameTag) {
+      return nameTag.content;
+    }
+
+    // Check for 'property' attribute (used by Open Graph)
+    const propertyTag = this.meta.getTag(`property="${tagName}"`);
+    if (propertyTag) {
+      return propertyTag.content;
+    }
+
+    return '';
   }
 
   updateMetaTags(tags: { name: string; content: string }[]) {
@@ -94,7 +86,7 @@ export class SeoService {
     twitterCard?: string;
   }) {
     const cleanDescription = this.stripHtmlTags(data.description);
-    this.updateTitle(data.title);
+    this.setTitle(data.title);
     this.updateOpenGraphTags({...data, description: cleanDescription});
     this.updateTwitterCards({...data, description: cleanDescription});
     this.updateMetaTags([

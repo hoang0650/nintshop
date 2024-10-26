@@ -49,7 +49,7 @@ export class BlogListComponent implements OnInit {
         this.seoService.setSocialShareTags({
           title: 'Nintshop | trang mua sắm, thương mại và đăng tin hàng đầu',
           description: 'Trang đăng tin bất động sản, mua sắm, thương mại hàng đầu tại nintshop.com.',
-          image: '',
+          image: 'https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0',
           url: 'www.nintshop.com',
         });
       },

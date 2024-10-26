@@ -38,7 +38,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           this.product = data;
           this.seoService.setSocialShareTags({
             title: data.name,
-            description: 'Trang đăng tin bất động sản, mua sắm, thương mại hàng đầu tại nintshop.com.',
+            description: data.description,
             image: '',
             url: 'www.nintshop.com',
           });

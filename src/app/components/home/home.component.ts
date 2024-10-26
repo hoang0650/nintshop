@@ -9,8 +9,8 @@ export class HomeComponent implements OnInit{
   constructor(private seoService: SeoService){}
   ngOnInit(): void {
     this.seoService.setSocialShareTags({
-      title: 'Nintshop | trang mua sắm, thương mại và đăng tin hàng đầu',
-      description: 'Trang đăng tin bất động sản, mua sắm, thương mại hàng đầu tại nintshop.com.',
+      title: 'Nintshop | trang mua sắm, thương mại và đăng tin hàng đầu.',
+      description: 'Trang đăng tin bất động sản, mua sắm, thương mại hàng đầu tại nintshop.com',
       image: '',
       url: 'www.nintshop.com',
     });

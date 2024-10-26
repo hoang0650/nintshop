@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LanguageService } from './services/language.service';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { SeoService } from './services/seo.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,7 +11,7 @@ export class AppComponent {
   isLoading = false;
   showHeaderFooter = true;
 
-  constructor(private router: Router,private languageService: LanguageService) {
+  constructor(private router: Router,private languageService: LanguageService, private seoService: SeoService) {
     // Lắng nghe sự kiện router để kiểm soát trạng thái loading
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
@@ -34,6 +35,13 @@ export class AppComponent {
      this.languageService.currentLanguage.subscribe(lang => {
       // Có thể thực hiện các tác vụ liên quan đến ngôn ngữ ở đây nếu cần
     });
+    // Thiết lập các thẻ mặc định
+    this.seoService.setSocialShareTags({
+      title: 'Nintshop | trang mua sắm, thương mại và đăng tin hàng đầu.',
+      description: 'Trang đăng tin bất động sản, mua sắm, thương mại hàng đầu tại nintshop.com',
+      image: '',
+      url: 'www.nintshop.com',
+    });
   }
 
    // Function to scroll to the top of the page with smooth scroll effect
@@ -49,5 +57,5 @@ export class AppComponent {
     }
     // Other role clicks can trigger some other actions if necessary
   }
-  title = 'nintshop';
+
 }

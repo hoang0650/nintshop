@@ -3,7 +3,7 @@
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
             <a href="" class="text-decoration-none">
-                <!-- <img class="mb-4" src="nintshop_img/logo.jpg" alt="Nint Shop" style="width: 150px; height: 50px"> -->
+                <img class="mb-4" src="nintshop_img/logo1.jpg" alt="Nint Shop" style="width: 250px; height: 150px">
                 <!-- <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">N</span>intShop</h1> -->
             </a>
             <!-- <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore amet erat.</p> -->
@@ -31,21 +31,22 @@
                         <a class="text-dark mb-2" routerLink="/cart"><i class="fa fa-angle-right mr-2"></i>{{ 'CART' | translate}}</a>
                         <a class="text-dark mb-2" routerLink="/checkout"><i class="fa fa-angle-right mr-2"></i>{{ 'CHECK_OUT' | translate}}</a>
                         <a class="text-dark mb-2" routerLink="/contact"><i class="fa fa-angle-right mr-2"></i>{{ 'CONTACT' | translate}}</a>
+                        <a class="text-dark mb-2" routerLink="/faqs"><i class="fa fa-angle-right mr-2"></i>FAQs</a>
                         <!-- <a class="text-dark mb-2" routerLink="/support-chat"><i class="fa fa-angle-right mr-2"></i>Support</a> -->
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
+                    <app-message></app-message>
                     <h5 class="font-weight-bold text-dark mb-4">{{ 'Newsletter' | translate}}</h5>
-                    <form action="">
+                    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
                         <div class="form-group">
-                            <input type="text" class="form-control border-0 py-4" placeholder="{{ 'Your_Name' | translate}}" required="required" />
+                            <input type="text" class="form-control border-0 py-4" placeholder="{{ 'Your_Name' | translate}}" id="name" formControlName="name" required/>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control border-0 py-4" placeholder="{{ 'Your_Email' | translate}}"
-                                required="required" />
+                            <input type="email" class="form-control border-0 py-4" placeholder="{{ 'Your_Email' | translate}}" id="email" formControlName="email" required/>
                         </div>
                         <div>
-                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">{{ 'Subscribe_Now' | translate}}</button>
+                            <button class="btn btn-primary btn-block border-0 py-3" type="submit" [disabled]="!contactForm.valid">{{ 'Subscribe_Now' | translate}}</button>
                         </div>
                     </form>
                 </div>

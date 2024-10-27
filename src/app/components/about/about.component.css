@@ -1,0 +1,53 @@
+.container-about {
+    margin: 0;
+    max-width: 100%;
+    min-height: auto;
+    display: grid;
+    place-content: center;
+    grid-template-columns: auto auto;
+    background: url('https://sm.ign.com/ign_es/news/c/confirmado/confirmado-trunks-estara-en-dragon-ball-fighterz_nvrd.png') no-repeat center center/cover;
+}
+
+.character {
+    position: relative;
+    display: inline-block;
+}
+
+img {
+    --s: min(50vw, 360px); /* control the size */
+    width: var(--s);
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: top;
+    padding: calc(var(--s)/4) calc(var(--s)/8) 0;
+    box-sizing: border-box;
+    background: conic-gradient(from 135deg at 50% 15%, #e0dee1, #28a6b5 25%, #0000 0);
+    clip-path: polygon(-50% 0, 150% 0, 50% 100%);
+    transition: .5s;
+    cursor: pointer;
+}
+
+img:hover {
+    padding: 0;
+}
+
+/* Style for the hover text */
+.character-info {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+/* Show text on hover */
+.character:hover .character-info {
+    opacity: 1;
+}

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from '../../services/contact.service';
-
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -10,7 +10,7 @@ import { ContactService } from '../../services/contact.service';
 export class ContactComponent {
   contactForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private contactService: ContactService) {
+  constructor(private fb: FormBuilder, private contactService: ContactService, private messageService: MessageService) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -23,11 +23,11 @@ export class ContactComponent {
     if (this.contactForm.valid) {
       this.contactService.sendContactForm(this.contactForm.value).subscribe(
         (response) => {
-          alert('Your message has been sent successfully.');
+          this.messageService.addMessage('success', 'This is a success message!');
           this.contactForm.reset();
         },
         (error) => {
-          alert('Failed to send your message.');
+          this.messageService.addMessage('danger', 'This is an error message!');
         }
       );
     }

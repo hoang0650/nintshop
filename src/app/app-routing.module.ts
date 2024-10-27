@@ -33,10 +33,12 @@ import { LightningSaleComponent } from './components/lightning-sale/lightning-sa
 import { GermanLessonComponent } from './components/german-lesson/german-lesson.component';
 import { VideoManagementComponent } from './components/video-management/video-management.component';
 import { FaqsComponent } from './components/faqs/faqs.component';
+import { AboutComponent } from './components/about/about.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'shop', component: ShopComponent },
+  { path: 'about', component: AboutComponent },
   { path: 'shop-page', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: PostFeedComponent },
   { path: 'detail/:id', component: DetailComponent },
   { path: 'cart', component: CartComponent },

@@ -38,6 +38,8 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -92,6 +94,9 @@ import { BlogCreatorComponent } from './components/blog-creator/blog-creator.com
 import { LightningSaleComponent } from './components/lightning-sale/lightning-sale.component';
 import { TableOfContentsComponent } from './components/table-of-contents/table-of-contents.component';
 import { HasRoleDirective } from './directives/has-role.directive';
+import { VideoManagementComponent } from './components/video-management/video-management.component';
+import { VideoFormComponent } from './components/video-form/video-form.component';
+import { GermanLessonComponent } from './components/german-lesson/german-lesson.component';
 
 
 registerLocaleData(en);
@@ -154,6 +159,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     LightningSaleComponent,
     TableOfContentsComponent,
     HasRoleDirective,
+    VideoManagementComponent,
+    VideoFormComponent,
+    GermanLessonComponent,
   ],
   imports: [
     BrowserModule,
@@ -198,7 +206,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzStatisticModule,
     NzToolTipModule,
     NzCarouselModule,
-    NzPaginationModule
+    NzPaginationModule,
+    NzInputNumberModule,
+    NzSliderModule
   ],
   providers: [
     provideClientHydration(),

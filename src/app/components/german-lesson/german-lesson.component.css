@@ -1,0 +1,22 @@
+.audio-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .audio-controls nz-slider {
+    flex-grow: 1;
+    margin: 0 16px;
+  }
+  .playback-rate {
+    margin-bottom: 16px;
+  }
+  .transcript-card {
+    margin-top: 16px;
+  }
+  .transcript-card p {
+    cursor: pointer;
+  }
+  .transcript-card p.active {
+    font-weight: bold;
+    color: #1890ff;
+  }

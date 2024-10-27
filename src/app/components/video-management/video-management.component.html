@@ -1,0 +1,35 @@
+<div class="container">
+    <h1 nz-typography>Video and German Lesson Management</h1>
+    <button nz-button nzType="primary" (click)="openVideoModal()">
+        <i nz-icon nzType="plus"></i>Add New Video/Lesson
+    </button>
+    <nz-table #basicTable [nzData]="videos">
+        <thead>
+            <tr>
+                <th>Thumbnail</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Duration</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let video of basicTable.data">
+                <td>
+                    <nz-avatar [nzSize]="64" nzShape="square" [nzSrc]="video.thumbnailUrl"></nz-avatar>
+                </td>
+                <td>{{ video.title }}</td>
+                <td>{{ video.description }}</td>
+                <td>{{ video.duration | date:'mm:ss' }}</td>
+                <td>{{ video.isGermanLesson ? 'German Lesson' : 'Video' }}</td>
+                <td>
+                    <a (click)="openVideoModal(video)">Edit</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-popconfirm nzPopconfirmTitle="Are you sure to delete this video/lesson?"
+                        (nzOnConfirm)="deleteVideo(video._id)">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>

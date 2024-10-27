@@ -30,6 +30,8 @@ import { BlogComponent } from './components/blog/blog.component';
 import { BlogListComponent } from './components/blog-list/blog-list.component';
 import { BlogCreatorComponent } from './components/blog-creator/blog-creator.component';
 import { LightningSaleComponent } from './components/lightning-sale/lightning-sale.component';
+import { GermanLessonComponent } from './components/german-lesson/german-lesson.component';
+import { VideoManagementComponent } from './components/video-management/video-management.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -51,6 +53,8 @@ const routes: Routes = [
   { path: 'livestream', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE },  component: LivestreamComponent },
   { path: 'livestream-homepage', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: LivestreamHomepageComponent },
   { path: 'qr-payment', component: QrCodeComponent },
+  { path: 'german-lessons', component: GermanLessonComponent },
+  { path: 'video-management', component: VideoManagementComponent },
   { path: 'order-tracking', component: OrderTrackingComponent },
   { path: 'order', component: OrderComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },

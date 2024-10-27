@@ -1,56 +1,56 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ProductApiService } from '../../services/product-api.service';
-import { Product } from '../../interfaces/product';
+// import { Product } from '../../interfaces/product';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { MessageService } from '../../services/message.service';
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+}
 @Component({
   selector: 'app-related-products',
   templateUrl: './related-products.component.html',
   styleUrls: ['./related-products.component.css']
 })
 export class RelatedProductsComponent implements OnInit {
-  @Input() relatedProducts: Product[] = []; // Nhận dữ liệu từ component cha
+  products: Product[] = [
+    { id: 1, name: "Sản phẩm 1", price: "199.000đ", image: "https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0" },
+    { id: 2, name: "Sản phẩm 2", price: "249.000đ", image: "https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0" },
+    { id: 3, name: "Sản phẩm 3", price: "299.000đ", image: "https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0" },
+    { id: 4, name: "Sản phẩm 4", price: "349.000đ", image: "https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0" },
+    { id: 5, name: "Sản phẩm 5", price: "399.000đ", image: "https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0" },
+    { id: 6, name: "Sản phẩm 6", price: "449.000đ", image: "https://sale-nest-api.onrender.com/api/upload/image/66f8429b500667cc9350d3f0" },
+  ];
 
-  constructor(
-    private productService: ProductApiService, 
-    private cartService: CartService,
-    private messageService: MessageService,
-    private route: ActivatedRoute, 
-    private router: Router
-  ) {}
+  carouselConfig = {
+    dots: false,
+    nzAutoPlay: true,
+    nzAutoPlaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 4 }
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 3 }
+      },
+      {
+        breakpoint: 576,
+        settings: { slidesToShow: 2 }
+      },
+      {
+        breakpoint: 480,
+        settings: { slidesToShow: 1 }
+      }
+    ]
+  };
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id'); // Lấy ID sản phẩm từ URL
-    if (id) {
-      this.productService.getRelatedProducts(id).subscribe(
-        (products) => {
-          this.relatedProducts = products; // Cập nhật danh sách sản phẩm liên quan
-          console.log('relatedProducts', this.relatedProducts);
-        },
-        (error) => {
-          console.error('Error fetching related products:', error);
-        }
-      );
-    }
-  }
+  constructor() { }
 
-  getSlides(): any[] {
-    const slides = [];
-    for (let i = 0; i < this.relatedProducts.length; i += 4) {
-      slides.push(this.relatedProducts.slice(i, i + 4)); // Chia sản phẩm thành các slide
-    }
-    return slides;
-  }
-
-  navigateToProduct(productId: string) {
-    this.router.navigate(['/detail', productId]); // Điều hướng đến chi tiết sản phẩm
-  }
-
-  // Hàm thêm sản phẩm vào giỏ hàng
-  addToCart(product: any) {
-    this.cartService.addToCart(product);
-    this.messageService.addMessage('success', 'Bạn đã thêm giỏ hàng thành công!');
-  }
+  ngOnInit(): void { }
 }

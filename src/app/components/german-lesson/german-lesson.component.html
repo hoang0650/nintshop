@@ -1,0 +1,61 @@
+<nz-card [nzTitle]="lesson?.title || 'Loading...'" [nzExtra]="extraTemplate">
+    <div *ngIf="lesson; else loading">
+      <audio #audioPlayer (timeupdate)="onTimeUpdate()">
+        <source [src]="lesson.url" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      
+      <div class="audio-controls">
+        <button nz-button nzType="primary" (click)="togglePlay()">
+          <i nz-icon [nzType]="isPlaying ? 'pause' : 'caret-right'"></i>
+          {{ isPlaying ? 'Pause' : 'Play' }}
+        </button>
+        <nz-slider
+          [(ngModel)]="currentTime"
+          [nzMax]="duration"
+          (ngModelChange)="seek($event)"
+        ></nz-slider>
+        <span>{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
+      </div>
+      
+      <div class="playback-rate">
+        <span>Playback Speed:</span>
+        <nz-select [(ngModel)]="playbackRate" (ngModelChange)="changePlaybackRate()">
+          <nz-option nzValue="0.5" nzLabel="0.5x"></nz-option>
+          <nz-option nzValue="0.75" nzLabel="0.75x"></nz-option>
+          <nz-option nzValue="1" nzLabel="1x"></nz-option>
+          <nz-option nzValue="1.25" nzLabel="1.25x"></nz-option>
+          <nz-option nzValue="1.5" nzLabel="1.5x"></nz-option>
+        </nz-select>
+      </div>
+      
+      <nz-card nzTitle="Current Transcript" class="transcript-card">
+        <p>{{ currentTranscript }}</p>
+      </nz-card>
+      
+      <nz-card nzTitle="Full Transcript" class="transcript-card">
+        <p *ngFor="let item of lesson.transcript" 
+           [class.active]="isActiveTranscript(item)"
+           (click)="seekToTranscript(item)">
+          {{ item.text }}
+        </p>
+      </nz-card>
+    </div>
+  </nz-card>
+  
+  <ng-template #loading>
+    <nz-spin nzTip="Loading..."></nz-spin>
+  </ng-template>
+  
+  <ng-template #extraTemplate>
+    <a nz-dropdown [nzDropdownMenu]="menu">
+      More lessons <i nz-icon nzType="down"></i>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item *ngFor="let lessonItem of lessons" (click)="loadLesson(lessonItem._id)">
+          {{ lessonItem.title }}
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+  </ng-template>

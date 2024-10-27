@@ -6,6 +6,7 @@ import { Product } from '../../interfaces/product';
 import { Subscription } from 'rxjs';
 import { SeoService } from '../../services/seo.service';
 import { MessageService } from '../../services/message.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -27,7 +28,8 @@ export class DetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private messageService: MessageService,
     private cartService: CartService,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,12 +47,22 @@ export class DetailComponent implements OnInit, OnDestroy {
           this.selectedImage = this.product.image[0];
           this.selectedColor = this.product.colors[0];
           // Lấy danh sách sản phẩm liên quan
-          this.getRelatedProducts(id);
         },
         error => {
           console.error('Error fetching product details:', error);
         }
       );
+      if (id) {
+        this.productService.getRelatedProducts(id).subscribe(
+          (products) => {
+            this.relatedProducts = products; // Cập nhật danh sách sản phẩm liên quan
+            console.log('relatedProducts', this.relatedProducts);
+          },
+          (error) => {
+            console.error('Error fetching related products:', error);
+          }
+        );
+      }
       this.subscriptions.add(detailSub); // Thêm subscription vào danh sách
     }
   }
@@ -59,15 +71,16 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe(); // Hủy tất cả các subscription
   }
 
-  getRelatedProducts(productId: string) {
-    this.productService.getRelatedProducts(productId).subscribe(
-      (products: Product[]) => {
-        this.relatedProducts = products; // Cập nhật danh sách sản phẩm liên quan
-      },
-      error => {
-        console.error('Error fetching related products:', error);
-      }
-    );
+  getSlides(): any[] {
+    const slides = [];
+    for (let i = 0; i < this.relatedProducts.length; i += 4) {
+      slides.push(this.relatedProducts.slice(i, i + 4)); // Chia sản phẩm thành các slide
+    }
+    return slides;
+  }
+
+  navigateToProduct(productId: string) {
+    window.location.href = `/detail/${productId}`;
   }
 
   addToCart(product: any) {
@@ -137,4 +150,29 @@ export class DetailComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  carouselConfig = {
+    dots: false,
+    nzAutoPlay: true,
+    nzAutoPlaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 4 }
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 3 }
+      },
+      {
+        breakpoint: 576,
+        settings: { slidesToShow: 2 }
+      },
+      {
+        breakpoint: 480,
+        settings: { slidesToShow: 1 }
+      }
+    ]
+  };
+
 }

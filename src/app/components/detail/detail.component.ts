@@ -22,6 +22,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   currentImageIndex = 0;
   selectedImage: string = ''
   selectedColor: string = '';
+  sliderValue = 0; // Giá trị mặc định cho slider
   private subscriptions: Subscription = new Subscription(); // Biến để lưu các subscriptions
   constructor(
     private productService: ProductApiService,
@@ -111,25 +112,20 @@ export class DetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectImage(index: number) {
-    this.selectedImage = this.product.image[index];
+  onSliderChange(value: number): void {
+    this.selectedImage = this.product.image[value]; // Cập nhật hình ảnh đã chọn
+  }
+
+  selectImage(index: number): void {
+    this.selectedImage = this.product.image[index]; // Cập nhật chỉ số hình ảnh đã chọn
+    this.sliderValue = index; // Cập nhật giá trị của slider
   }
 
   setCurrentImage(index: number) {
     this.currentImageIndex = index;
   }
 
-  scrollImages(direction: 'left' | 'right') {
-    const container = this.imageListContainer.nativeElement;
-    const list = this.imageList.nativeElement;
-    const scrollAmount = container.clientWidth;
-
-    if (direction === 'left') {
-      list.style.transform = `translateX(${Math.min(0, list.getBoundingClientRect().left - container.getBoundingClientRect().left + scrollAmount)}px)`;
-    } else {
-      list.style.transform = `translateX(${Math.max(container.clientWidth - list.clientWidth, list.getBoundingClientRect().left - container.getBoundingClientRect().left - scrollAmount)}px)`;
-    }
-  }
+  
 
 
   incrementClickCount(event: MouseEvent, productId: string) {

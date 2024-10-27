@@ -1,0 +1,124 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Bố cục flex cho layout */
+.layout {
+    display: flex;
+    gap: 30px;
+}
+
+/* Khu vực nội dung chính */
+.main-content {
+    flex: 2;
+    min-width: 300px;
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+/* Bố cục sidebar */
+.sidebar {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* Banner styles */
+.banner {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.banner-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Facebook Ifram */
+
+.fb-page {
+    max-width: 340px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+.fb-page iframe {
+    max-width: 100%;
+  }
+
+
+.faq-container {
+    max-width: 800px;
+    /* Giới hạn chiều rộng tối đa */
+    margin: 0 auto;
+    /* Căn giữa */
+    padding: 20px;
+    background-color: #f9f9f9;
+    /* Nền màu sáng */
+    border-radius: 8px;
+    /* Bo góc */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng */
+}
+
+.faq-title {
+    text-align: center;
+    /* Căn giữa tiêu đề */
+    font-size: 24px;
+    /* Kích thước chữ tiêu đề */
+    margin-bottom: 20px;
+    /* Khoảng cách dưới tiêu đề */
+}
+
+.nz-collapse-panel {
+    background-color: #fff;
+    /* Màu nền cho từng panel */
+    border-radius: 4px;
+    /* Bo góc cho panel */
+    margin-bottom: 10px;
+    /* Khoảng cách giữa các panel */
+    transition: background-color 0.3s ease;
+    /* Hiệu ứng chuyển đổi */
+}
+
+.nz-collapse-panel:hover {
+    background-color: #f0f0f0;
+    /* Màu nền khi hover */
+}
+
+.nz-collapse-header {
+    font-size: 18px;
+    /* Kích thước chữ tiêu đề của panel */
+}
+
+.nz-collapse-panel p {
+    margin: 10px 0;
+    /* Khoảng cách cho đoạn văn bản */
+}
+
+/* Responsive */
+@media (max-width: 575px) {
+    .faq-title {
+        font-size: 20px;
+        /* Kích thước chữ nhỏ hơn trên mobile */
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+  
+    .main-content,
+    .sidebar {
+        flex: 1 1 100%;
+    }
+  }
+  figcaption {
+    text-align: center;
+    color: darkgray;
+    font-size: 13px;
+  }

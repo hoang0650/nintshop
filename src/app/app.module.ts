@@ -40,6 +40,7 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -86,8 +87,6 @@ import { MessageComponent } from './components/message/message.component';
 import { SupportChatComponent } from './components/support-chat/support-chat.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { BlogComponent } from './components/blog/blog.component';
-import { RelatedPostComponent } from './components/related-post/related-post.component';
-import { RelatedProductsComponent } from './components/related-products/related-products.component';
 import { CommentBlogComponent } from './components/comment-blog/comment-blog.component';
 import { BlogListComponent } from './components/blog-list/blog-list.component';
 import { BlogCreatorComponent } from './components/blog-creator/blog-creator.component';
@@ -97,6 +96,7 @@ import { HasRoleDirective } from './directives/has-role.directive';
 import { VideoManagementComponent } from './components/video-management/video-management.component';
 import { VideoFormComponent } from './components/video-form/video-form.component';
 import { GermanLessonComponent } from './components/german-lesson/german-lesson.component';
+import { FaqsComponent } from './components/faqs/faqs.component';
 
 
 registerLocaleData(en);
@@ -151,8 +151,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     SupportChatComponent,
     CategoryListComponent,
     BlogComponent,
-    RelatedPostComponent,
-    RelatedProductsComponent,
     CommentBlogComponent,
     BlogListComponent,
     BlogCreatorComponent,
@@ -162,6 +160,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     VideoManagementComponent,
     VideoFormComponent,
     GermanLessonComponent,
+    FaqsComponent,
   ],
   imports: [
     BrowserModule,
@@ -208,7 +207,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzCarouselModule,
     NzPaginationModule,
     NzInputNumberModule,
-    NzSliderModule
+    NzSliderModule,
+    NzCollapseModule
   ],
   providers: [
     provideClientHydration(),

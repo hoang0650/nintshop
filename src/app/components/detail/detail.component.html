@@ -23,23 +23,28 @@
                 </div>
             </div>
             <div class="position-relative mt-4">
-                <div class="image-list-container overflow-hidden" #imageListContainer>
-                    <div class="d-flex justify-content-between mt-2">
-                        <button class="btn btn-outline-dark" style="z-index: 100;" (click)="scrollImages('left')">
-                            <i class="fa fa-angle-left"></i>
-                        </button>
-                        <div class="d-flex image-list" #imageList>
-                            <div *ngFor="let img of product?.image; let i = index" class="mr-2">
-                                <img [src]="img" alt="Thumbnail" class="img-thumbnail"
-                                    style="width: 160px; height: 80px; object-fit: cover; cursor: pointer;"
-                                    (click)="selectImage(i)" [class.border-primary]="selectedImage === img">
-                            </div>
-                        </div>
-                        <button class="btn btn-outline-dark" style="z-index: 100;" (click)="scrollImages('right')">
-                            <i class="fa fa-angle-right"></i>
-                        </button>
+                <div class="image-list-container">
+                    <nz-slider
+                      [(ngModel)]="sliderValue"
+                      [nzMin]="0"
+                      [nzMax]="product?.image.length - 1"
+                      [nzStep]="1"
+                      (ngModelChange)="onSliderChange($event)"
+                      [nzTooltipVisible]="'always'"
+                    >
+                    </nz-slider>
+                  
+                    <!-- <div class="image-list" #imageList>
+                      <img *ngIf="selectedImage" [src]="product?.image[selectedImage]" alt="Selected Image" class="img-cover" />
                     </div>
-                </div>
+                  
+                    <div class="image-thumbnails">
+                      <div *ngFor="let img of product?.image; let i = index" class="thumbnail" (click)="selectImage(i)">
+                        <img [src]="img" alt="Thumbnail" class="img-thumbnail" />
+                      </div>
+                    </div> -->
+                  </div>
+                  
             </div>
         </div>
 
@@ -117,9 +122,7 @@
             </div>
         </div>
     </div>
-
-    <app-featured></app-featured>
-
+    <!-- <app-featured></app-featured> -->
     <div class="row px-xl-5">
         <div class="col">
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">

@@ -13,35 +13,49 @@
     border-color: #e61e43;
 }
 
-:host {
-    display: block;
-    font-family: 'Roboto', sans-serif;
-  }
-  .img-cover {
-    object-fit: cover;
-    height: 400px;
-  }
+.image-list-container {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.img-cover {
+  object-fit: cover;
+  height: 400px;
+  width: 100%;
+}
+
+.image-thumbnails {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap; /* Cho phép hình ảnh xuống dòng nếu cần */
+}
+
+.thumbnail {
+  margin: 0 5px; /* Giảm khoảng cách giữa các hình thu nhỏ */
+  cursor: pointer;
+}
+
+.img-thumbnail {
+  width: calc((100% / 6) - 10px); /* Chiều rộng cho 6 hình trên desktop */
+  height: 80px; /* Kích thước hình thu nhỏ */
+  object-fit: cover;
+  transition: border-color 0.2s ease-in-out;
+}
+
+/* Hiệu ứng hover cho hình thu nhỏ */
+.img-thumbnail:hover {
+  border-color: #007bff;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 575px) {
   .img-thumbnail {
-    transition: border-color 0.2s ease-in-out;
+    width: calc((100% / 3) - 10px); /* Chiều rộng cho 3 hình trên mobile */
   }
-  .img-thumbnail:hover {
-    border-color: #007bff;
-  }
-  .image-list-container {
-    position: relative;
-    width: 100%;
-  }
-  .image-list-wrapper {
-    width: calc(100% - 80px);
-    margin: 0 auto;
-  }
-  .image-list {
-    display: flex;
-    transition: transform 0.3s ease;
-  }
-  .btn-outline-dark {
-    z-index: 10;
-  }
+}
+
   .variant-container {
     display: flex;
     flex-wrap: wrap;

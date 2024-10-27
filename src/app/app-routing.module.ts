@@ -32,6 +32,7 @@ import { BlogCreatorComponent } from './components/blog-creator/blog-creator.com
 import { LightningSaleComponent } from './components/lightning-sale/lightning-sale.component';
 import { GermanLessonComponent } from './components/german-lesson/german-lesson.component';
 import { VideoManagementComponent } from './components/video-management/video-management.component';
+import { FaqsComponent } from './components/faqs/faqs.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -44,6 +45,7 @@ const routes: Routes = [
   { path: 'blog/:id', component: BlogComponent },
   { path: 'blog', component: BlogListComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'faqs', component: FaqsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: SignupComponent },
   { path: 'balance', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: BalanceComponent },

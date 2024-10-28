@@ -97,7 +97,7 @@ import { VideoManagementComponent } from './components/video-management/video-ma
 import { VideoFormComponent } from './components/video-form/video-form.component';
 import { GermanLessonComponent } from './components/german-lesson/german-lesson.component';
 import { FaqsComponent } from './components/faqs/faqs.component';
-import { AboutComponent } from './components/about/about.component';
+import { AboutComponent } from './pages/about/about.component';
 
 
 registerLocaleData(en);

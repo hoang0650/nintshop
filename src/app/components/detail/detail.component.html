@@ -15,36 +15,46 @@
     <app-message></app-message>
     <div class="row px-xl-5">
         <div class="col-lg-5 pb-5">
-            <div id="product-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner border">
-                    <div class="carousel-item active">
-                        <img class="w-100 h-100 img-cover" [src]="selectedImage" alt="Image">
+            <!-- Main Image Container -->
+            <div class="main-image-container" #mainImageContainer>
+                <img [src]="selectedImage || product?.image[0]" 
+                     [alt]="product?.name" 
+                     class="main-product-image"
+                     [class.zoomed]="zoomEnabled"
+                     [style.transform]="zoomEnabled ? 'scale(' + zoomScale + ')' : 'none'"
+                     [style.transformOrigin]="zoomEnabled ? zoomPosition.x + '% ' + zoomPosition.y + '%' : 'center'"
+                     draggable="false">
+            </div>
+
+            <!-- Thumbnail Navigation -->
+            <div class="thumbnail-slider">
+                <button class="nav-btn prev" 
+                        [class.disabled]="currentImageIndex === 0"
+                        (click)="scrollThumbnails('prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="thumbnails-wrapper">
+                    <div class="thumbnails"
+                         [style.transform]="'translateX(' + currentTranslate + 'px)'"
+                         [style.transition]="isDragging ? 'none' : 'transform 0.3s'">
+                        <div *ngFor="let img of product?.image; let i = index" 
+                             class="thumbnail-item"
+                             [class.active]="selectedImage === img"
+                             (click)="selectImage(img, i)">
+                            <img [src]="img" 
+                                 [alt]="product?.name + ' thumbnail ' + (i + 1)"
+                                 loading="lazy"
+                                 draggable="false">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="position-relative mt-4">
-                <div class="image-list-container">
-                    <nz-slider
-                      [(ngModel)]="sliderValue"
-                      [nzMin]="0"
-                      [nzMax]="product?.image.length - 1"
-                      [nzStep]="1"
-                      (ngModelChange)="onSliderChange($event)"
-                      [nzTooltipVisible]="'always'"
-                    >
-                    </nz-slider>
-                  
-                    <!-- <div class="image-list" #imageList>
-                      <img *ngIf="selectedImage" [src]="product?.image[selectedImage]" alt="Selected Image" class="img-cover" />
-                    </div>
-                  
-                    <div class="image-thumbnails">
-                      <div *ngFor="let img of product?.image; let i = index" class="thumbnail" (click)="selectImage(i)">
-                        <img [src]="img" alt="Thumbnail" class="img-thumbnail" />
-                      </div>
-                    </div> -->
-                  </div>
-                  
+
+                <button class="nav-btn next"
+                        [class.disabled]="currentImageIndex === (product?.image?.length || 0) - 1"
+                        (click)="scrollThumbnails('next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
 
@@ -199,5 +209,7 @@
     </div>
   </nz-carousel>
 </div>
+
+
 
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Variant } from '../interfaces/variant';
+
 export interface CartItem {
   name: string;
   description: string;
@@ -8,9 +9,11 @@ export interface CartItem {
   quantity: number;
   image: string;
   variants?: {
-    size?: string;
-    color?: string;
+    size: string;
+    color: string;
   };
+  hasInsurance?: boolean;  // Thêm thuộc tính mới
+  insurancePrice?: number; // Thêm thuộc tính mới
 }
 
 @Injectable({

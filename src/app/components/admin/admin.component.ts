@@ -5,6 +5,7 @@ import { ProductApiService } from '../../services/product-api.service';
 import { CheckoutService } from '../../services/checkout.service';
 import { MessageService } from '../../services/message.service';
 import { HttpClient } from '@angular/common/http';
+
 // Define the enum for order status
 enum OrderStatus {
   Pending = 'pending',
@@ -21,13 +22,14 @@ interface Order {
   totalPrice: number;
   createdAt: Date;
 }
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-
+  imagePreviews: { url: string, file: File }[] = [];
   imageSrc: string | ArrayBuffer | null = null;
   imageId: string | null = null;
   uploadMessage: string = '';
@@ -40,12 +42,11 @@ export class AdminComponent implements OnInit {
   selectedProduct: Product | null = null;
   isEditing: boolean = false;
   editingProductId: string | null = null;
-  imagePreviews: string[] = [];
   selectedFiles: File[] = [];
   expandedProductId: string | null = null;
   imagesToDelete: string[] = [];
-  itemsPerPage = 10; // Số lượng sản phẩm trên mỗi trang
-  currentPage = 1; // Trang hiện tạ
+  itemsPerPage = 10; // Number of products per page
+  currentPage = 1; // Current page
   filteredProducts: any[] = [];
 
   // Order variables
@@ -53,14 +54,20 @@ export class AdminComponent implements OnInit {
   orderForm: FormGroup;
   OrderStatus = OrderStatus; // Make enum available in the template
 
-  constructor(private http: HttpClient, private messageService: MessageService, private fb: FormBuilder, private productService: ProductApiService, private checkoutService: CheckoutService) {
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService,
+    private fb: FormBuilder,
+    private productService: ProductApiService,
+    private checkoutService: CheckoutService
+  ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
       price: [0, Validators.required],
       quantity: [0, Validators.required],
       description: ['', Validators.required],
-      tiktokAffiliateLink: [''],
+      tiktokAffiliateLink: [''], // TikTok affiliate link
       variants: this.fb.array([this.createVariant()])
     });
     this.orderForm = this.fb.group({
@@ -73,12 +80,39 @@ export class AdminComponent implements OnInit {
   showManageProducts = false;
 
   toggleManageProducts() {
+    this.resetForm();
     this.showManageProducts = !this.showManageProducts;
+  }
+  toggleTab() {
+    this.resetForm();
+    this.showManageProducts = false;
+  }
+  toggleEditProducts() {
+   this.showManageProducts = !this.showManageProducts;
   }
 
   ngOnInit(): void {
     this.loadProducts();
     this.loadOrders();
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedFiles = Array.from(input.files);
+      this.imagePreviews = [];
+      this.selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagePreviews.push({ url: e.target.result, file });
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
+  removeImage(index: number): void {
+    this.imagePreviews.splice(index, 1);
   }
 
   applyPagination() {
@@ -95,7 +129,9 @@ export class AdminComponent implements OnInit {
   }
 
   totalPages() {
-    return Array(Math.ceil(this.products.length / this.itemsPerPage)).fill(0).map((x, i) => i + 1);
+    return Array(Math.ceil(this.products.length / this.itemsPerPage))
+      .fill(0)
+      .map((_, i) => i + 1);
   }
 
   get variants(): FormArray {
@@ -118,23 +154,6 @@ export class AdminComponent implements OnInit {
     this.variants.removeAt(index);
   }
 
-  onFilesSelected(event: Event) {
-    const element = event.target as HTMLInputElement;
-    const files = element.files;
-
-    if (files) {
-      this.selectedFiles = Array.from(files);
-      this.imagePreviews = [];
-      this.selectedFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.imagePreviews.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  }
-
   startEdit(id: string): void {
     this.editingProductId = id;
     const productToEdit = this.products.find(p => p._id === id);
@@ -149,11 +168,13 @@ export class AdminComponent implements OnInit {
 
       // Add variants from the product
       productToEdit.variants.forEach(variant => {
-        this.variants.push(this.fb.group({
-          size: [variant.size],
-          color: [variant.color],
-          stock: [variant.stock]
-        }));
+        this.variants.push(
+          this.fb.group({
+            size: [variant.size],
+            color: [variant.color],
+            stock: [variant.stock]
+          })
+        );
       });
 
       this.isEditing = true;
@@ -173,22 +194,13 @@ export class AdminComponent implements OnInit {
     this.variants.push(this.createVariant());
   }
 
-  // onSubmit() {
-  //   if (this.productForm.valid) {
-  //     if (this.editingProductId) {
-  //       this.updateProduct();
-  //     } else {
-  //       this.createProduct();
-  //     }
-  //   }
-  // }
   onSubmit() {
     if (this.productForm.valid) {
       const formData = new FormData();
       formData.append('productData', JSON.stringify(this.productForm.value));
 
-      this.selectedFiles.forEach((file, index) => {
-        formData.append('images', file, file.name);
+      this.imagePreviews.forEach((image, index) => {
+        formData.append(`images[${index}]`, image.file);
       });
 
       if (this.isEditing && this.selectedProduct) {
@@ -200,50 +212,50 @@ export class AdminComponent implements OnInit {
   }
 
   loadProducts() {
-    this.http.get<Product[]>('https://sale-nest-api.onrender.com/api/products').subscribe(
-      data => {
-        this.products = data
+    this.http.get<Product[]>('https://sale-nest-api.onrender.com/api/products').subscribe({
+      next: data => {
+        this.products = data;
         this.filteredProducts = [...this.products];
         this.applyPagination();
       },
-      error => console.error('Error fetching products:', error)
-    );
+      error: error => console.error('Error fetching products:', error)
+    });
   }
 
   createProduct(formData: FormData) {
-    this.http.post<{ message: string, product: Product }>('https://sale-nest-api.onrender.com/api/products', formData).subscribe(
-      response => {
+    this.http.post<{ message: string; product: Product }>('https://sale-nest-api.onrender.com/api/products', formData).subscribe({
+      next: response => {
         this.products.push(response.product);
         this.resetForm();
       },
-      error => console.error('Error creating product:', error)
-    );
+      error: error => console.error('Error creating product:', error)
+    });
   }
 
   updateProduct(id: string, formData: FormData) {
-    this.http.put<{ message: string, product: Product }>(`https://sale-nest-api.onrender.com/api/products/${id}`, formData).subscribe(
-      response => {
+    this.http.put<{ message: string; product: Product }>(`https://sale-nest-api.onrender.com/api/products/${id}`, formData).subscribe({
+      next: response => {
         const index = this.products.findIndex(p => p._id === id);
         if (index !== -1) {
           this.products[index] = response.product;
         }
         this.resetForm();
       },
-      error => console.error('Error updating product:', error)
-    );
+      error: error => console.error('Error updating product:', error)
+    });
   }
 
   deleteProduct(id: string): void {
-    this.productService.deleteProduct(id).subscribe(
-      () => {
+    this.productService.deleteProduct(id).subscribe({
+      next: () => {
         this.messageService.addMessage('success', 'This is a success message!');
         this.products = this.products.filter(p => p._id !== id);
       },
-      error => {
+      error: error => {
         this.messageService.addMessage('danger', 'This is an error message!');
         console.error('Error deleting product:', error);
       }
-    );
+    });
   }
 
   markImageForDeletion(imageUrl: string): void {
@@ -252,7 +264,6 @@ export class AdminComponent implements OnInit {
     }
     this.imagesToDelete.push(imageUrl);
   }
-
 
   resetForm(): void {
     this.productForm.reset();
@@ -270,33 +281,28 @@ export class AdminComponent implements OnInit {
   }
 
   loadOrders() {
-    this.checkoutService.getOrders().subscribe(
-      data => {
-        console.log('data', data);
-
-        this.orders = data
-      }
-    )
+    this.checkoutService.getOrders().subscribe(data => {
+      this.orders = data;
+    });
   }
 
   onSubmitOrder() {
     if (this.orderForm.valid) {
       const { _id, status } = this.orderForm.value;
-      this.checkoutService.updateOrderStatus(_id, status).subscribe(
-        (updatedOrder: Order) => {
+      this.checkoutService.updateOrderStatus(_id, status).subscribe({
+        next: (updatedOrder: Order) => {
           const index = this.orders.findIndex(order => order._id === updatedOrder._id);
           if (index !== -1) {
             this.orders[index] = updatedOrder;
           }
           this.messageService.addMessage('success', 'This is a success message!');
           this.orderForm.reset({ status: OrderStatus.Pending });
-          console.log('Order status updated successfully');
         },
-        (error) => {
+        error: error => {
           this.messageService.addMessage('danger', 'This is an error message!');
           console.error('Error updating order status:', error);
         }
-      );
+      });
     }
   }
 
@@ -328,7 +334,7 @@ export class AdminComponent implements OnInit {
     formData.append('description', this.productForm.get('description')?.value);
     formData.append('variants', JSON.stringify(this.productForm.get('variants')?.value));
 
-    this.selectedFiles.forEach((file, index) => {
+    this.selectedFiles.forEach(file => {
       formData.append(`image`, file, file.name);
     });
 

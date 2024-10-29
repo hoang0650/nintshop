@@ -4,7 +4,7 @@
     <!-- Tabs for Product and Order -->
     <ul class="nav nav-tabs justify-content-center border-secondary mb-4">
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#product-tab"
+        <a (click)="toggleTab()" class="nav-link active" data-toggle="tab" href="#product-tab"
           >Product</a
         >
       </li>
@@ -17,335 +17,317 @@
     <div class="tab-content">
       <!-- Product Tab -->
       <div class="tab-pane fade show active" id="product-tab">
-        <div *ngIf="!showManageProducts">
-          <!-- Button to toggle Manage Products -->
-          <button class="btn btn-primary mb-4" (click)="toggleManageProducts()">
-            Add New Product
-          </button>
-
-          <!-- Product List -->
-          <h3 class="mt-5">Product List</h3>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let product of products">
+        <div class="container mt-5">
+          <div *ngIf="!showManageProducts">
+            <!-- Button to toggle Manage Products -->
+            <button
+              class="btn btn-primary mb-4"
+              (click)="toggleManageProducts()"
+            >
+              Add New Product
+            </button>
+            <!-- Product List -->
+            <h2 class="mb-4">Product List</h2>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
                   <tr>
-                    <td>
-                      <button
-                        class="btn btn-sm btn-outline-primary"
-                        (click)="onExpandChange(product._id)"
-                      >
-                        <i
-                          class="fas"
-                          [ngClass]="{
-                            'fa-chevron-down':
-                              expandedProductId !== product._id,
-                            'fa-chevron-up': expandedProductId === product._id
-                          }"
-                        ></i>
-                      </button>
-                    </td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.quantity }}</td>
-                    <td>
-                      <ng-container *appHasRole="'WRITE'">
-                        <button
-                          class="btn btn-sm btn-info"
-                          (click)="startEdit(product._id)"
-                          *ngIf="editingProductId !== product._id"
-                          (click)="toggleManageProducts()"
-                        >
-                          <i class="fas fa-edit"></i> Edit
-                        </button>
-                      </ng-container>
-                      <ng-container *appHasRole="'ADMIN'">
-                        <button
-                          class="btn btn-sm btn-danger ml-2"
-                          (click)="deleteProduct(product._id)"
-                          *ngIf="editingProductId !== product._id"
-                        >
-                          <i class="fas fa-trash"></i> Delete
-                        </button>
-                      </ng-container>
-                    </td>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
                   </tr>
-                  <tr *ngIf="expandedProductId === product._id">
-                    <td colspan="6">
-                      <div class="p-3">
-                        <h5>Description</h5>
-                        {{ product.description }}
-                        <h5>Preview Images</h5>
-                        <div class="d-flex flex-wrap">
-                          <div *ngFor="let imageUrl of product.image">
-                            <img
-                              [src]="imageUrl"
-                              alt="Product Image"
-                              width="100"
-                              height="100"
-                            />
-                            <button
-                              type="button"
-                              class="btn btn-danger btn-sm"
-                              (click)="markImageForDeletion(imageUrl)"
-                            >
-                              <i class="fas fa-trash"></i> Delete
-                            </button>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let product of products">
+                    <tr>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          (click)="onExpandChange(product._id)"
+                        >
+                          <i
+                            class="fas"
+                            [ngClass]="{
+                              'fa-chevron-down':
+                                expandedProductId !== product._id,
+                              'fa-chevron-up': expandedProductId === product._id
+                            }"
+                          ></i>
+                        </button>
+                      </td>
+                      <td>{{ product.name }}</td>
+                      <td>{{ product.price }}</td>
+                      <td>{{ product.quantity }}</td>
+                      <td>
+                        <ng-container *appHasRole="'WRITE'">
+                          <button
+                            class="btn btn-sm btn-info"
+                            (click)="startEdit(product._id)"
+                            *ngIf="editingProductId !== product._id"
+                            (click)="toggleEditProducts()"
+                          >
+                            <i class="fas fa-edit"></i> Edit
+                          </button>
+                        </ng-container>
+                        <ng-container *appHasRole="'ADMIN'">
+                          <button
+                            class="btn btn-sm btn-danger ml-2"
+                            (click)="deleteProduct(product._id)"
+                            *ngIf="editingProductId !== product._id"
+                          >
+                            <i class="fas fa-trash"></i> Delete
+                          </button>
+                        </ng-container>
+                      </td>
+                    </tr>
+                    <tr *ngIf="expandedProductId === product._id">
+                      <td colspan="6">
+                        <div class="p-3">
+                          <h5>Description</h5>
+                          {{ product.description }}
+                          <h5>Preview Images</h5>
+                          <div class="d-flex flex-wrap">
+                            <div *ngFor="let imageUrl of product.image">
+                              <img
+                                [src]="imageUrl"
+                                alt="Product Image"
+                                width="100"
+                                height="100"
+                              />
+                              <button
+                                type="button"
+                                class="btn btn-danger btn-sm"
+                                (click)="markImageForDeletion(imageUrl)"
+                              >
+                                <i class="fas fa-trash"></i> Delete
+                              </button>
+                            </div>
                           </div>
+                          <h5 class="mt-3">Variants</h5>
+                          <table class="table table-sm">
+                            <thead>
+                              <tr>
+                                <th>Size</th>
+                                <th>Color</th>
+                                <th>Stock</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let variant of product.variants">
+                                <td>{{ variant.size }}</td>
+                                <td>{{ variant.color }}</td>
+                                <td>{{ variant.stock }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
-                        <h5 class="mt-3">Variants</h5>
-                        <table class="table table-sm">
-                          <thead>
-                            <tr>
-                              <th>Size</th>
-                              <th>Color</th>
-                              <th>Stock</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let variant of product.variants">
-                              <td>{{ variant.size }}</td>
-                              <td>{{ variant.color }}</td>
-                              <td>{{ variant.stock }}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-12 pb-1">
-            <nav aria-label="Page navigation">
-              <ul class="pagination justify-content-center mb-3">
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a
-                    class="page-link"
-                    (click)="changePage(currentPage - 1)"
-                    aria-label="Previous"
-                    [attr.aria-disabled]="currentPage === 1"
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-12 pb-1">
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mb-3">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a
+                      class="page-link"
+                      (click)="changePage(currentPage - 1)"
+                      aria-label="Previous"
+                      [attr.aria-disabled]="currentPage === 1"
+                    >
+                      <span aria-hidden="true">&laquo;</span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    *ngFor="let page of totalPages()"
+                    [class.active]="currentPage === page"
                   >
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                </li>
-                <li
-                  class="page-item"
-                  *ngFor="let page of totalPages()"
-                  [class.active]="currentPage === page"
-                >
-                  <a class="page-link" (click)="changePage(page)">{{ page }}</a>
-                </li>
-                <li
-                  class="page-item"
-                  [class.disabled]="currentPage === totalPages().length"
-                >
-                  <a
-                    class="page-link"
-                    (click)="changePage(currentPage + 1)"
-                    aria-label="Next"
-                    [attr.aria-disabled]="currentPage === totalPages().length"
+                    <a class="page-link" (click)="changePage(page)">{{
+                      page
+                    }}</a>
+                  </li>
+                  <li
+                    class="page-item"
+                    [class.disabled]="currentPage === totalPages().length"
                   >
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+                    <a
+                      class="page-link"
+                      (click)="changePage(currentPage + 1)"
+                      aria-label="Next"
+                      [attr.aria-disabled]="currentPage === totalPages().length"
+                    >
+                      <span aria-hidden="true">&raquo;</span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
+
         <!-- Manage Products Section -->
         <div *ngIf="showManageProducts">
-          <button class="btn btn-primary mb-4" (click)="toggleManageProducts()">Show list product</button>
-
-          <h3 class="mb-4"> 
-            <p *ngIf="!showManageProducts">Manage Products</p>
-            <p *ngIf="showManageProducts">Form product</p>
-        </h3>
-          <!-- Form to add/edit product -->
-          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label class="form-label" for="name">Name</label>
-              <input
-                placeholder="Nhập vào tên sản phẩm"
-                class="form-control"
-                id="name"
-                formControlName="name"
-                type="text"
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="type">Type</label>
-              <input
-                placeholder="Nhập vào phân loại sản phẩm"
-                class="form-control"
-                id="type"
-                formControlName="type"
-                type="text"
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="price">Price</label>
-              <input
-                placeholder="Nhập vào giá sản phẩm"
-                class="form-control"
-                id="price"
-                formControlName="price"
-                type="number"
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="quantity">Quantity</label>
-              <input
-                placeholder="Nhập vào số lượng"
-                class="form-control"
-                id="quantity"
-                formControlName="quantity"
-                type="number"
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="description">Description</label>
-              <editor
-                id="description"
-                formControlName="description"
-                apiKey="svjwnw0epdbm6nlw5r643hpcztdphaqa7hyed3k5u87wkj8l"
-                [init]="{
-                  plugins: [
-                    'anchor',
-                    'autolink',
-                    'charmap',
-                    'codesample',
-                    'emoticons',
-                    'image',
-                    'link',
-                    'lists',
-                    'media',
-                    'searchreplace',
-                    'table',
-                    'visualblocks',
-                    'wordcount'
-                  ],
-                  toolbar:
-                    'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                  tinycomments_mode: 'embedded',
-                  tinycomments_author: 'Author name',
-                  mergetags_list: [
-                    { value: 'First.Name', title: 'First Name' },
-                    { value: 'Email', title: 'Email' }
-                  ]
-                }"
-              ></editor>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="tiktokAffiliateLink"
-                >Link Social</label
-              >
-              <input
-                placeholder="Nhập vào link tiktok/youtube/facebook"
-                class="form-control"
-                id="tiktokAffiliateLink"
-                formControlName="tiktokAffiliateLink"
-                type="text"
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="image">Images</label>
-              <input
-                class="form-control"
-                id="image"
-                type="file"
-                (change)="onFilesSelected($event)"
-                multiple
-              />
-            </div>
-            <div class="mb-3">
-              <!-- Preview Images -->
-              <div *ngIf="imagePreviews.length > 0">
-                <div *ngFor="let imagePreview of imagePreviews">
-                  <img
-                    [src]="imagePreview"
-                    alt="Product Image"
-                    width="100"
-                    height="100"
-                  />
+          <div class="container mt-5">
+            <button
+              class="btn btn-primary mb-4"
+              (click)="toggleManageProducts()"
+            >
+              Show list product
+            </button>
+            <h2 class="mb-4">
+              {{ isEditing ? "Edit Product" : "Add New Product" }}
+            </h2>
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+              <!-- Product Name -->
+              <div class="form-group">
+                <label for="productName">Product Name</label>
+                <input
+                  type="text"
+                  id="productName"
+                  formControlName="name"
+                  class="form-control"
+                  placeholder="Enter product name"
+                  required
+                />
+                <div
+                  *ngIf="
+                    productForm.get('name')?.invalid &&
+                    productForm.get('name')?.touched
+                  "
+                  class="text-danger"
+                >
+                  Product name is required.
                 </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <!-- Variants -->
-              <div formArrayName="variants">
-                <h4>Variants</h4>
+
+              <!-- Product Description -->
+              <div class="form-group">
+                <label for="productDescription">Product Description</label>
+                <textarea
+                  id="productDescription"
+                  formControlName="description"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Enter product description"
+                  required
+                ></textarea>
                 <div
-                  *ngFor="let variant of variants.controls; let i = index"
-                  [formGroupName]="i"
-                  class="mb-3 p-3 border rounded"
+                  *ngIf="
+                    productForm.get('description')?.invalid &&
+                    productForm.get('description')?.touched
+                  "
+                  class="text-danger"
                 >
+                  Product description is required.
+                </div>
+              </div>
+
+              <!-- Product Price -->
+              <div class="form-group">
+                <label for="productPrice">Product Price</label>
+                <input
+                  type="number"
+                  id="productPrice"
+                  formControlName="price"
+                  class="form-control"
+                  placeholder="Enter product price"
+                  required
+                />
+                <div
+                  *ngIf="
+                    productForm.get('price')?.invalid &&
+                    productForm.get('price')?.touched
+                  "
+                  class="text-danger"
+                >
+                  Product price is required.
+                </div>
+              </div>
+
+              <!-- Image Management Section -->
+              <div class="form-group">
+                <label for="productImages">Product Images</label>
+                <div class="image-grid">
                   <div
-                    class="d-flex justify-content-between align-items-center mb-2"
+                    *ngFor="let image of imagePreviews; let i = index"
+                    class="image-item"
                   >
-                    <h5 class="mb-0">Variant {{ i + 1 }}</h5>
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm"
-                      (click)="removeVariant(i)"
-                    >
-                      <i class="fas fa-trash"></i> Delete Variant
-                    </button>
-                  </div>
-                  <div class="mb-2">
-                    <label class="form-label" for="size">Size</label>
-                    <input
-                      placeholder="Nhập vào kích thước(Nếu có)"
-                      class="form-control"
-                      id="size"
-                      formControlName="size"
-                      type="text"
+                    <img
+                      [src]="image.url"
+                      alt="Product Image"
+                      class="img-thumbnail"
                     />
+                    <div class="image-actions">
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm"
+                        (click)="removeImage(i)"
+                        title="Delete Image"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div class="mb-2">
-                    <label class="form-label" for="color">Color</label>
+                </div>
+                <button type="button" class="btn btn-success mt-2">
+                  Add Image
+                </button>
+              </div>
+
+              <!-- Variant Management Section -->
+              <div class="form-group">
+                <label for="productVariants">Product Variants</label>
+                <div class="variant-grid">
+                  <div
+                    *ngFor="let variant of variants.controls; let i = index"
+                    class="variant-item"
+                  >
                     <input
-                      placeholder="Nhập vào màu sắc(Nếu có)"
-                      class="form-control"
-                      id="color"
-                      formControlName="color"
                       type="text"
+                      [(ngModel)]="variant.value.name"
+                      placeholder="Variant Name"
+                      class="form-control mb-2"
                     />
-                  </div>
-                  <div class="mb-2">
-                    <label class="form-label" for="stock">Stock</label>
                     <input
-                      placeholder="Nhập vào số lượng(Nếu có)"
-                      class="form-control"
-                      id="stock"
-                      formControlName="stock"
                       type="number"
+                      [(ngModel)]="variant.value.price"
+                      placeholder="Variant Price"
+                      class="form-control mb-2"
                     />
+                    <div class="variant-actions">
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm"
+                        (click)="removeVariant(i)"
+                        title="Delete Variant"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <button
                   type="button"
-                  class="btn btn-secondary mt-2"
+                  class="btn btn-success mt-2"
                   (click)="addVariant()"
                 >
                   Add Variant
                 </button>
               </div>
-            </div>
-            <ng-container *appHasRole="'WRITE'">
-              <button type="submit" class="btn btn-primary">
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="productForm.invalid"
+              >
                 {{ isEditing ? "Update Product" : "Create Product" }}
               </button>
               <button
@@ -356,49 +338,13 @@
               >
                 Cancel
               </button>
-            </ng-container>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
       <!-- Order Tab -->
       <div class="tab-pane fade" id="order-tab">
         <div class="container mt-5">
-          <!-- Order List -->
-          <h3 class="mt-5">Order List</h3>
-          <div class="table-responsive order-list-container">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer Name</th>
-                  <th>Status</th>
-                  <th>Total Price</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let order of orders">
-                  <tr>
-                    <td>{{ order._id }}</td>
-                    <td>{{ order.orderId }}</td>
-                    <td>{{ order.status }}</td>
-                    <td>{{ order.totalPrice | number : "1.0-0" }} vnđ</td>
-                    <td>
-                      <ng-container *appHasRole="'WRITE'">
-                        <button
-                          class="btn btn-sm btn-info"
-                          (click)="editOrder(order)"
-                        >
-                          <i class="fas fa-edit"></i> Edit
-                        </button>
-                      </ng-container>
-                    </td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-          </div>
-
           <h2 class="mb-4">Order Management</h2>
           <!-- Form to update order status -->
           <form
@@ -444,6 +390,41 @@
               </button>
             </ng-container>
           </form>
+          <!-- Order List -->
+          <h3 class="mt-5">Order List</h3>
+          <div class="table-responsive order-list-container">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer Name</th>
+                  <th>Status</th>
+                  <th>Total Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let order of orders">
+                  <tr>
+                    <td>{{ order._id }}</td>
+                    <td>{{ order.orderId }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.totalPrice | number : "1.0-0" }} vnđ</td>
+                    <td>
+                      <ng-container *appHasRole="'WRITE'">
+                        <button
+                          class="btn btn-sm btn-info"
+                          (click)="editOrder(order)"
+                        >
+                          <i class="fas fa-edit"></i> Edit
+                        </button>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

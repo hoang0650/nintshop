@@ -3,32 +3,34 @@ import { ProductApiService } from '../../services/product-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { CartService, CartItem } from '../../services/cart.service';
 import { Product } from '../../interfaces/product';
+import { Variant } from '../../interfaces/variant';
 import { Subscription } from 'rxjs';
 import { SeoService } from '../../services/seo.service';
 import { MessageService } from '../../services/message.service';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.css'] // Đã sửa typo từ 'styleUrl' thành 'styleUrls'
+  styleUrls: ['./detail.component.css']
 })
 export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('imageList') imageList!: ElementRef;
   @ViewChild('imageListContainer') imageListContainer!: ElementRef;
   @ViewChild('mainImageContainer') mainImageContainer!: ElementRef;
-  product: any;
-  relatedProducts: any[]=[];
-  cartItems: any[] = [];
-  selectedVariant: any;
+  product: Product | undefined;
+  relatedProducts: Product[] = [];
+  cartItems: CartItem[] = [];
+  selectedVariant: Variant | undefined;
   currentImageIndex = 0;
-  selectedImage: string = ''
+  selectedImage: string = '';
   selectedColor: string = '';
-  sliderValue = 0; // Giá trị mặc định cho slider
-  private subscriptions: Subscription = new Subscription(); // Biến để lưu các subscriptions
+  sliderValue = 0;
+  private subscriptions: Subscription = new Subscription();
   private thumbnailScroll = 0;
-  private readonly thumbnailWidth = 80; // Width của mỗi thumbnail
-  private readonly thumbnailGap = 8;  // Khoảng cách giữa các thumbnails
-  private readonly scrollStep = this.thumbnailWidth + this.thumbnailGap; // Khai báo scrollStep một lần
+  private readonly thumbnailWidth = 80;
+  private readonly thumbnailGap = 8;
+  private readonly scrollStep = this.thumbnailWidth + this.thumbnailGap;
   private scrollAmount = 0;
   private isAnimating = false;
   quantity: number = 1;
@@ -36,7 +38,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   insurancePrice: number = 39000;
   selectedLocation: string = 'Hà Nội';
   shippingFee: number = 20000;
-  
+
   locations: string[] = [
     'Hà Nội',
     'TP. Hồ Chí Minh',
@@ -54,7 +56,6 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   zoomLevel: number = 2.5;
   isZoomed: boolean = false;
   mousePosition = { x: 0, y: 0 };
-
   zoomEnabled: boolean = false;
   zoomPosition = { x: 0, y: 0 };
   zoomScale: number = 2.5;
@@ -85,44 +86,47 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
           });
           this.selectedImage = this.product.image[0];
           this.selectedColor = this.product.colors[0];
-          // Lấy danh sách sản phẩm liên quan
         },
         error => {
           console.error('Error fetching product details:', error);
         }
       );
-      if (id) {
-        this.productService.getRelatedProducts(id).subscribe(
-          (products) => {
-            this.relatedProducts = products; // Cập nhật danh sách sản phẩm liên quan
-            console.log('relatedProducts', this.relatedProducts);
-          },
-          (error) => {
-            console.error('Error fetching related products:', error);
-          }
-        );
-      }
-      this.subscriptions.add(detailSub); // Thêm subscription vào danh sách
+      this.subscriptions.add(detailSub);
+
+      this.productService.getRelatedProducts(id).subscribe(
+        (products: Product[]) => {
+          this.relatedProducts = products;
+          console.log('relatedProducts', this.relatedProducts);
+        },
+        error => {
+          console.error('Error fetching related products:', error);
+        }
+      );
     }
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe(); // Hủy tất cả các subscription
+    this.subscriptions.unsubscribe();
   }
 
-  getSlides(): any[] {
-    const slides = [];
+  ngAfterViewInit(): void {
+    this.preloadImages();
+    this.initializeImageHandlers();
+  }
+
+  getSlides(): Product[][] {
+    const slides: Product[][] = [];
     for (let i = 0; i < this.relatedProducts.length; i += 4) {
-      slides.push(this.relatedProducts.slice(i, i + 4)); // Chia sản phẩm thành các slide
+      slides.push(this.relatedProducts.slice(i, i + 4));
     }
     return slides;
   }
 
-  navigateToProduct(productId: string) {
+  navigateToProduct(productId: string): void {
     window.location.href = `/detail/${productId}`;
   }
 
-  addToCart(product: any) {
+  addToCart(product: Product): void {
     if (this.selectedVariant) {
       const item: CartItem = {
         name: product.name,
@@ -141,7 +145,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  selectVariant(variant: { size: string; color: string }) {
+  selectVariant(variant: Variant): void {
     this.selectedVariant = variant;
     if (this.product) {
       const variantIndex = this.product.variants.indexOf(variant);
@@ -153,7 +157,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSliderChange(value: number): void {
-    this.selectedImage = this.product.image[value]; // Cập nhật hình ảnh đã chọn
+    this.selectedImage = this.product?.image[value] || '';
   }
 
   selectImage(image: string, index: number): void {
@@ -161,23 +165,19 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentImageIndex = index;
     this.zoomEnabled = false;
 
-    // Tính toán vị trí scroll để đưa thumbnail được chọn vào giữa
     const thumbnailsWrapper = document.querySelector('.thumbnails-wrapper') as HTMLElement;
     if (!thumbnailsWrapper) return;
 
     const containerWidth = thumbnailsWrapper.clientWidth;
     const targetScroll = (index * this.scrollStep) - (containerWidth - this.thumbnailWidth) / 2;
-    
-    // Giới hạn scroll trong phạm vi cho phép
+
     const thumbnailsEl = document.querySelector('.thumbnails') as HTMLElement;
     const maxScroll = thumbnailsEl.scrollWidth - containerWidth;
     this.scrollAmount = Math.max(0, Math.min(targetScroll, maxScroll));
 
-    // Áp dụng scroll với animation
     thumbnailsEl.style.transition = 'transform 0.3s ease';
     thumbnailsEl.style.transform = `translateX(-${this.scrollAmount}px)`;
 
-    // Reset transition sau khi animation hoàn thành
     setTimeout(() => {
       thumbnailsEl.style.transition = '';
     }, 300);
@@ -186,39 +186,41 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private updateNavigationButtons(): void {
-    const prevBtn = document.querySelector('.nav-btn.prev');
-    const nextBtn = document.querySelector('.nav-btn.next');
+    const prevBtn = document.querySelector('.nav-btn.prev') as HTMLElement;
+    const nextBtn = document.querySelector('.nav-btn.next') as HTMLElement;
     const thumbnailsEl = document.querySelector('.thumbnails') as HTMLElement;
-    
+
     if (!thumbnailsEl || !prevBtn || !nextBtn) return;
 
     const containerWidth = thumbnailsEl.parentElement!.clientWidth;
     const maxScroll = thumbnailsEl.scrollWidth - containerWidth;
 
-    // Cập nhật trạng thái nút prev
-    if (prevBtn instanceof HTMLElement) {
-      prevBtn.classList.toggle('disabled', this.scrollAmount <= 0);
-    }
-
-    // Cập nhật trạng thái nút next
-    if (nextBtn instanceof HTMLElement) {
-      nextBtn.classList.toggle('disabled', this.scrollAmount >= maxScroll);
-    }
+    prevBtn.classList.toggle('disabled', this.scrollAmount <= 0);
+    nextBtn.classList.toggle('disabled', this.scrollAmount >= maxScroll);
   }
 
-  handleImageZoom(event: MouseEvent): void {
-    if (!this.mainImageContainer || window.innerWidth <= 768) return;
+  handleImageZoom(event: MouseEvent | TouchEvent): void {
+    if (!this.mainImageContainer) return;
 
     const container = this.mainImageContainer.nativeElement;
     const rect = container.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    let x: number | undefined, y: number | undefined;
 
-    this.zoomEnabled = true;
-    this.zoomPosition = {
-      x: (x / rect.width) * 100,
-      y: (y / rect.height) * 100
-    };
+    if (event instanceof MouseEvent) {
+      x = event.clientX - rect.left;
+      y = event.clientY - rect.top;
+    } else if (event instanceof TouchEvent) {
+      x = event.touches[0].clientX - rect.left;
+      y = event.touches[0].clientY - rect.top;
+    }
+
+    if (x !== undefined && y !== undefined) {
+      this.zoomEnabled = true;
+      this.zoomPosition = {
+        x: (x / rect.width) * 100,
+        y: (y / rect.height) * 100
+      };
+    }
   }
 
   handleMouseLeave(): void {
@@ -226,12 +228,12 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   handleThumbnailScroll(direction: 'left' | 'right'): void {
-    const thumbnailsContainer = document.querySelector('.thumbnails');
+    const thumbnailsContainer = document.querySelector('.thumbnails') as HTMLElement;
     if (!thumbnailsContainer) return;
 
-    const scrollAmount = 100; // Điều chỉnh khoảng cách scroll
+    const scrollAmount = 100;
     const currentScroll = thumbnailsContainer.scrollLeft;
-    
+
     thumbnailsContainer.scrollTo({
       left: direction === 'left' ? currentScroll - scrollAmount : currentScroll + scrollAmount,
       behavior: 'smooth'
@@ -239,38 +241,27 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   checkScrollPosition(): void {
-    const container = document.querySelector('.thumbnails');
-    const prevBtn = document.querySelector('.nav-btn.prev');
-    const nextBtn = document.querySelector('.nav-btn.next');
-    
+    const container = document.querySelector('.thumbnails') as HTMLElement;
+    const prevBtn = document.querySelector('.nav-btn.prev') as HTMLElement;
+    const nextBtn = document.querySelector('.nav-btn.next') as HTMLElement;
+
     if (!container || !prevBtn || !nextBtn) return;
 
-    // Hiển thị/ẩn nút prev
-    if (container.scrollLeft <= 0) {
-      prevBtn.classList.add('disabled');
-    } else {
-      prevBtn.classList.remove('disabled');
-    }
-
-    // Hiển thị/ẩn nút next
-    if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
-      nextBtn.classList.add('disabled');
-    } else {
-      nextBtn.classList.remove('disabled');
-    }
+    prevBtn.classList.toggle('disabled', container.scrollLeft <= 0);
+    nextBtn.classList.toggle('disabled', container.scrollLeft + container.clientWidth >= container.scrollWidth);
   }
 
   scrollThumbnails(direction: 'prev' | 'next'): void {
     if (this.isAnimating) return;
-    
+
     const thumbnailsEl = document.querySelector('.thumbnails') as HTMLElement;
     if (!thumbnailsEl) return;
 
     const containerWidth = thumbnailsEl.parentElement!.clientWidth;
     const maxScroll = thumbnailsEl.scrollWidth - containerWidth;
-    
+
     this.isAnimating = true;
-    
+
     if (direction === 'prev') {
       this.scrollAmount = Math.max(this.scrollAmount - this.scrollStep, 0);
     } else {
@@ -278,19 +269,12 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     thumbnailsEl.style.transform = `translateX(-${this.scrollAmount}px)`;
-    
-    // Cập nhật trạng thái nút điều hướng
+
     this.updateNavigationButtons();
-    
-    // Reset trạng thái animation sau khi hoàn thành
+
     setTimeout(() => {
       this.isAnimating = false;
     }, 300);
-  }
-
-  ngAfterViewInit() {
-    this.preloadImages();
-    this.initializeImageHandlers();
   }
 
   private preloadImages(): void {
@@ -306,30 +290,18 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
     const container = this.mainImageContainer?.nativeElement;
     if (!container) return;
 
-    // Xử lý zoom trên desktop
     container.addEventListener('mousemove', (e: MouseEvent) => this.handleImageZoom(e));
     container.addEventListener('mouseleave', () => this.zoomEnabled = false);
 
-    // Xử lý touch events trên mobile
-    const thumbnails = document.querySelector('.thumbnails');
+    container.addEventListener('touchstart', (e: TouchEvent) => this.handleTouchStart(e));
+    container.addEventListener('touchmove', (e: TouchEvent) => this.handleTouchMove(e));
+    container.addEventListener('touchend', () => this.handleTouchEnd());
+
+    const thumbnails = document.querySelector('.thumbnails') as HTMLElement;
     if (thumbnails) {
-      thumbnails.addEventListener('touchstart', (e: Event) => {
-        if (e instanceof TouchEvent) {
-          this.handleTouchStart(e);
-        }
-      });
-
-      thumbnails.addEventListener('touchmove', (e: Event) => {
-        if (e instanceof TouchEvent) {
-          this.handleTouchMove(e);
-        }
-      });
-
-      thumbnails.addEventListener('touchend', (e: Event) => {
-        if (e instanceof TouchEvent) {
-          this.handleTouchEnd();
-        }
-      });
+      thumbnails.addEventListener('touchstart', (e: TouchEvent) => this.handleTouchStart(e));
+      thumbnails.addEventListener('touchmove', (e: TouchEvent) => this.handleTouchMove(e));
+      thumbnails.addEventListener('touchend', () => this.handleTouchEnd());
     }
   }
 
@@ -360,22 +332,18 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      // Calculate positions
       const overlayWidth = overlay.offsetWidth;
       const overlayHeight = overlay.offsetHeight;
 
       let overlayX = x - overlayWidth / 2;
       let overlayY = y - overlayHeight / 2;
 
-      // Constrain overlay position
       overlayX = Math.max(0, Math.min(overlayX, rect.width - overlayWidth));
       overlayY = Math.max(0, Math.min(overlayY, rect.height - overlayHeight));
 
-      // Position overlay
       overlay.style.left = `${overlayX}px`;
       overlay.style.top = `${overlayY}px`;
 
-      // Update zoom result
       const zoomRatio = 2.5;
       result.style.backgroundImage = `url(${mainImage.src})`;
       result.style.backgroundSize = `${rect.width * zoomRatio}px ${rect.height * zoomRatio}px`;
@@ -383,21 +351,21 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  incrementClickCount(event: MouseEvent, productId: string) {
-    event.preventDefault(); // Ngăn chặn hành vi mặc định của link
+  incrementClickCount(event: MouseEvent, productId: string): void {
+    event.preventDefault();
     this.productService.incrementClickCount(productId).subscribe(
       response => {
         console.log('Click count updated:', response.clickCount);
         if (this.product) {
           this.product.clickCount = response.clickCount;
         }
-        // Chuyển hướng đến link tiếp thị liên kết
-        window.open(this.product.affiliateLink, '_blank');
+        if (this.product?.affiliateLink) {
+          window.open(this.product.affiliateLink, '_blank');
+        }
       },
       error => {
         console.error('Error updating click count:', error);
-        // Vẫn chuyển hướng đến link tiếp thị liên kết ngay cả khi có lỗi
-        window.open(this.product.affiliateLink, '_blank');
+        window.open(this.product?.affiliateLink, '_blank');
       }
     );
   }
@@ -439,7 +407,7 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   calculateTotalPrice(): number {
-    let total = this.product?.price * this.quantity;
+    let total = (this.product?.price || 0) * this.quantity;
     if (this.hasInsurance) {
       total += this.insurancePrice;
     }
@@ -447,23 +415,23 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   handleTouchStart(event: TouchEvent): void {
-    event.preventDefault(); // Ngăn chặn scroll mặc định
+    event.preventDefault();
     this.touchStartX = event.touches[0].clientX;
     this.isDragging = true;
   }
 
   handleTouchMove(event: TouchEvent): void {
-    event.preventDefault(); // Ngăn chặn scroll mặc định
+    event.preventDefault();
     if (!this.isDragging) return;
 
     const currentX = event.touches[0].clientX;
     const diff = currentX - this.touchStartX;
     const thumbnails = document.querySelector('.thumbnails') as HTMLElement;
-    
+
     if (thumbnails) {
       const newTranslate = this.currentTranslate + diff;
       const maxTranslate = thumbnails.scrollWidth - thumbnails.clientWidth;
-      
+
       if (newTranslate <= 0 && Math.abs(newTranslate) <= maxTranslate) {
         thumbnails.style.transform = `translateX(${newTranslate}px)`;
       }
@@ -481,7 +449,6 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('window:resize')
   onResize(): void {
-    // Reset scroll amount khi resize window
     this.scrollAmount = 0;
     const thumbnailsEl = document.querySelector('.thumbnails') as HTMLElement;
     if (thumbnailsEl) {

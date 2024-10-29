@@ -11,5 +11,12 @@ export interface Product {
   sold: number;
   image: string[];
   variants: Variant[];
-  
+  viewCount?: number;
+  affiliateLink?: string; 
+  clickCount?: number; 
+  stock: number;
+  colors: string[]; 
 }
+
+
+

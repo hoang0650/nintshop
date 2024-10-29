@@ -1,193 +1,146 @@
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-1">
-    <div class="d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 100px;">
-        <div class="d-inline-flex">
-            <p class="m-0"><a routerLink="/home">Home</a></p>
-            <p class="m-0 px-2">/</p>
-            <p class="m-0"><a routerLink="/detail/{{product?._id}}">Detail</a></p>
-        </div>
+  <div class="d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 100px;">
+    <div class="d-inline-flex">
+      <p class="m-0"><a routerLink="/home">Home</a></p>
+      <p class="m-0 px-2">/</p>
+      <p class="m-0"><a routerLink="/detail/{{product?._id}}">Detail</a></p>
     </div>
+  </div>
 </div>
 <!-- Page Header End -->
 
 <!-- Shop Detail Start -->
 <div class="container-fluid py-5">
-    <app-message></app-message>
-    <div class="row px-xl-5">
-        <div class="col-lg-5 pb-5">
-            <!-- Main Image Container -->
-            <div class="main-image-container" #mainImageContainer>
-                <img [src]="selectedImage || product?.image[0]" 
-                     [alt]="product?.name" 
-                     class="main-product-image"
-                     [class.zoomed]="zoomEnabled"
-                     [style.transform]="zoomEnabled ? 'scale(' + zoomScale + ')' : 'none'"
-                     [style.transformOrigin]="zoomEnabled ? zoomPosition.x + '% ' + zoomPosition.y + '%' : 'center'"
-                     draggable="false">
-            </div>
-
-            <!-- Thumbnail Navigation -->
-            <div class="thumbnail-slider">
-                <button class="nav-btn prev" 
-                        [class.disabled]="currentImageIndex === 0"
-                        (click)="scrollThumbnails('prev')">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <div class="thumbnails-wrapper">
-                    <div class="thumbnails"
-                         [style.transform]="'translateX(' + currentTranslate + 'px)'"
-                         [style.transition]="isDragging ? 'none' : 'transform 0.3s'">
-                        <div *ngFor="let img of product?.image; let i = index" 
-                             class="thumbnail-item"
-                             [class.active]="selectedImage === img"
-                             (click)="selectImage(img, i)">
-                            <img [src]="img" 
-                                 [alt]="product?.name + ' thumbnail ' + (i + 1)"
-                                 loading="lazy"
-                                 draggable="false">
-                        </div>
-                    </div>
-                </div>
-
-                <button class="nav-btn next"
-                        [class.disabled]="currentImageIndex === (product?.image?.length || 0) - 1"
-                        (click)="scrollThumbnails('next')">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="col-lg-7 pb-5">
-            <h3 class="font-weight-semi-bold">{{product?.name}}</h3>
-            <div class="d-flex mb-3">
-                <div class="text-primary mr-2">
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                </div>
-                <small class="pt-1">(50 Reviews)</small>
-            </div>
-            <h3 class="font-weight-semi-bold mb-4">{{ product?.price | number: '1.0-0'}} VNĐ</h3>
-
-            <div class="mb-4">
-                <p class="text-dark font-weight-medium mb-2">Variants:</p>
-                <div class="variant-container">
-                    <div *ngFor="let variant of product?.variants; let i = index" class="variant-item">
-                        <div class="variant-card" [class.selected]="selectedVariant === variant" (click)="selectVariant(variant)">
-                          <!-- <div class="variant-image-container">
-                            <img [src]="product?.image[i + 1] || product?.image[0]" alt="Variant" class="variant-image">
-                          </div> -->
-                          <div class="variant-info">
-                            <p class="variant-color">{{ variant.color }}</p>
-                            <p class="variant-size">{{ variant.size }}</p>
-                          </div>
-                        </div>
-                      </div>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center mb-4 pt-2 flex-wrap">
-                <button class="btn btn-primary px-3 mr-2 mb-2" (click)="addToCart(product)">
-                    <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
-                </button>
-                <!-- (click)="incrementClickCount($event, product._id, 'tiktok')" -->
-                <!-- <a [href]="product.tiktokAffiliateLink" target="_blank" rel="noopener noreferrer" 
-                   class="btn btn-danger px-3 mr-2 mb-2">
-                  <i class="fab fa-tiktok mr-1"></i> Buy on TikTok Shop
-                </a>
-                <a [href]="" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id, 'shopee')" 
-                   class="btn btn-warning px-3 mr-2 mb-2">
-                  <i class="fas fa-shopping-bag mr-1"></i> Buy on Shopee
-                </a>
-                <a [href]="product?.temuLink" target="_blank" rel="noopener noreferrer" (click)="incrementClickCount($event, product._id, 'temu')" 
-                   class="btn btn-info px-3 mb-2">
-                  <i class="fas fa-store mr-1"></i> Buy on Temu
-                </a> -->
-            </div>
-
-            <div class="mt-3">
-                <p>Views: {{ product?.viewCount || 0 }}</p>
-            </div>
-
-            <div class="d-flex pt-2">
-                <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
-                <div class="d-inline-flex">
-                    <a class="text-dark px-2" href="https://www.facebook.com/profile.php?id=61566602871136"
-                        target="_blank">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-pinterest"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- <app-featured></app-featured> -->
-    <div class="row px-xl-5">
-        <div class="col">
-            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="tab-pane-1">
-                    <h4 class="mb-3">Product Description</h4>
-                    <div [innerHTML]="product?.description" class="product-description"></div>
-                </div>
-                <div class="tab-pane fade" id="tab-pane-3">
-                    <app-review [productId]="product?._id"></app-review>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Shop Detail End -->
-<!-- <app-message></app-message>
-<div class="container-fluid py-5 bg-light">
-  <div class="text-center mb-4">
-    <h2 class="section-title px-5"><span class="px-2 border-bottom border-primary">You May Also Like</span></h2>
-  </div>
+  <app-message></app-message>
   <div class="row px-xl-5">
-    <div class="col">
-      <nz-carousel [nzDots]="false" nzAutoplay nzEffect="scrollx">
-        <div nz-carousel-content *ngFor="let slide of getSlides()">
-          <div class="d-flex justify-content-around product-grid">
-            <div (click)='navigateToProduct(product._id)' class="card product-item border-0 shadow" *ngFor="let product of slide">
-              <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                <img class="img-fluid w-100" [src]="product.image[0]" alt="{{ product.name }}">
-              </div>
-              <div class="card-body d-flex flex-column justify-content-between p-3 text-center">
-                <h6 class="text-truncate mb-2">{{ product.name }}</h6>
-                <div class="d-flex justify-content-center mb-1">
-                  <h6 class="text-primary">{{ product.price | number: '1.0-0' }} VNĐ</h6>
-                </div>
-                <div class="d-flex justify-content-around">
-                  <a (click)="navigateToProduct(product.id)" class="btn btn-sm text-dark px-2 py-1">
-                    <i class="fas fa-eye mr-1"></i>View Detail
-                  </a>
-                  <a (click)="addToCart(product)" class="btn btn-sm btn-primary px-2 py-1">
-                    <i class="fas fa-shopping-cart mr-1"></i>Add To Cart
-                  </a>
-                </div>
+    <div class="col-lg-5 pb-5">
+      <!-- Main Image Container -->
+      <div class="main-image-container position-relative" #mainImageContainer>
+        <img [src]="selectedImage || product?.image?.[0]" 
+             [alt]="product?.name" 
+             class="main-product-image img-fluid"
+             [class.zoomed]="zoomEnabled"
+             [style.transform]="zoomEnabled ? 'scale(' + zoomScale + ')' : 'none'"
+             [style.transformOrigin]="zoomEnabled ? zoomPosition.x + '% ' + zoomPosition.y + '%' : 'center'"
+             draggable="false">
+        <div *ngIf="zoomEnabled" class="zoom-overlay"></div>
+      </div>
+
+      <!-- Thumbnail Navigation -->
+      <div class="thumbnail-slider d-flex align-items-center mt-3">
+        <button class="nav-btn prev btn btn-outline-secondary" 
+                [class.disabled]="currentImageIndex === 0"
+                (click)="scrollThumbnails('prev')">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="thumbnails-wrapper flex-grow-1 mx-2">
+          <div class="thumbnails d-flex"
+               [style.transform]="'translateX(' + currentTranslate + 'px)'"
+               [style.transition]="isDragging ? 'none' : 'transform 0.3s'"
+               >
+               <div *ngFor="let img of product?.image; let i = index" 
+               class="thumbnail-item mx-1"
+               [class.active]="selectedImage === img"
+               (click)="selectImage(img, i)"
+               (touchstart)="selectImage(img, i)">
+            <img [src]="img" 
+                 [alt]="product?.name + ' thumbnail ' + (i + 1)"
+                 class="img-thumbnail"
+                 loading="lazy"
+                 draggable="false">
+          </div>
+          </div>
+        </div>
+
+        <button class="nav-btn next btn btn-outline-secondary"
+                [class.disabled]="currentImageIndex === (product?.image?.length || 0) - 1"
+                (click)="scrollThumbnails('next')">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="col-lg-7 pb-5">
+      <h3 class="font-weight-semi-bold">{{product?.name}}</h3>
+      <div class="d-flex mb-3">
+        <div class="text-primary mr-2">
+          <small class="fas fa-star"></small>
+          <small class="fas fa-star"></small>
+          <small class="fas fa-star"></small>
+          <small class="fas fa-star"></small>
+          <small class="fas fa-star"></small>
+        </div>
+        <small class="pt-1">(50 Reviews)</small>
+      </div>
+      <h3 class="font-weight-semi-bold mb-4">{{ product?.price | number: '1.0-0'}} VNĐ</h3>
+
+      <div class="mb-4">
+        <p class="text-dark font-weight-medium mb-2">Variants:</p>
+        <div class="variant-container d-flex flex-wrap">
+          <div *ngFor="let variant of product?.variants; let i = index" class="variant-item m-1">
+            <div class="variant-card p-2 border rounded" [class.selected]="selectedVariant === variant" (click)="selectVariant(variant)">
+              <div class="variant-info">
+                <p class="variant-color mb-1">{{ variant.color }}</p>
+                <p class="variant-size mb-0">{{ variant.size }}</p>
               </div>
             </div>
           </div>
         </div>
-      </nz-carousel>
+      </div>
+
+      <div class="d-flex align-items-center mb-4 pt-2 flex-wrap">
+        <button class="btn btn-primary px-3 mr-2 mb-2" (click)="product && addToCart(product)">
+          <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+        </button>
+      </div>
+
+      <div class="mt-3">
+        <p>Views: {{ product?.viewCount !== null && product?.viewCount !== undefined ? product?.viewCount : 0 }}</p>
+      </div>
+
+      <div class="d-flex pt-2">
+        <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
+        <div class="d-inline-flex">
+          <a class="text-dark px-2" href="https://www.facebook.com/profile.php?id=61566602871136"
+              target="_blank">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a class="text-dark px-2" href="">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a class="text-dark px-2" href="">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a class="text-dark px-2" href="">
+            <i class="fab fa-pinterest"></i>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-</div> -->
-<div class="related-products-container">
+  <div class="row px-xl-5">
+    <div class="col">
+      <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+        <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
+        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="tab-pane-1">
+          <h4 class="mb-3">Product Description</h4>
+          <div [innerHTML]="product?.description" class="product-description"></div>
+        </div>
+        <div class="tab-pane fade" id="tab-pane-3">
+          <app-review [productId]="product?._id!"></app-review>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Shop Detail End -->
+
+<div class="related-products-container mt-5">
   <div class="text-center mb-4">
     <h2 class="section-title px-5"><span class="px-2 border-bottom border-primary">You May Also Like</span></h2>
   </div>
@@ -197,7 +150,7 @@
         <nz-card-meta [nzTitle]="product.name" [nzDescription]="priceTemplate"></nz-card-meta>
       </nz-card>
       <ng-template #coverTemplate>
-        <img [alt]="product.name" [src]="product.image[0]" />
+        <img [alt]="product.name" [src]="product.image[0]" class="img-fluid" />
       </ng-template>
       <ng-template #priceTemplate>
         <span nz-typography nzType="danger">{{ product.price | number: '1.0-0' }} VNĐ</span>
@@ -209,7 +162,3 @@
     </div>
   </nz-carousel>
 </div>
-
-
-
-

@@ -55,3 +55,70 @@
     display: flex;
     gap: 5px;
   }
+  /* Style for image preview container */
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.image-preview {
+  flex: 1 1 calc(33.333% - 20px);
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.image-preview textarea {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.image-preview button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .image-preview {
+    flex: 1 1 calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .image-preview {
+    flex: 1 1 100%;
+  }
+}
+
+.fullscreen-editor {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1050; /* Ensure it is above other elements */
+  background: white;
+  box-sizing: border-box;
+}
+
+.fullscreen-editor .ql-container {
+  height: calc(100% - 50px); /* Adjust height to fit toolbar */
+}
+
+.fullscreen-editor .ql-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.fullscreen-editor .ql-editor {
+  height: calc(100% - 50px); /* Adjust height to fit toolbar */
+  overflow-y: auto;
+}

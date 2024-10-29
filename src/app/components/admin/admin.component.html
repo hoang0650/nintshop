@@ -4,7 +4,11 @@
     <!-- Tabs for Product and Order -->
     <ul class="nav nav-tabs justify-content-center border-secondary mb-4">
       <li class="nav-item">
-        <a (click)="toggleTab()" class="nav-link active" data-toggle="tab" href="#product-tab"
+        <a
+          (click)="toggleTab()"
+          class="nav-link active"
+          data-toggle="tab"
+          href="#product-tab"
           >Product</a
         >
       </li>
@@ -207,25 +211,25 @@
                 </div>
               </div>
 
-              <!-- Product Description -->
+              <!-- Product Type -->
               <div class="form-group">
-                <label for="productDescription">Product Description</label>
-                <textarea
-                  id="productDescription"
-                  formControlName="description"
+                <label for="productType">Product Type</label>
+                <input
+                  type="text"
+                  id="productType"
+                  formControlName="type"
                   class="form-control"
-                  rows="3"
-                  placeholder="Enter product description"
+                  placeholder="Enter product type"
                   required
-                ></textarea>
+                />
                 <div
                   *ngIf="
-                    productForm.get('description')?.invalid &&
-                    productForm.get('description')?.touched
+                    productForm.get('type')?.invalid &&
+                    productForm.get('type')?.touched
                   "
                   class="text-danger"
                 >
-                  Product description is required.
+                  Product type is required.
                 </div>
               </div>
 
@@ -251,66 +255,139 @@
                 </div>
               </div>
 
-              <!-- Image Management Section -->
+              <!-- Product Quantity -->
+              <div class="form-group">
+                <label for="productQuantity">Product Quantity</label>
+                <input
+                  type="number"
+                  id="productQuantity"
+                  formControlName="quantity"
+                  class="form-control"
+                  placeholder="Enter product quantity"
+                  required
+                />
+                <div
+                  *ngIf="
+                    productForm.get('quantity')?.invalid &&
+                    productForm.get('quantity')?.touched
+                  "
+                  class="text-danger"
+                >
+                  Product quantity is required.
+                </div>
+              </div>
+
+              <!-- Product Description -->
+              <div class="form-group">
+                <label for="productDescription">Product Description</label>
+                <quill-editor
+                  class="fullscreen-editor"
+                  #quillEditor
+                  formControlName="description"
+                  [styles]="{ height: '200px', width: '100%' }"
+                  [modules]="{
+                    toolbar: [
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      ['link', 'image'],
+                      [{ align: [] }],
+                      ['clean']
+                    ],
+                    imageResize: {}
+                  }"
+                ></quill-editor>
+                <div
+                  *ngIf="
+                    productForm.get('description')?.invalid &&
+                    productForm.get('description')?.touched
+                  "
+                  class="text-danger"
+                >
+                  Product description is required.
+                </div>
+              </div>
+              <!-- Image Upload -->
               <div class="form-group">
                 <label for="productImages">Product Images</label>
-                <div class="image-grid">
+                <input
+                  type="file"
+                  id="productImages"
+                  #productImagesInput
+                  (change)="onFileSelected($event)"
+                  multiple
+                  class="form-control"
+                  placeholder="Upload product images here"
+                />
+                <div class="image-preview-container mt-3">
                   <div
                     *ngFor="let image of imagePreviews; let i = index"
-                    class="image-item"
+                    class="image-preview"
                   >
                     <img
                       [src]="image.url"
-                      alt="Product Image"
+                      alt="Image Preview"
                       class="img-thumbnail"
                     />
-                    <div class="image-actions">
-                      <button
-                        type="button"
-                        class="btn btn-danger btn-sm"
-                        (click)="removeImage(i)"
-                        title="Delete Image"
-                      >
-                        <i class="fas fa-trash-alt"></i>
-                      </button>
-                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm mt-2"
+                      (click)="removeImage(i)"
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
-                <button type="button" class="btn btn-success mt-2">
-                  Add Image
-                </button>
               </div>
 
-              <!-- Variant Management Section -->
+              <!-- TikTok Affiliate Link -->
+              <div class="form-group">
+                <label for="tiktokAffiliateLink">TikTok Affiliate Link</label>
+                <input
+                  type="text"
+                  id="tiktokAffiliateLink"
+                  formControlName="tiktokAffiliateLink"
+                  class="form-control"
+                  placeholder="Enter TikTok affiliate link"
+                />
+              </div>
+
+              <!-- Product Variants -->
               <div class="form-group">
                 <label for="productVariants">Product Variants</label>
-                <div class="variant-grid">
+                <div formArrayName="variants">
                   <div
                     *ngFor="let variant of variants.controls; let i = index"
+                    [formGroupName]="i"
                     class="variant-item"
                   >
                     <input
                       type="text"
-                      [(ngModel)]="variant.value.name"
-                      placeholder="Variant Name"
+                      formControlName="size"
+                      placeholder="Variant Size"
+                      class="form-control mb-2"
+                    />
+                    <input
+                      type="text"
+                      formControlName="color"
+                      placeholder="Variant Color"
                       class="form-control mb-2"
                     />
                     <input
                       type="number"
-                      [(ngModel)]="variant.value.price"
-                      placeholder="Variant Price"
+                      formControlName="stock"
+                      placeholder="Variant Stock"
                       class="form-control mb-2"
                     />
-                    <div class="variant-actions">
-                      <button
-                        type="button"
-                        class="btn btn-danger btn-sm"
-                        (click)="removeVariant(i)"
-                        title="Delete Variant"
-                      >
-                        <i class="fas fa-trash-alt"></i>
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      (click)="removeVariant(i)"
+                      title="Delete Variant"
+                    >
+                      <i class="fas fa-trash-alt"></i> Delete Variant
+                    </button>
                   </div>
                 </div>
                 <button
@@ -328,15 +405,8 @@
                 class="btn btn-primary"
                 [disabled]="productForm.invalid"
               >
+                
                 {{ isEditing ? "Update Product" : "Create Product" }}
-              </button>
-              <button
-                *ngIf="isEditing"
-                type="button"
-                class="btn btn-secondary ml-2"
-                (click)="stopEdit()"
-              >
-                Cancel
               </button>
             </form>
           </div>

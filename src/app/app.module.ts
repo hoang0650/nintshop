@@ -14,7 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxEchartsModule } from 'ngx-echarts'; // Import NgxEchartsModule
 import { HighchartsChartModule } from 'highcharts-angular';
 import { EditorModule } from '@tinymce/tinymce-angular';
-
+import { QuillModule } from 'ngx-quill';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -165,6 +165,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     AboutComponent,
   ],
   imports: [
+    QuillModule.forRoot({
+      modules: {
+        imageResize: {}
+      }
+    }),
     BrowserModule,
     TranslateModule.forRoot({
       defaultLanguage: 'vi', // Ngôn ngữ mặc định

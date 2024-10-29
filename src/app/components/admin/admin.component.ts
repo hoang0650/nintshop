@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Product } from '../../interfaces/product';
 import { ProductApiService } from '../../services/product-api.service';
 import { CheckoutService } from '../../services/checkout.service';
 import { MessageService } from '../../services/message.service';
 import { HttpClient } from '@angular/common/http';
+import 'quill/dist/quill.snow.css';
 
 // Define the enum for order status
 enum OrderStatus {
@@ -29,7 +31,8 @@ interface Order {
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  imagePreviews: { url: string, file: File }[] = [];
+  @ViewChild('productImagesInput') productImagesInput!: ElementRef;
+  imagePreviews: { url: string; file: File; description?: string; }[] = [];
   imageSrc: string | ArrayBuffer | null = null;
   imageId: string | null = null;
   uploadMessage: string = '';
@@ -58,8 +61,9 @@ export class AdminComponent implements OnInit {
     private http: HttpClient,
     private messageService: MessageService,
     private fb: FormBuilder,
-    private productService: ProductApiService,
-    private checkoutService: CheckoutService
+    private snackBar: MatSnackBar,
+    private checkoutService: CheckoutService,
+    private productService: ProductApiService
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -110,9 +114,16 @@ export class AdminComponent implements OnInit {
       });
     }
   }
-
+  updateFileInput(): void {
+    const dataTransfer = new DataTransfer();
+    this.imagePreviews.forEach(image => {
+      dataTransfer.items.add(image.file);
+    });
+    this.productImagesInput.nativeElement.files = dataTransfer.files;
+  }
   removeImage(index: number): void {
     this.imagePreviews.splice(index, 1);
+    this.updateFileInput();
   }
 
   applyPagination() {
@@ -198,9 +209,9 @@ export class AdminComponent implements OnInit {
     if (this.productForm.valid) {
       const formData = new FormData();
       formData.append('productData', JSON.stringify(this.productForm.value));
-
-      this.imagePreviews.forEach((image, index) => {
-        formData.append(`images[${index}]`, image.file);
+      
+      this.selectedFiles.forEach((file, index) => {
+        formData.append('images', file, file.name);
       });
 
       if (this.isEditing && this.selectedProduct) {
@@ -210,6 +221,8 @@ export class AdminComponent implements OnInit {
       }
     }
   }
+  
+
 
   loadProducts() {
     this.http.get<Product[]>('https://sale-nest-api.onrender.com/api/products').subscribe({
@@ -225,10 +238,15 @@ export class AdminComponent implements OnInit {
   createProduct(formData: FormData) {
     this.http.post<{ message: string; product: Product }>('https://sale-nest-api.onrender.com/api/products', formData).subscribe({
       next: response => {
+        this.snackBar.open('Thêm sản phẩm thành công', 'Close', {
+          duration: 3000,
+        });
         this.products.push(response.product);
-        this.resetForm();
+        this.toggleTab();
       },
-      error: error => console.error('Error creating product:', error)
+      error: error => { this.snackBar.open('Có lỗi xảy ra khi thêm sản phẩm', 'Close', {
+        duration: 3000,
+      });console.error('Error creating product:', error)}
     });
   }
 
@@ -239,20 +257,28 @@ export class AdminComponent implements OnInit {
         if (index !== -1) {
           this.products[index] = response.product;
         }
-        this.resetForm();
+        this.snackBar.open('Cập nhật sản phẩm thành công', 'Close', {
+          duration: 3000,
+        });
+        this.toggleTab();
       },
-      error: error => console.error('Error updating product:', error)
+      error: error => { this.snackBar.open('Có lỗi xảy ra khi cập nhật sản phẩm', 'Close', {
+        duration: 3000,
+      });console.error('Error updating product:', error)}
     });
   }
 
   deleteProduct(id: string): void {
     this.productService.deleteProduct(id).subscribe({
       next: () => {
-        this.messageService.addMessage('success', 'This is a success message!');
+        this.messageService.addMessage('success', 'Xóa sản phẩm thành công!');
         this.products = this.products.filter(p => p._id !== id);
       },
       error: error => {
-        this.messageService.addMessage('danger', 'This is an error message!');
+        this.snackBar.open('Có lỗi xảy ra khi xóa sản phẩm', 'Close', {
+          duration: 3000,
+        });
+        // this.messageService.addMessage('danger', 'This is an error message!');
         console.error('Error deleting product:', error);
       }
     });
@@ -326,18 +352,5 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  private prepareProductData(): any {
-    const formData = new FormData();
-    formData.append('name', this.productForm.get('name')?.value);
-    formData.append('price', this.productForm.get('price')?.value);
-    formData.append('quantity', this.productForm.get('quantity')?.value);
-    formData.append('description', this.productForm.get('description')?.value);
-    formData.append('variants', JSON.stringify(this.productForm.get('variants')?.value));
-
-    this.selectedFiles.forEach(file => {
-      formData.append(`image`, file, file.name);
-    });
-
-    return formData;
-  }
+ 
 }

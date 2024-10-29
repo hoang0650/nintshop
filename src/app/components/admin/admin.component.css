@@ -11,3 +11,7 @@
     max-width: 100%; /* Ensures images are responsive */
     height: auto;
 }
+.order-list-container {
+    max-height: 400px; /* Set the desired height */
+    overflow-y: auto;
+  }

@@ -70,6 +70,12 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  showManageProducts = false;
+
+  toggleManageProducts() {
+    this.showManageProducts = !this.showManageProducts;
+  }
+
   ngOnInit(): void {
     this.loadProducts();
     this.loadOrders();

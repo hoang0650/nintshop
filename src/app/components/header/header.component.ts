@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false
   isAdmin: boolean = false;
   isSticky: boolean = false;
+  isNav: boolean = false;
   isLeftSidebarOpen: boolean = false;
   isRightSidebarOpen: boolean = false;
   infor: any;
@@ -197,6 +198,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isMobile(): boolean {
     return window.matchMedia('(max-width: 557px)').matches;
+  }
+
+  toggleNav(){
+    this.isNav = !this.isNav
   }
 
   toggleLeftSidebar(){

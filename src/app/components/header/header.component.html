@@ -92,7 +92,7 @@
                 <div class="navbar-nav w-100 overflow-auto" style="height: 410px;">
                     <a class="nav-item nav-link category-link" *ngFor="let category of categories"
                         (click)="onCategoryClick(category)">
-                        {{ category.name  | translate}}
+                        {{ category.name | translate}}
                     </a>
                 </div>
 
@@ -127,12 +127,24 @@
                     <div class="navbar-nav mr-auto py-0">
                         <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">{{ 'HOME' | translate
                             }}</a>
-                        <a routerLink="/shop" routerLinkActive="active" class="nav-item nav-link">{{ 'SHOP' | translate
-                            }}</a>
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ 'SHOP' | translate }}</a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a class="dropdown-item" routerLink="/shops">{{ 'SHOP' | translate }}</a>
+                                <a class="dropdown-item" routerLink="/shop-register">{{ 'SHOP_REGISTER' | translate
+                                    }}</a>
+                            </div>
+                        </div>
                         <a *ngIf="isAdmin" routerLink="/shop-page" routerLinkActive="active"
                             class="nav-item nav-link">{{ 'SHOP_PAGE' | translate }}</a>
-                        <a routerLink="/blog" routerLinkActive="active" class="nav-item nav-link">{{ 'Blog' | translate
-                            }}</a>
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ 'BLOG' | translate }}</a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a class="dropdown-item" routerLink="/blogger">{{ 'BLOG' | translate }}</a>
+                                <a class="dropdown-item" routerLink="/blogger-register">{{ 'BLOGGER_REGISTER' |
+                                    translate }}</a>
+                            </div>
+                        </div>
                         <a *ngIf="isAdmin" routerLink="/livestream-homepage" routerLinkActive="active"
                             class="nav-item nav-link">{{ 'LIVE' | translate }}</a>
                         <a routerLink="/about" routerLinkActive="active" class="nav-item nav-link">{{
@@ -168,6 +180,11 @@
                                 <a class="dropdown-item" routerLink="/user-info">{{ 'USER_INFO' | translate }}</a>
                                 <a *ngIf="isAdmin" class="dropdown-item" routerLink="/balance">{{ 'BALANCE' | translate
                                     }}</a>
+                                <a class="dropdown-item" routerLink="/shop-register">{{ 'SHOP_REGISTER' | translate
+                                    }}</a>
+                                <a class="dropdown-item" routerLink="/blogger-register">{{ 'BLOGGER_REGISTER' |
+                                    translate }}</a>
+                                <a class="dropdown-item" routerLink="/complaint">{{ 'COMPLAINT' | translate}}</a>
                             </div>
                         </div>
                         <a routerLinkActive="active" class="nav-item nav-link" (click)="logOut()">{{ 'LOG_OUT' |
@@ -194,12 +211,27 @@
     <!-- Add your left sidebar content here -->
     <div class="sidebar-content">
         <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">{{ 'HOME' | translate }}</a>
-        <a routerLink="/shop" routerLinkActive="active" class="nav-item nav-link">{{ 'SHOP' | translate }}</a>
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ 'SHOP' | translate }}</a>
+            <div class="dropdown-menu rounded-0 m-0">
+                <a class="dropdown-item" routerLink="/shops">{{ 'SHOP' | translate }}</a>
+                <a class="dropdown-item" routerLink="/shop-register">{{ 'SHOP_REGISTER' | translate
+                    }}</a>
+            </div>
+        </div>
         <a *ngIf="isAdmin" routerLink="/shop-page" routerLinkActive="active" class="nav-item nav-link">{{ 'SHOP_PAGE' |
             translate }}</a>
-        <a routerLink="/blog" routerLinkActive="active" class="nav-item nav-link">{{ 'Blog' | translate }}</a>
+        <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ 'BLOG' | translate }}</a>
+                <div class="dropdown-menu rounded-0 m-0">
+                    <a class="dropdown-item" routerLink="/blogger">{{ 'BLOG' | translate }}</a>
+                    <a class="dropdown-item" routerLink="/blogger-register">{{ 'BLOGGER_REGISTER' |
+                        translate }}</a>
+                </div>
+        </div>
         <a *ngIf="isAdmin" routerLink="/livestream-homepage" routerLinkActive="active" class="nav-item nav-link">{{
             'LIVE' | translate }}</a>
+        <a routerLink="/about" routerLinkActive="active" class="nav-item nav-link">{{ 'ABOUT' | translate }}</a>
         <a routerLink="/order-tracking" routerLinkActive="active" class="nav-item nav-link">{{ 'TRACKING' | translate
             }}</a>
         <div class="nav-item dropdown" *ngIf="isAdmin">
@@ -227,6 +259,9 @@
                     <a class="dropdown-item" routerLink="/user-info">{{ 'USER_INFO' | translate }}</a>
                     <a *ngIf="isAdmin" class="dropdown-item" routerLink="/balance">{{ 'BALANCE' | translate
                         }}</a>
+                    <a class="dropdown-item" routerLink="/shop-register">{{ 'SHOP_REGISTER' | translate }}</a>
+                    <a class="dropdown-item" routerLink="/blogger-register">{{ 'BLOGGER_REGISTER' | translate }}</a>
+                    <a class="dropdown-item" routerLink="/complaint">{{ 'COMPLAINT' | translate}}</a>
                 </div>
             </div>
             <a routerLinkActive="active" class="nav-item nav-link" (click)="logOut()">{{ 'LOG_OUT' |

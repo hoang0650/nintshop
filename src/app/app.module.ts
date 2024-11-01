@@ -59,14 +59,14 @@ import { DetailComponent } from './components/detail/detail.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ContactComponent } from './components/contact/contact.component';
-import { LoginComponent } from './components/login/login.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { LoginComponent } from './components/register-page/login/login.component';
+import { SignupComponent } from './components/register-page/signup/signup.component';
 import { ReviewComponent } from './components/review/review.component';
 import { QrCodeComponent } from './components/qr-code/qr-code.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { ChatboxComponent } from './components/chatbox/chatbox.component';
 import { OrderTrackingComponent } from './components/order-tracking/order-tracking.component';
-import { AdminComponent } from './components/admin/admin.component';
+import { AdminComponent } from './components/admin-pages/admin/admin.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { OrderComponent } from './components/order/order.component';
@@ -85,10 +85,10 @@ import { BalanceComponent } from './components/balance/balance.component';
 import { SafePipe } from './pipes/safe.pipe';
 import { MessageComponent } from './components/message/message.component';
 import { SupportChatComponent } from './components/support-chat/support-chat.component';
-import { CategoryListComponent } from './components/category-list/category-list.component';
+import { CategoryListComponent } from './components/page-list/category-list/category-list.component';
 import { BlogComponent } from './components/blog/blog.component';
 import { CommentBlogComponent } from './components/comment-blog/comment-blog.component';
-import { BlogListComponent } from './components/blog-list/blog-list.component';
+import { BlogListComponent } from './components/page-list/blog-list/blog-list.component';
 import { BlogCreatorComponent } from './components/blog-creator/blog-creator.component';
 import { LightningSaleComponent } from './components/lightning-sale/lightning-sale.component';
 import { TableOfContentsComponent } from './components/table-of-contents/table-of-contents.component';
@@ -98,7 +98,13 @@ import { VideoFormComponent } from './components/video-form/video-form.component
 import { GermanLessonComponent } from './components/german-lesson/german-lesson.component';
 import { FaqsComponent } from './components/faqs/faqs.component';
 import { AboutComponent } from './pages/about/about.component';
-
+import { BloggerComponent } from './components/register-page/blogger/blogger.component';
+import { StoreComponent } from './components/register-page/store/store.component';
+import { ProjectComponent } from './components/register-page/project/project.component';
+import { ComplaintComponent } from './components/register-page/complaint/complaint.component';
+import { RevenueManagementComponent } from './components/admin-pages/revenue-management/revenue-management.component';
+import { BloggerListComponent } from './components/page-list/blogger-list/blogger-list.component';
+import { ShopListComponent } from './components/page-list/shop-list/shop-list.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -163,13 +169,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     GermanLessonComponent,
     FaqsComponent,
     AboutComponent,
+    BloggerComponent,
+    StoreComponent,
+    ProjectComponent,
+    ComplaintComponent,
+    RevenueManagementComponent,
+    BloggerListComponent,
+    ShopListComponent
   ],
   imports: [
-    QuillModule.forRoot({
-      modules: {
-        imageResize: {}
-      }
-    }),
     BrowserModule,
     TranslateModule.forRoot({
       defaultLanguage: 'vi', // Ngôn ngữ mặc định
@@ -182,9 +190,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     NgxEchartsModule.forRoot({ echarts: () => import('echarts') }),
     HighchartsChartModule,
+    FormsModule,
     ReactiveFormsModule,
     EditorModule,
-    FormsModule,
+    QuillModule.forRoot({
+      modules: {
+        imageResize: {}
+      }
+    }),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right', // You can customize position here
       timeOut: 3000, // Duration in milliseconds

@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { Product } from '../../interfaces/product';
-import { ProductApiService } from '../../services/product-api.service';
-import { CheckoutService } from '../../services/checkout.service';
-import { MessageService } from '../../services/message.service';
+import { Product } from '../../../interfaces/product';
+import { ProductApiService } from '../../../services/product-api.service';
+import { CheckoutService } from '../../../services/checkout.service';
+import { MessageService } from '../../../services/message.service';
 import { HttpClient } from '@angular/common/http';
 import 'quill/dist/quill.snow.css';
 

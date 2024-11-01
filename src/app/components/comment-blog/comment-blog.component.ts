@@ -18,7 +18,6 @@ export class CommentBlogComponent implements OnInit {
 
   ngOnInit(): void {
     this.blogId = this.route.snapshot.paramMap.get('id')!;
-    console.log(' this.blogId', this.blogId)
     this.loadComments();
   }
 

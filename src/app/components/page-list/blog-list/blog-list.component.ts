@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BlogService } from '../../services/blog.service';
-import { Blog } from '../../interfaces/blog';
-import { SeoService } from '../../services/seo.service';
+import { BlogService } from '../../../services/blog.service';
+import { Blog } from '../../../interfaces/blog';
+import { SeoService } from '../../../services/seo.service';
 
 // interface BlogPost {
 //   id: number;

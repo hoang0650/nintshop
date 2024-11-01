@@ -1,0 +1,64 @@
+<!-- blogger-list.component.html -->
+<!-- <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Danh sách Blogger</h1>
+    <div class="relative mb-6">
+        <input type="text" placeholder="Tìm kiếm blogger..." [(ngModel)]="searchTerm"
+            class="w-full pl-10 pr-4 py-2 border rounded-lg" />
+        <i class="fa fa-search"></i>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let blogger of filteredBloggers" class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center mb-2">
+                    <svg class="h-6 w-6 text-gray-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <h2 class="text-xl font-semibold">{{ blogger.name }}</h2>
+                </div>
+                <p class="text-gray-600">Chuyên môn: {{ blogger.specialty }}</p>
+                <p class="text-gray-600">Giá: {{ blogger.rate }}</p>
+            </div>
+            <div class="px-6 py-4 bg-gray-100">
+                <button (click)="hireBlogger(blogger._id)"
+                    class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    Thuê Blogger
+                </button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="container">
+    <h1 class="title">Danh sách Blogger</h1>
+    
+    <div class="search-bar">
+      <input type="text" placeholder="Tìm kiếm blogger..." class="search-input">
+      <button class="search-button">Tìm kiếm</button>
+    </div>
+  
+    <div class="blogger-grid">
+      <!-- Repeat this card for each blogger -->
+      <div class="blogger-card">
+        <img src="path-to-blogger-image.jpg" alt="Blogger Name" class="blogger-image">
+        <div class="blogger-info">
+          <h2 class="blogger-name">Tên Blogger</h2>
+          <p class="blogger-specialty">Chuyên môn: Thời trang</p>
+          <p class="blogger-bio">Mô tả ngắn về blogger và kinh nghiệm của họ...</p>
+          <div class="blogger-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="rating-number">4.5</span>
+          </div>
+          <button class="hire-btn">Thuê Blogger</button>
+        </div>
+      </div>
+      <!-- End of blogger card -->
+    </div>
+  
+    <div class="pagination">
+      <button class="pagination-btn">Trước</button>
+      <span class="page-number">Trang 1 của 5</span>
+      <button class="pagination-btn">Sau</button>
+    </div>
+  </div>

@@ -1,0 +1,40 @@
+<!-- revenue-management.component.html -->
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Quản lý doanh thu và lịch sử giao dịch</h1>
+
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-xl font-semibold mb-4">Tổng doanh thu: {{ totalRevenue | currency:'VND':'symbol':'1.0-0' }}</h2>
+    </div>
+
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+        <h2 class="text-xl font-semibold mb-4">Lịch sử giao dịch</h2>
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">ID</th>
+                    <th class="px-4 py-2">Ngày</th>
+                    <th class="px-4 py-2">Mô tả</th>
+                    <th class="px-4 py-2">Số tiền</th>
+                    <th class="px-4 py-2">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let transaction of transactions">
+                    <td class="border px-4 py-2">{{ transaction.id }}</td>
+                    <td class="border px-4 py-2">{{ transaction.date | date:'dd/MM/yyyy' }}</td>
+                    <td class="border px-4 py-2">{{ transaction.description }}</td>
+                    <td class="border px-4 py-2">{{ transaction.amount | currency:'VND':'symbol':'1.0-0' }}</td>
+                    <td class="border px-4 py-2">
+                        <span [ngClass]="{
+                'bg-green-200 text-green-800': transaction.status === 'completed',
+                'bg-yellow-200 text-yellow-800': transaction.status === 'pending',
+                'bg-red-200 text-red-800': transaction.status === 'cancelled'
+              }" class="px-2 py-1 rounded-full text-sm">
+                            {{ transaction.status }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

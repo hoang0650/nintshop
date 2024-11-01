@@ -1,0 +1,62 @@
+<!-- store-list.component.html -->
+<!-- <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Danh sách cửa hàng</h1>
+    <div class="relative mb-6">
+        <input type="text" placeholder="Tìm kiếm cửa hàng..." [(ngModel)]="searchTerm"
+            class="w-full pl-10 pr-4 py-2 border rounded-lg" />
+        <i class="fa fa-search"></i>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let store of filteredStores" class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center mb-2">
+                    <svg class="h-6 w-6 text-gray-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    <h2 class="text-xl font-semibold">{{ store.storeName }}</h2>
+                </div>
+                <p class="text-gray-600">{{ store.address }}</p>
+            </div>
+            <div class="px-6 py-4 bg-gray-100">
+                <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    Xem chi tiết
+                </button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- store-list.component.html -->
+<div class="container">
+    <h1 class="title">Danh sách cửa hàng</h1>
+    
+    <div class="search-bar">
+      <input type="text" placeholder="Tìm kiếm cửa hàng..." class="search-input">
+      <button class="search-button">Tìm kiếm</button>
+    </div>
+  
+    <div class="store-grid">
+      <!-- Repeat this card for each store -->
+      <div class="store-card">
+        <img src="path-to-store-image.jpg" alt="Store Name" class="store-image">
+        <div class="store-info">
+          <h2 class="store-name">Tên Cửa Hàng</h2>
+          <p class="store-address">123 Đường ABC, Quận 1, TP.HCM</p>
+          <div class="store-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="rating-number">4.5</span>
+          </div>
+          <button class="view-details-btn">Xem chi tiết</button>
+        </div>
+      </div>
+      <!-- End of store card -->
+    </div>
+  
+    <div class="pagination">
+      <button class="pagination-btn">Trước</button>
+      <span class="page-number">Trang 1 của 5</span>
+      <button class="pagination-btn">Sau</button>
+    </div>
+  </div>

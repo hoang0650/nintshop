@@ -1,0 +1,57 @@
+<!-- blogger-registration.component.html -->
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Đăng ký Blogger</h1>
+    <form [formGroup]="bloggerForm" (ngSubmit)="onSubmit()" class="max-w-lg mx-auto">
+        <div class="mb-4">
+            <label for="fullName" class="block text-gray-700 text-sm font-bold mb-2">Họ và tên</label>
+            <input type="text" id="fullName" formControlName="fullName"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+            <input type="email" id="email" formControlName="email"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Số điện thoại</label>
+            <input type="tel" id="phone" formControlName="phone"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label for="specialty" class="block text-gray-700 text-sm font-bold mb-2">Chuyên môn</label>
+            <select id="specialty" formControlName="specialty"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="">Chọn chuyên môn</option>
+                <option value="fashion">Thời trang</option>
+                <option value="food">Ẩm thực</option>
+                <option value="travel">Du lịch</option>
+                <option value="technology">Công nghệ</option>
+                <option value="lifestyle">Phong cách sống</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="experience" class="block text-gray-700 text-sm font-bold mb-2">Số năm kinh nghiệm</label>
+            <input type="number" id="experience" formControlName="experience"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label for="bio" class="block text-gray-700 text-sm font-bold mb-2">Tiểu sử</label>
+            <textarea id="bio" formControlName="bio"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                rows="4"></textarea>
+        </div>
+        <div class="mb-6">
+            <label for="portfolioUrl" class="block text-gray-700 text-sm font-bold mb-2">URL Portfolio (không bắt
+                buộc)</label>
+            <input type="url" id="portfolioUrl" formControlName="portfolioUrl"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="flex items-center justify-between">
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                [disabled]="!bloggerForm.valid">
+                Đăng ký
+            </button>
+        </div>
+    </form>
+</div>

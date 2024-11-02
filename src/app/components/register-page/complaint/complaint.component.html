@@ -1,41 +1,76 @@
-<!-- complaint-form.component.html -->
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Gửi khiếu nại</h1>
-    <form [formGroup]="complaintForm" (ngSubmit)="onSubmit()" class="max-w-lg mx-auto">
-        <div class="mb-4">
-            <label for="subject" class="block text-gray-700 text-sm font-bold mb-2">Tiêu đề khiếu nại</label>
-            <input type="text" id="subject" formControlName="subject"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-        <div class="mb-4">
-            <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Mô tả chi tiết</label>
-            <textarea id="description" formControlName="description"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                rows="4"></textarea>
-        </div>
-        <div class="mb-4">
-            <label for="relatedEntityType" class="block text-gray-700 text-sm font-bold mb-2">Loại đối tượng liên
-                quan</label>
-            <select id="relatedEntityType" formControlName="relatedEntityType"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">Chọn loại</option>
-                <option value="store">Cửa hàng</option>
-                <option value="blogger">Blogger</option>
-                <option value="project">Dự án</option>
-            </select>
-        </div>
-        <div class="mb-6">
-            <label for="relatedEntityId" class="block text-gray-700 text-sm font-bold mb-2">ID đối tượng liên
-                quan</label>
-            <input type="text" id="relatedEntityId" formControlName="relatedEntityId"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-        <div class="flex items-center justify-between">
-            <button type="submit"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                [disabled]="!complaintForm.valid">
-                Gửi khiếu nại
-            </button>
-        </div>
+    <h1 nz-typography nzTitle>Gửi Khiếu Nại</h1>
+    <form nz-form [formGroup]="complaintForm" (ngSubmit)="onSubmit()" class="max-w-lg mx-auto">
+  
+      <!-- Tiêu đề khiếu nại -->
+      <div class="mb-4">
+        <nz-form-label nzFor="subject" nzRequired>Tiêu đề khiếu nại</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            id="subject"
+            formControlName="subject"
+            placeholder="Nhập tiêu đề khiếu nại"
+          />
+        </nz-form-control>
+      </div>
+  
+      <!-- Mô tả chi tiết -->
+      <div class="mb-4">
+        <nz-form-label nzFor="description" nzRequired>Mô tả chi tiết</nz-form-label>
+        <nz-form-control>
+          <textarea
+            nz-input
+            id="description"
+            formControlName="description"
+            placeholder="Nhập mô tả chi tiết"
+            rows="4"
+          ></textarea>
+        </nz-form-control>
+      </div>
+  
+      <!-- Loại đối tượng liên quan -->
+      <div class="mb-4">
+        <nz-form-label nzFor="relatedEntityType" nzRequired>Loại đối tượng liên quan</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            id="relatedEntityType"
+            formControlName="relatedEntityType"
+            placeholder="Chọn loại"
+            nzShowSearch
+          >
+            <nz-option nzValue="store" nzLabel="Cửa hàng"></nz-option>
+            <nz-option nzValue="blogger" nzLabel="Blogger"></nz-option>
+            <nz-option nzValue="project" nzLabel="Dự án"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </div>
+  
+      <!-- ID đối tượng liên quan -->
+      <div class="mb-6">
+        <nz-form-label nzFor="relatedEntityId" nzRequired>ID đối tượng liên quan</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            id="relatedEntityId"
+            formControlName="relatedEntityId"
+            placeholder="Nhập ID đối tượng liên quan"
+          />
+        </nz-form-control>
+      </div>
+  
+      <!-- Nút gửi khiếu nại -->
+      <div class="flex items-center justify-end">
+        <button
+          nz-button
+          nzType="primary"
+          [disabled]="!complaintForm.valid"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Gửi khiếu nại
+        </button>
+      </div>
+  
     </form>
-</div>
+  </div>
+  

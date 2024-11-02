@@ -1,0 +1,39 @@
+<div class="project-detail-container">
+    <!-- Thông tin chi tiết dự án -->
+    <nz-card nzTitle="Chi Tiết Dự Án" nzHoverable class="project-card">
+      <h2 class="project-title">Thiết kế website bán hàng</h2>
+      <p class="project-description">
+        Cần thiết kế một website bán hàng thời trang với giao diện hiện đại và responsive.
+      </p>
+      <div class="project-info">
+        <nz-tag nzColor="gold">💵 Ngân sách: 5,000,000 - 10,000,000 VNĐ</nz-tag>
+        <nz-tag nzColor="blue">⏰ Thời hạn: 30 ngày</nz-tag>
+        <nz-tag nzColor="purple">🔨 Kỹ năng: React, Node.js, UI/UX</nz-tag>
+        <nz-tag nzColor="cyan">📋 12 đề xuất</nz-tag>
+      </div>
+    </nz-card>
+  
+    <!-- Danh sách bình luận từ freelancer -->
+    <div class="freelancer-comments">
+      <h2 class="comments-title">Lời Chào Giá Từ Freelancer</h2>
+      <nz-list nzBordered [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'vertical'" class="comments-list">
+        <ng-template #item let-comment>
+          <nz-list-item class="comment-item">
+            <nz-list-item-meta
+              nzAvatar
+              [nzAvatar]="comment.freelancer.avatar"
+              nzTitle="{{ comment.freelancer.name }}"
+              nzDescription="{{ comment.comment }}"
+            ></nz-list-item-meta>
+            <div class="freelancer-bid">
+              <p class="offer-price">💲 Giá đề xuất: {{ comment.offerPrice }} VNĐ</p>
+              <button nz-button nzType="primary" nzShape="round" (click)="selectFreelancer(comment.freelancer)">
+                Chọn freelancer này
+              </button>
+            </div>
+          </nz-list-item>
+        </ng-template>
+      </nz-list>
+    </div>
+  </div>
+  

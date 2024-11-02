@@ -32,40 +32,145 @@
     <div class="tab-content mt-3">
         <div id="deposit" class="tab-pane fade show active">
             <h3>Nạp tiền</h3>
-            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền cần nạp" class="form-control mb-2"/>
+            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền cần nạp" class="form-control mb-2" />
             <button class="btn btn-primary" (click)="deposit()">Nạp tiền</button>
         </div>
 
         <div id="transfer" class="tab-pane fade">
             <h3>Chuyển tiền</h3>
-            <input type="email" [(ngModel)]="recipientEmail" placeholder="Email người nhận" class="form-control mb-2"/>
+            <input type="email" [(ngModel)]="recipientEmail" placeholder="Email người nhận" class="form-control mb-2" />
             <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền cần chuyển" class="form-control mb-2" />
             <button class="btn btn-primary" (click)="transfer()">Chuyển tiền</button>
         </div>
 
         <div id="convert" class="tab-pane fade">
             <h3>Quy đổi sang coin</h3>
-            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền USD cần quy đổi" class="form-control mb-2"/>
+            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền USD cần quy đổi"
+                class="form-control mb-2" />
             <button class="btn btn-primary" (click)="convertToCoin()">Quy đổi sang coin</button>
         </div>
 
         <div id="gift" class="tab-pane fade">
             <h3>Tặng quà</h3>
-            <input type="text" [(ngModel)]="recipientEmail" placeholder="Tên người nhận" class="form-control mb-2"/>
-            <input type="number" [(ngModel)]="coinAmount" placeholder="Nhập số coin cần tặng" class="form-control mb-2"/>
+            <input type="text" [(ngModel)]="recipientEmail" placeholder="Tên người nhận" class="form-control mb-2" />
+            <input type="number" [(ngModel)]="coinAmount" placeholder="Nhập số coin cần tặng"
+                class="form-control mb-2" />
             <button class="btn btn-primary" (click)="gift()">Tặng quà</button>
         </div>
 
         <div id="withdraw" class="tab-pane">
             <h3>Rút tiền</h3>
-            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền cần rút" class="form-control mb-2"/>
+            <input type="number" [(ngModel)]="amount" placeholder="Nhập số tiền cần rút" class="form-control mb-2" />
             <button class="btn btn-primary" (click)="withdraw()">Rút tiền</button>
         </div>
 
         <div id="convertCoinToMoney" class="tab-pane">
             <h3>Quy đổi coin sang USD (trừ 1% phí)</h3>
-            <input type="number" [(ngModel)]="coinAmount" placeholder="Nhập số coin cần quy đổi" class="form-control mb-2"/>
+            <input type="number" [(ngModel)]="coinAmount" placeholder="Nhập số coin cần quy đổi"
+                class="form-control mb-2" />
             <button class="btn btn-primary" (click)="convertCoinToMoney()">Quy đổi coin sang USD</button>
         </div>
     </div>
 </div>
+
+<div class="transaction-history-container">
+    <h2>Lịch Sử Giao Dịch</h2>
+    <nz-table
+      #userTransactionTable
+      #expandTable
+      [nzData]="userTransactions"
+      [nzBordered]="true"
+    >
+      <thead>
+        <tr>
+          <th>Mã Giao Dịch</th>
+          <th>Loại Giao Dịch</th>
+          <th>Số Tiền (VNĐ)</th>
+          <th>Trạng Thái</th>
+          <th>Thời Gian Giao Dịch</th>
+          <th>Xem Chi Tiết</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let transaction of userTransactions">
+          <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.type }}</td>
+            <td>{{ transaction.amount | currency: 'VND' }}</td>
+            <td>
+              <nz-tag [nzColor]="transaction.status === 'Success' ? 'green' : 'red'">
+                {{ transaction.status }}
+              </nz-tag>
+            </td>
+            <td>{{ transaction.date | date: 'short' }}</td>
+            <td>
+                <button nz-button nzType="link" (click)="toggleExpand(transaction)">Chi tiết</button>
+            </td>
+          </tr>
+          <tr *ngIf="transaction.expanded" class="expanded-row">
+            <td colspan="6">
+              <div class="transaction-details">
+                <p><strong>Mô tả chi tiết:</strong> {{ transaction.details }}</p>
+                <p><strong>Phương thức thanh toán:</strong> {{ transaction.paymentMethod }}</p>
+                <p><strong>Thời gian xác nhận:</strong> {{ transaction.confirmationDate | date: 'short' }}</p>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  </div>
+  
+
+  <div class="transaction-history-container">
+    <h2>Quản Lý Lịch Sử Giao Dịch</h2>
+    <nz-table
+      #adminTransactionTable
+      [nzData]="adminTransactions"
+      [nzBordered]="true"
+      #expandTable
+    >
+      <thead>
+        <tr>
+          <th>Mã Giao Dịch</th>
+          <th>Người Dùng</th>
+          <th>Loại Giao Dịch</th>
+          <th>Số Tiền (VNĐ)</th>
+          <th>Trạng Thái</th>
+          <th>Thời Gian Giao Dịch</th>
+          <th>Xem Chi Tiết</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let transaction of adminTransactions">
+          <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.userName }}</td>
+            <td>{{ transaction.type }}</td>
+            <td>{{ transaction.amount | currency: 'VND' }}</td>
+            <td>
+              <nz-tag [nzColor]="transaction.status === 'Success' ? 'green' : 'red'">
+                {{ transaction.status }}
+              </nz-tag>
+            </td>
+            <td>{{ transaction.date | date: 'short' }}</td>
+            <td>
+              <button nz-button nzType="link" (click)="toggleExpand2(transaction)">Chi tiết</button>
+            </td>
+          </tr>
+          <tr *ngIf="transaction.expanded" class="expanded-row">
+            <td colspan="7">
+              <div class="transaction-details">
+                <p><strong>Mô tả chi tiết:</strong> {{ transaction.details }}</p>
+                <p><strong>Phương thức thanh toán:</strong> {{ transaction.paymentMethod }}</p>
+                <p><strong>Thời gian xác nhận:</strong> {{ transaction.confirmationDate | date: 'short' }}</p>
+                <p><strong>Người xác nhận:</strong> {{ transaction.confirmedBy }}</p>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  </div>
+  
+  

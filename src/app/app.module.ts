@@ -44,6 +44,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker'; // Import module cho date-picker
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -116,6 +117,7 @@ import { BloggerRevenueDashboardComponent } from './components/admin-pages/blogg
 import { ProjectManagementComponent } from './components/admin-pages/project-management/project-management.component';
 import { FreelanceProjectListComponent } from './components/page-list/freelance-project-list/freelance-project-list.component';
 import { CardComponent } from './components/page-list/card/card.component';
+import { ProjectDetailComponent } from './components/page-list/project-detail/project-detail.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -193,7 +195,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     BloggerRevenueDashboardComponent,
     ProjectManagementComponent,
     FreelanceProjectListComponent,
-    CardComponent
+    CardComponent,
+    ProjectDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -250,6 +253,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzTagModule,
     NzTimelineModule,
     NzModalModule,
+    NzDatePickerModule,
     NzDescriptionsModule
   ],
   providers: [

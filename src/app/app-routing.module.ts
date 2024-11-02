@@ -40,6 +40,7 @@ import { ComplaintComponent } from './components/register-page/complaint/complai
 import { ProjectComponent } from './components/register-page/project/project.component';
 import { ShopListComponent } from './components/page-list/shop-list/shop-list.component';
 import { BloggerListComponent } from './components/page-list/blogger-list/blogger-list.component';
+import { ProjectDetailComponent } from './components/page-list/project-detail/project-detail.component';
 import { FreelanceProjectListComponent } from './components/page-list/freelance-project-list/freelance-project-list.component';
 import { BloggerRevenueDashboardComponent } from './components/admin-pages/blogger-revenue-dashboard/blogger-revenue-dashboard.component';
 import { BloggerManagementComponent } from './components/admin-pages/blogger-management/blogger-management.component';
@@ -58,6 +59,7 @@ const routes: Routes = [
   { path: 'blogger-management', component: BloggerManagementComponent},
   { path: 'revenue-management', component: RevenueManagementComponent},
   { path: 'project-management', component: ProjectManagementComponent},
+  { path: 'project-detail', component: ProjectDetailComponent},
   { path: 'blogger-revenue-management', component: BloggerRevenueDashboardComponent},
   { path: 'store-revenue-management', component: StoreRevenueDashboardComponent},
   { path: 'shop-page', canActivate: [adminGuard], data: { requiredPermission: Permission.READ }, component: PostFeedComponent },

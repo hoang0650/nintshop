@@ -79,4 +79,42 @@
       font-size: 18px;
     }
   }
+
+  .transaction-history-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .expanded-row {
+    background-color: #f1f1f1;
+  }
+  
+  .transaction-details {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 768px) {
+    .transaction-history-container {
+      overflow-x: auto;
+    }
+  }
+  
+
+  .admin-transaction-history-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+
+    @media (max-width: 768px) {
+      overflow-x: auto;
+    }
+  }
+  
+  h2 {
+    margin-bottom: 16px;
+  }
+  
+  
   

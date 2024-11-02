@@ -41,6 +41,10 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -105,6 +109,13 @@ import { ComplaintComponent } from './components/register-page/complaint/complai
 import { RevenueManagementComponent } from './components/admin-pages/revenue-management/revenue-management.component';
 import { BloggerListComponent } from './components/page-list/blogger-list/blogger-list.component';
 import { ShopListComponent } from './components/page-list/shop-list/shop-list.component';
+import { StoreManagementComponent } from './components/admin-pages/store-management/store-management.component';
+import { BloggerManagementComponent } from './components/admin-pages/blogger-management/blogger-management.component';
+import { StoreRevenueDashboardComponent } from './components/admin-pages/store-revenue-dashboard/store-revenue-dashboard.component';
+import { BloggerRevenueDashboardComponent } from './components/admin-pages/blogger-revenue-dashboard/blogger-revenue-dashboard.component';
+import { ProjectManagementComponent } from './components/admin-pages/project-management/project-management.component';
+import { FreelanceProjectListComponent } from './components/page-list/freelance-project-list/freelance-project-list.component';
+import { CardComponent } from './components/page-list/card/card.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -175,7 +186,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComplaintComponent,
     RevenueManagementComponent,
     BloggerListComponent,
-    ShopListComponent
+    ShopListComponent,
+    StoreManagementComponent,
+    BloggerManagementComponent,
+    StoreRevenueDashboardComponent,
+    BloggerRevenueDashboardComponent,
+    ProjectManagementComponent,
+    FreelanceProjectListComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
@@ -228,7 +246,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzPaginationModule,
     NzInputNumberModule,
     NzSliderModule,
-    NzCollapseModule
+    NzCollapseModule,
+    NzTagModule,
+    NzTimelineModule,
+    NzModalModule,
+    NzDescriptionsModule
   ],
   providers: [
     provideClientHydration(),

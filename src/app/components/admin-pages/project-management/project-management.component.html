@@ -1,0 +1,135 @@
+<!-- project-management.component.html -->
+<nz-card nzTitle="Quản lý Dự án">
+    <button nz-button nzType="primary" (click)="showCreateProjectModal()" style="margin-bottom: 16px;">
+      <i nz-icon nzType="plus"></i>Tạo dự án mới
+    </button>
+    
+    <nz-table #projectTable [nzData]="projects">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên dự án</th>
+          <th>Blogger</th>
+          <th>Ngày bắt đầu</th>
+          <th>Ngày kết thúc</th>
+          <th>Trạng thái</th>
+          <th>Tiến độ</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let project of projectTable.data">
+          <td>{{ project.id }}</td>
+          <td>{{ project.title }}</td>
+          <td>{{ project.blogger }}</td>
+          <td>{{ project.startDate }}</td>
+          <td>{{ project.endDate }}</td>
+          <td>
+            <nz-tag [nzColor]="getStatusColor(project.status)">{{ project.status }}</nz-tag>
+          </td>
+          <td>
+            <nz-progress [nzPercent]="project.progress" nzSize="small"></nz-progress>
+          </td>
+          <td>
+            <button nz-button nzType="primary" (click)="showProjectDetails(project)">Chi tiết</button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  
+  <nz-modal
+    [(nzVisible)]="isModalVisible"
+    [nzTitle]="selectedProject?.title"
+    (nzOnCancel)="handleCancel()"
+    [nzFooter]="null"
+  >
+    <ng-container *nzModalContent>
+      <nz-descriptions nzTitle="Thông tin dự án" nzBordered [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }">
+        <nz-descriptions-item nzTitle="Blogger">{{ selectedProject?.blogger }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày bắt đầu">{{ selectedProject?.startDate }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày kết thúc">{{ selectedProject?.endDate }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Trạng thái">
+          <nz-tag [nzColor]="getStatusColor(selectedProject?.status || '')">{{ selectedProject?.status }}</nz-tag>
+        </nz-descriptions-item>
+      </nz-descriptions>
+  
+      <nz-divider></nz-divider>
+  
+      <h3>Tiến độ dự án</h3>
+      <nz-progress [nzPercent]="selectedProject?.progress || 0" nzSize="default"></nz-progress>
+  
+      <nz-divider></nz-divider>
+  
+      <h3>Các mốc quan trọng</h3>
+      <nz-timeline>
+        <nz-timeline-item *ngFor="let milestone of milestones" [nzColor]="'green'">
+          <h4>{{ milestone.title }}</h4>
+          <p>{{ milestone.date }}</p>
+          <p>{{ milestone.description }}</p>
+        </nz-timeline-item>
+      </nz-timeline>
+  
+      <nz-divider></nz-divider>
+  
+      <h3>Lịch sử hoạt động</h3>
+      <nz-timeline>
+        <nz-timeline-item>Blogger đã cập nhật nội dung - 2023-06-25</nz-timeline-item>
+        <nz-timeline-item>Khách hàng đã phản hồi - 2023-06-20</nz-timeline-item>
+        <nz-timeline-item>Blogger đã gửi bản nháp - 2023-06-15</nz-timeline-item>
+        <nz-timeline-item>Dự án bắt đầu - 2023-06-01</nz-timeline-item>
+      </nz-timeline>
+    </ng-container>
+  </nz-modal>
+  
+  <nz-modal
+    [(nzVisible)]="isCreateModalVisible"
+    nzTitle="Tạo dự án mới"
+    (nzOnCancel)="handleCreateProjectCancel()"
+    (nzOnOk)="handleCreateProjectOk()"
+    [nzOkText]="'Tạo'"
+    [nzCancelText]="'Hủy'"
+  >
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="createProjectForm">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzRequired>Tên dự án</nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng nhập tên dự án!">
+            <input nz-input formControlName="title" placeholder="Nhập tên dự án" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzRequired>Blogger</nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng chọn blogger!">
+            <nz-select formControlName="blogger" nzPlaceHolder="Chọn blogger">
+              <nz-option nzValue="Nguyễn Văn A" nzLabel="Nguyễn Văn A"></nz-option>
+              <nz-option nzValue="Trần Thị B" nzLabel="Trần Thị B"></nz-option>
+              <nz-option nzValue="Lê Văn C" nzLabel="Lê Văn C"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzRequired>Ngày bắt đầu</nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng chọn ngày bắt đầu!">
+            <nz-date-picker formControlName="startDate"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzRequired>Ngày kết thúc</nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng chọn ngày kết thúc!">
+            <nz-date-picker formControlName="endDate"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzRequired>Trạng thái</nz-form-label>
+          <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng chọn trạng thái!">
+            <nz-select formControlName="status" nzPlaceHolder="Chọn trạng thái">
+              <nz-option nzValue="Chưa bắt đầu" nzLabel="Chưa bắt đầu"></nz-option>
+              <nz-option nzValue="Đang thực hiện" nzLabel="Đang thực hiện"></nz-option>
+              <nz-option nzValue="Hoàn thành" nzLabel="Hoàn thành"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+  </nz-modal>

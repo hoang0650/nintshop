@@ -1,0 +1,42 @@
+<!-- store-management.component.html -->
+<nz-card nzTitle="Quản lý Cửa hàng">
+    <div nz-row [nzGutter]="16">
+      <div nz-col [nzSpan]="8">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input placeholder="Tìm kiếm cửa hàng" [(ngModel)]="searchValue" (ngModelChange)="search()"/>
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon nzType="search"></i>
+        </ng-template>
+      </div>
+      <div nz-col [nzSpan]="16" style="text-align: right;">
+        <button nz-button nzType="primary"><i nz-icon nzType="plus"></i>Thêm cửa hàng mới</button>
+      </div>
+    </div>
+    <nz-table #basicTable [nzData]="stores">
+      <thead>
+        <tr>
+          <th>Tên cửa hàng</th>
+          <th>Địa chỉ</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>{{ data.name }}</td>
+          <td>{{ data.address }}</td>
+          <td>
+            <nz-tag [nzColor]="data.status === 'active' ? 'green' : data.status === 'pending' ? 'gold' : 'red'">
+              {{ data.status === 'active' ? 'Hoạt động' : data.status === 'pending' ? 'Chờ duyệt' : 'Không hoạt động' }}
+            </nz-tag>
+          </td>
+          <td>
+            <a>Xem chi tiết</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a>Chỉnh sửa</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>

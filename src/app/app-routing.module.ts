@@ -40,16 +40,27 @@ import { ComplaintComponent } from './components/register-page/complaint/complai
 import { ProjectComponent } from './components/register-page/project/project.component';
 import { ShopListComponent } from './components/page-list/shop-list/shop-list.component';
 import { BloggerListComponent } from './components/page-list/blogger-list/blogger-list.component';
+import { FreelanceProjectListComponent } from './components/page-list/freelance-project-list/freelance-project-list.component';
+import { BloggerRevenueDashboardComponent } from './components/admin-pages/blogger-revenue-dashboard/blogger-revenue-dashboard.component';
+import { BloggerManagementComponent } from './components/admin-pages/blogger-management/blogger-management.component';
+import { StoreRevenueDashboardComponent } from './components/admin-pages/store-revenue-dashboard/store-revenue-dashboard.component';
+import { StoreManagementComponent } from './components/admin-pages/store-management/store-management.component';
+import { ProjectManagementComponent } from './components/admin-pages/project-management/project-management.component';
 import { RevenueManagementComponent } from './components/admin-pages/revenue-management/revenue-management.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'shop', component: ShopComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'project', component: ProjectComponent },
+  // { path: 'project', component: ProjectComponent },
   { path: 'complaint', component: ComplaintComponent },
+  { path: 'store-management', component: StoreManagementComponent},
+  { path: 'blogger-management', component: BloggerManagementComponent},
   { path: 'revenue-management', component: RevenueManagementComponent},
-  { path: 'shop-page', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: PostFeedComponent },
+  { path: 'project-management', component: ProjectManagementComponent},
+  { path: 'blogger-revenue-management', component: BloggerRevenueDashboardComponent},
+  { path: 'store-revenue-management', component: StoreRevenueDashboardComponent},
+  { path: 'shop-page', canActivate: [adminGuard], data: { requiredPermission: Permission.READ }, component: PostFeedComponent },
   { path: 'detail/:id', component: DetailComponent },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
@@ -62,6 +73,7 @@ const routes: Routes = [
   { path: 'register', component: SignupComponent },
   { path: 'shops', component: ShopListComponent },
   { path: 'blogger', component: BloggerListComponent },
+  { path: 'project', component: FreelanceProjectListComponent },
   { path: 'shop-register', component: StoreComponent },
   { path: 'blogger-register', component: BloggerComponent },
   { path: 'balance', canActivate: [adminGuard], data: { requiredPermission: Permission.WRITE }, component: BalanceComponent },

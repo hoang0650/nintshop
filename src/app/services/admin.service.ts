@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = 'http://localhost:3000/api/services'; // Adjust this to your API URL
-
+  private apiUrl = 'http://localhost:3000/api/services'; 
+  // private apiUrl= 'https://sale-nest-api.onrender.com/api/services'
   constructor(private http: HttpClient) { }
   registerStore(storeData: any): Observable<any> {
     const token = localStorage.getItem('access_token')

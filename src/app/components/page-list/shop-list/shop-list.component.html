@@ -30,33 +30,33 @@
 
 <!-- store-list.component.html -->
 <div class="container">
-    <h1 class="title">Danh sách cửa hàng</h1>
-    
-    <div class="search-bar">
-      <input type="text" placeholder="Tìm kiếm cửa hàng..." class="search-input">
-      <button class="search-button">Tìm kiếm</button>
-    </div>
+  <h1 class="title">Danh sách cửa hàng</h1>
   
-    <div class="store-grid">
-      <!-- Repeat this card for each store -->
-      <div class="store-card">
-        <img src="path-to-store-image.jpg" alt="Store Name" class="store-image">
-        <div class="store-info">
-          <h2 class="store-name">Tên Cửa Hàng</h2>
-          <p class="store-address">123 Đường ABC, Quận 1, TP.HCM</p>
-          <div class="store-rating">
-            <span class="stars">★★★★☆</span>
-            <span class="rating-number">4.5</span>
-          </div>
-          <button class="view-details-btn">Xem chi tiết</button>
-        </div>
-      </div>
-      <!-- End of store card -->
-    </div>
-  
-    <div class="pagination">
-      <button class="pagination-btn">Trước</button>
-      <span class="page-number">Trang 1 của 5</span>
-      <button class="pagination-btn">Sau</button>
-    </div>
+  <div class="search-bar">
+    <input type="text" placeholder="Tìm kiếm cửa hàng..." class="search-input" [(ngModel)]="searchTerm">
+    <button class="search-button" (click)="fetchStores()">Tìm kiếm</button>
   </div>
+
+  <div class="store-grid">
+    <!-- Loop qua từng cửa hàng trong filteredStores -->
+    <div class="store-card" *ngFor="let store of filteredStores">
+      <img src="path-to-store-image.jpg" alt="{{ store.storeName }}" class="store-image">
+      <div class="store-info">
+        <h2 class="store-name">{{ store.storeName }}</h2>
+        <p class="store-address">{{ store.address }}</p>
+        <div class="store-rating">
+          <span class="stars">★★★★☆</span>
+          <span class="rating-number">4.5</span>
+        </div>
+        <button class="view-details-btn" [routerLink]="['/shop-page']">Xem chi tiết</button>
+      </div>
+    </div>
+    <!-- Kết thúc vòng lặp store-card -->
+  </div>
+
+  <div class="pagination">
+    <button class="pagination-btn">Trước</button>
+    <span class="page-number">Trang 1 của 5</span>
+    <button class="pagination-btn">Sau</button>
+  </div>
+</div>

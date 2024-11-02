@@ -1,40 +1,78 @@
 <!-- revenue-management.component.html -->
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Quản lý doanh thu và lịch sử giao dịch</h1>
-
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 class="text-xl font-semibold mb-4">Tổng doanh thu: {{ totalRevenue | currency:'VND':'symbol':'1.0-0' }}</h2>
+<nz-card nzTitle="Quản lý Doanh thu">
+    <div nz-row [nzGutter]="16">
+        <div nz-col [nzSpan]="6">
+            <nz-card>
+                <nz-statistic [nzValue]="(totalRevenue | number)!" [nzTitle]="'Tổng doanh thu'"
+                    [nzPrefix]="prefixTotalRevenue" [nzSuffix]="'VNĐ'"></nz-statistic>
+                <ng-template #prefixTotalRevenue><i nz-icon nzType="dollar"></i></ng-template>
+            </nz-card>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-card>
+                <nz-statistic [nzValue]="(storeRevenue | number)!" [nzTitle]="'Doanh thu cửa hàng'"
+                    [nzPrefix]="prefixStoreRevenue" [nzSuffix]="'VNĐ'"></nz-statistic>
+                <ng-template #prefixStoreRevenue><i nz-icon nzType="shop"></i></ng-template>
+            </nz-card>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-card>
+                <nz-statistic [nzValue]="(bloggerRevenue | number)!" [nzTitle]="'Doanh thu blogger'"
+                    [nzPrefix]="prefixBloggerRevenue" [nzSuffix]="'VNĐ'"></nz-statistic>
+                <ng-template #prefixBloggerRevenue><i nz-icon nzType="user"></i></ng-template>
+            </nz-card>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-card>
+                <nz-statistic [nzValue]="18.2" [nzTitle]="'Tỷ lệ tăng trưởng'" [nzPrefix]="prefixGrowthRate"
+                    [nzSuffix]="'%'"></nz-statistic>
+                <ng-template #prefixGrowthRate><i nz-icon nzType="arrow-up"></i></ng-template>
+            </nz-card>
+        </div>
     </div>
 
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
-        <h2 class="text-xl font-semibold mb-4">Lịch sử giao dịch</h2>
-        <table class="w-full">
+    <nz-divider></nz-divider>
+
+    <div nz-row [nzGutter]="16">
+        <div nz-col [nzSpan]="24">
+            <nz-card nzTitle="Biểu đồ doanh thu">
+                <div style="text-align: right; margin-bottom: 16px;">
+                    <nz-select [(ngModel)]="selectedTimeframe" (ngModelChange)="onTimeframeChange()"
+                        style="width: 200px;">
+                        <nz-option nzValue="thisWeek" nzLabel="Tuần này"></nz-option>
+                        <nz-option nzValue="thisMonth" nzLabel="Tháng này"></nz-option>
+                        <nz-option nzValue="lastMonth" nzLabel="Tháng trước"></nz-option>
+                        <nz-option nzValue="last3Months" nzLabel="3 tháng gần đây"></nz-option>
+                    </nz-select>
+                </div>
+                <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+                    style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+            </nz-card>
+        </div>
+    </div>
+
+    <nz-divider></nz-divider>
+
+    <nz-card nzTitle="Giao dịch gần đây">
+        <nz-table #basicTable [nzData]="recentTransactions">
             <thead>
                 <tr>
-                    <th class="px-4 py-2">ID</th>
-                    <th class="px-4 py-2">Ngày</th>
-                    <th class="px-4 py-2">Mô tả</th>
-                    <th class="px-4 py-2">Số tiền</th>
-                    <th class="px-4 py-2">Trạng thái</th>
+                    <th>ID</th>
+                    <th>Ngày</th>
+                    <th>Loại</th>
+                    <th>Tên</th>
+                    <th>Số tiền</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let transaction of transactions">
-                    <td class="border px-4 py-2">{{ transaction.id }}</td>
-                    <td class="border px-4 py-2">{{ transaction.date | date:'dd/MM/yyyy' }}</td>
-                    <td class="border px-4 py-2">{{ transaction.description }}</td>
-                    <td class="border px-4 py-2">{{ transaction.amount | currency:'VND':'symbol':'1.0-0' }}</td>
-                    <td class="border px-4 py-2">
-                        <span [ngClass]="{
-                'bg-green-200 text-green-800': transaction.status === 'completed',
-                'bg-yellow-200 text-yellow-800': transaction.status === 'pending',
-                'bg-red-200 text-red-800': transaction.status === 'cancelled'
-              }" class="px-2 py-1 rounded-full text-sm">
-                            {{ transaction.status }}
-                        </span>
-                    </td>
+                <tr *ngFor="let data of basicTable.data">
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.date }}</td>
+                    <td>{{ data.type }}</td>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.amount | number }} VNĐ</td>
                 </tr>
             </tbody>
-        </table>
-    </div>
-</div>
+        </nz-table>
+    </nz-card>
+</nz-card>

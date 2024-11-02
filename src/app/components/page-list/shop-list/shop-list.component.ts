@@ -21,15 +21,19 @@ export class ShopListComponent implements OnInit {
         this.stores = response;
       },
       (error) => {
-
+        console.error("Error fetching stores:", error);
       }
     );
   }
+  
 
   get filteredStores() {
-    return this.stores.filter(store =>
-      store.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      store.address.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    return this.stores.filter(store => {
+      return (
+        store.storeName?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        store.address?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    });
   }
+  
 }

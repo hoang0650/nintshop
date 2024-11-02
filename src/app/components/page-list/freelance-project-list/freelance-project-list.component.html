@@ -1,0 +1,41 @@
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Dự án freelance</h1>
+    <div nz-row nzGutter="16" class="mb-8" nzJustify="start">
+      <!-- Search Input -->
+      <div nz-col [nzSpan]="24" [nzMd]="8">
+        <nz-input-group [nzPrefix]="searchIcon" class="w-full">
+          <input
+            type="text"
+            nz-input
+            placeholder="Tìm kiếm dự án..."
+            [(ngModel)]="searchTerm"
+          />
+        </nz-input-group>
+        <ng-template #searchIcon>
+          <i nz-icon nzType="search" class="text-muted-foreground"></i>
+        </ng-template>
+      </div>
+  
+      <!-- Select Category Dropdown -->
+      <div nz-col [nzSpan]="24" [nzMd]="8">
+        <nz-select
+          [(ngModel)]="selectedCategory"
+          nzPlaceHolder="Chọn danh mục"
+          class="w-full"
+        >
+          <nz-option nzValue="all" nzLabel="Tất cả danh mục"></nz-option>
+          <nz-option nzValue="Web Development" nzLabel="Phát triển web"></nz-option>
+          <nz-option nzValue="Mobile Development" nzLabel="Phát triển di động"></nz-option>
+          <nz-option nzValue="Design" nzLabel="Thiết kế"></nz-option>
+          <nz-option nzValue="Writing" nzLabel="Viết lách"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+  
+    <div nz-row nzGutter="16">
+      <div nz-col [nzSpan]="24" [nzMd]="8" *ngFor="let project of filteredProjects">
+        <app-card [project]="project"></app-card>
+      </div>
+    </div>
+  </div>
+  

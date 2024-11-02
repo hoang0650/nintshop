@@ -1,0 +1,25 @@
+.container {
+    @media (max-width: 768px) {
+      .ant-row {
+        flex-direction: column;
+      }
+  
+      .ant-col {
+        width: 100%;
+      }
+    }
+  }
+  
+
+.nz-card {
+    margin-bottom: 16px;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
+}

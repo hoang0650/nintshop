@@ -34,23 +34,23 @@
     <h1 class="title">Danh sách Blogger</h1>
     
     <div class="search-bar">
-      <input type="text" placeholder="Tìm kiếm blogger..." class="search-input">
+      <input type="text" placeholder="Tìm kiếm blogger..." class="search-input" [(ngModel)]="searchTerm">
       <button class="search-button">Tìm kiếm</button>
     </div>
   
     <div class="blogger-grid">
       <!-- Repeat this card for each blogger -->
-      <div class="blogger-card">
-        <img src="path-to-blogger-image.jpg" alt="Blogger Name" class="blogger-image">
+      <div class="blogger-card" *ngFor="let blogger of filteredBloggers">
+        <img src="path-to-blogger-image.jpg" alt="{{blogger.bloggerName}}" class="blogger-image">
         <div class="blogger-info">
-          <h2 class="blogger-name">Tên Blogger</h2>
-          <p class="blogger-specialty">Chuyên môn: Thời trang</p>
-          <p class="blogger-bio">Mô tả ngắn về blogger và kinh nghiệm của họ...</p>
+          <h2 class="blogger-name">{{blogger.bloggerName}}</h2>
+          <p class="blogger-specialty">{{blogger.specialty}}</p>
+          <p class="blogger-bio overflow">{{blogger.bio}}</p>
           <div class="blogger-rating">
             <span class="stars">★★★★☆</span>
             <span class="rating-number">4.5</span>
           </div>
-          <button class="hire-btn">Thuê Blogger</button>
+          <button class="hire-btn" [routerLink]="['/project']">Thuê Blogger</button>
         </div>
       </div>
       <!-- End of blogger card -->

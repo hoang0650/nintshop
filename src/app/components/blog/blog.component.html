@@ -17,6 +17,10 @@
                 <app-table-of-contents [sections]="blog.sections"></app-table-of-contents>
 
                 <div class="post-content">
+                    <div *ngIf="isAdAvailable">
+                        <app-adsensebanner></app-adsensebanner>
+                    </div>
+     
                     <section *ngFor="let section of blog.sections; let i = index" [id]="'section-' + i">
                         <h2>{{ section.title }}</h2>
                         <div [innerHTML]="section.content"></div>
@@ -43,9 +47,13 @@
             <!-- Banner or Image -->
             <div class="banner">
                 <!-- <h2>Quảng cáo</h2> -->
-                 <a  href="https://www.ssi.com.vn/khach-hang-ca-nhan/mo-tai-khoan?mgm=2581&fbclid=IwY2xjawGEveBleHRuA2FlbQIxMAABHemiQHLgNV5Yii6P4cm0xNCQ-lFczMWbbFKWifxpNWgeM7Pw0gKB4nV-3A_aem_24YsoQAQZ3nHqj2qJ9ABqQ" target="_blank">
-                    <img src="img/Logo-SSI.jpg"  alt="SSI" class="banner-image"/>
-                 </a>
+                <a href="https://www.ssi.com.vn/khach-hang-ca-nhan/mo-tai-khoan?mgm=2581&fbclid=IwY2xjawGEveBleHRuA2FlbQIxMAABHemiQHLgNV5Yii6P4cm0xNCQ-lFczMWbbFKWifxpNWgeM7Pw0gKB4nV-3A_aem_24YsoQAQZ3nHqj2qJ9ABqQ"
+                    target="_blank">
+                    <img src="img/Logo-SSI.jpg" alt="SSI" class="banner-image" />
+                </a>
+            </div>
+            <div class="banner" *ngIf="isAdAvailable">
+                <app-adsensebanner></app-adsensebanner>
             </div>
 
             <!-- Related posts -->

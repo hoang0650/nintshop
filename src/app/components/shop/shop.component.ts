@@ -4,6 +4,7 @@ import { CartService } from '../../services/cart.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { SeoService } from '../../services/seo.service';
+import { AdService } from '../../services/ad.service';
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
@@ -18,10 +19,11 @@ export class ShopComponent implements OnInit{
   selectedSort: string = ''; // Khai báo thuộc tính selectedSort
   itemsPerPage = 9; // Số lượng sản phẩm trên mỗi trang
   currentPage = 1; // Trang hiện tạ
+  isAdAvailable = false;
 
   products: any[] = []; // Giả sử đây là danh sách sản phẩm từ service
   filteredProducts: any[] = [];
-  constructor(private seoService: SeoService ,private messageService: MessageService, private route: ActivatedRoute,public productService: ProductService,private cartService: CartService) { }
+  constructor(private adService: AdService,private seoService: SeoService ,private messageService: MessageService, private route: ActivatedRoute,public productService: ProductService,private cartService: CartService) { }
 
   ngOnInit(): void {
     this.seoService.setSocialShareTags({
@@ -51,6 +53,9 @@ export class ShopComponent implements OnInit{
           this.filteredProducts = [...this.products];
         }
       });
+    });
+    this.adService.isAdAvailable$.subscribe((isAvailable: boolean) => {
+      this.isAdAvailable = isAvailable;
     });
   }
   

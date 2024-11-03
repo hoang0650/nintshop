@@ -3,6 +3,7 @@ import { LanguageService } from '../../services/language.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from '../../services/contact.service';
 import { MessageService } from '../../services/message.service';
+import { AdService } from '../../services/ad.service';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -11,7 +12,8 @@ import { MessageService } from '../../services/message.service';
 export class FooterComponent implements OnInit {
   currentLanguage: string;
   contactForm: FormGroup;
-  constructor(private messageService: MessageService, private fb: FormBuilder,private languageService: LanguageService,private contactService: ContactService) {
+  isAdAvailable = false;
+  constructor(private adService: AdService, private messageService: MessageService, private fb: FormBuilder,private languageService: LanguageService,private contactService: ContactService) {
     this.currentLanguage = 'en'; // Ngôn ngữ mặc định
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -23,6 +25,9 @@ export class FooterComponent implements OnInit {
   ngOnInit(): void {
     this.languageService.currentLanguage.subscribe(lang => {
       this.currentLanguage = lang; // Cập nhật ngôn ngữ khi thay đổi
+    });
+    this.adService.isAdAvailable$.subscribe((isAvailable: boolean) => {
+      this.isAdAvailable = isAvailable;
     });
   }
   onSubmit() {

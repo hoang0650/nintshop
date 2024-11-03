@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Blog } from '../../interfaces/blog';
 import { SeoService } from '../../services/seo.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AdService } from '../../services/ad.service';
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
@@ -13,12 +14,14 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 export class BlogComponent implements OnInit, OnDestroy {
   blog: any ;
   relatedPosts:any;
+  isAdAvailable = false;
   private subscriptions: Subscription = new Subscription();
   constructor(
     private blogService: BlogService,
     private route: ActivatedRoute,
     private seoService: SeoService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private adService: AdService
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +53,9 @@ export class BlogComponent implements OnInit, OnDestroy {
         }
       );
     }
+    this.adService.isAdAvailable$.subscribe((isAvailable: boolean) => {
+      this.isAdAvailable = isAvailable;
+    });
     
   }
 

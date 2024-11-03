@@ -17,10 +17,6 @@
                 <app-table-of-contents [sections]="blog.sections"></app-table-of-contents>
 
                 <div class="post-content">
-                    <div *ngIf="isAdAvailable">
-                        <app-adsensebanner></app-adsensebanner>
-                    </div>
-     
                     <section *ngFor="let section of blog.sections; let i = index" [id]="'section-' + i">
                         <h2>{{ section.title }}</h2>
                         <div [innerHTML]="section.content"></div>
@@ -33,11 +29,13 @@
                             <img [src]="section.imageUrl" alt="Section image" />
                         </div>
                     </section>
+                    <app-adsensebanner></app-adsensebanner>  
                 </div>
             </article>
 
             <!-- Comments section -->
             <div class="comments-section">
+                <app-adsensebanner></app-adsensebanner> 
                 <app-comment-blog></app-comment-blog>
             </div>
         </div>
@@ -52,10 +50,6 @@
                     <img src="img/Logo-SSI.jpg" alt="SSI" class="banner-image" />
                 </a>
             </div>
-            <div class="banner" *ngIf="isAdAvailable">
-                <app-adsensebanner></app-adsensebanner>
-            </div>
-
             <!-- Related posts -->
             <div class="related-posts">
                 <h2>Bài viết liên quan</h2>
@@ -72,6 +66,11 @@
                 </ul>
                 <button (click)="showMore()" class="show-more-btn">Xem thêm</button>
             </div>
+            <div class="banner">
+                <app-adsensebanner></app-adsensebanner>  
+            </div>
+
+            
         </div>
     </div>
 </div>

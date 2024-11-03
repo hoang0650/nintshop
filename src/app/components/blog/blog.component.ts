@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Blog } from '../../interfaces/blog';
 import { SeoService } from '../../services/seo.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { AdService } from '../../services/ad.service';
+
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
@@ -20,8 +20,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     private blogService: BlogService,
     private route: ActivatedRoute,
     private seoService: SeoService,
-    private sanitizer: DomSanitizer,
-    private adService: AdService
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -52,11 +51,7 @@ export class BlogComponent implements OnInit, OnDestroy {
           console.error('Error fetching related products:', error);
         }
       );
-    }
-    this.adService.isAdAvailable$.subscribe((isAvailable: boolean) => {
-      this.isAdAvailable = isAvailable;
-    });
-    
+    }    
   }
 
   ngOnDestroy(): void {

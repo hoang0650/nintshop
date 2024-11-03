@@ -4,7 +4,7 @@ import { CartService } from '../../services/cart.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { SeoService } from '../../services/seo.service';
-import { AdService } from '../../services/ad.service';
+
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
@@ -23,7 +23,7 @@ export class ShopComponent implements OnInit{
 
   products: any[] = []; // Giả sử đây là danh sách sản phẩm từ service
   filteredProducts: any[] = [];
-  constructor(private adService: AdService,private seoService: SeoService ,private messageService: MessageService, private route: ActivatedRoute,public productService: ProductService,private cartService: CartService) { }
+  constructor(private seoService: SeoService ,private messageService: MessageService, private route: ActivatedRoute,public productService: ProductService,private cartService: CartService) { }
 
   ngOnInit(): void {
     this.seoService.setSocialShareTags({
@@ -54,11 +54,7 @@ export class ShopComponent implements OnInit{
         }
       });
     });
-    this.adService.isAdAvailable$.subscribe((isAvailable: boolean) => {
-      this.isAdAvailable = isAvailable;
-    });
   }
-  
 
   onSearchChange(event: any): void {
     this.searchTerm = event.target.value.toLowerCase();

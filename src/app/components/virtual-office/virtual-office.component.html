@@ -1,0 +1,45 @@
+<div class="office">
+  <!-- Hiển thị người dùng hiện tại -->
+  <div
+    class="character"
+    [style.top]="position.y + '%'"
+    [style.left]="position.x + '%'"
+    id="character"
+  >
+    <div class="username">{{ username }}</div>
+  </div>
+
+  <!-- Hiển thị tất cả người dùng khác -->
+  <div
+    *ngFor="let user of users | keyvalue"
+    class="character"
+    [style.top]="user.value.position.y + '%'"
+    [style.left]="user.value.position.x + '%'"
+    [attr.id]="user.key"
+  >
+    <div class="username">{{ user.value.username }}</div>
+  </div>
+
+  <div class="room meeting-room" id="meetingRoom">Phòng Họp</div>
+  <div class="room work-desk" id="workDesk">Bàn Làm Việc</div>
+  <div class="room director-room" id="directorRoom">Phòng Giám Đốc</div>
+  <div class="room it-room" id="itRoom">Phòng IT</div>
+  <div class="room hr-room" id="hrRoom">Phòng Nhân Sự</div>
+
+  <div class="meet-features" *ngIf="inMeetingRoom">
+    <h3>Tính Năng Google Meet</h3>
+    <button (click)="toggleMic()">Mic: <span>{{ micOn ? 'Bật' : 'Tắt' }}</span></button>
+    <button (click)="toggleVideo()">Video: <span>{{ videoOn ? 'Bật' : 'Tắt' }}</span></button>
+    <button (click)="openChat()">Chat</button>
+  </div>
+
+  <!-- Khu vực chat -->
+  <!-- <div *ngIf="isChatOpen" class="chat-box">
+    <div class="messages">
+      <div *ngFor="let message of messages">
+        <strong>{{ message.username }}:</strong> {{ message.text }}
+      </div>
+    </div>
+    <input [(ngModel)]="chatMessage" (keydown.enter)="sendMessage()" placeholder="Nhập tin nhắn..." />
+  </div> -->
+</div>

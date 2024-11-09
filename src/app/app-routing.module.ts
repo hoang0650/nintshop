@@ -37,6 +37,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { StoreComponent } from './components/register-page/store/store.component';
 import { BloggerComponent } from './components/register-page/blogger/blogger.component';
 import { ComplaintComponent } from './components/register-page/complaint/complaint.component';
+import { VirtualOfficeComponent } from './components/virtual-office/virtual-office.component';
 import { ProjectComponent } from './components/register-page/project/project.component';
 import { ShopListComponent } from './components/page-list/shop-list/shop-list.component';
 import { BloggerListComponent } from './components/page-list/blogger-list/blogger-list.component';
@@ -54,6 +55,7 @@ const routes: Routes = [
   { path: 'shop', component: ShopComponent },
   { path: 'about', component: AboutComponent },
   // { path: 'project', component: ProjectComponent },
+  { path:'virtual-office', component: VirtualOfficeComponent},
   { path: 'complaint', component: ComplaintComponent },
   { path: 'store-management', component: StoreManagementComponent},
   { path: 'blogger-management', component: BloggerManagementComponent},

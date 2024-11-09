@@ -9,7 +9,8 @@ import { SeoService } from './services/seo.service';
 })
 export class AppComponent {
   isLoading = false;
-  showHeaderFooter = true;
+  showHeader = true;
+  showFooter = true;
 
   constructor(private router: Router,private languageService: LanguageService, private seoService: SeoService) {
     // Lắng nghe sự kiện router để kiểm soát trạng thái loading
@@ -26,9 +27,13 @@ export class AppComponent {
 
       // Kiểm tra nếu route hiện tại là Livestream để ẩn header/footer
       if (this.router.url.includes('/livestream')) {
-        this.showHeaderFooter = false;
+        this.showHeader = false;
+        this.showFooter = false;
+      }if (this.router.url.includes('/virtual-office')) {
+        this.showFooter = false;
       } else {
-        this.showHeaderFooter = true;
+        this.showHeader = true;
+        this.showFooter = true;
       }
     });
      // Nếu bạn cần làm gì đó khi ngôn ngữ thay đổi trong AppComponent

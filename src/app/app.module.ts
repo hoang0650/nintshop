@@ -119,6 +119,7 @@ import { FreelanceProjectListComponent } from './components/page-list/freelance-
 import { CardComponent } from './components/page-list/card/card.component';
 import { ProjectDetailComponent } from './components/page-list/project-detail/project-detail.component';
 import { AdsensebannerComponent } from './components/adsensebanner/adsensebanner.component';
+import { VirtualOfficeComponent } from './components/virtual-office/virtual-office.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -198,7 +199,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FreelanceProjectListComponent,
     CardComponent,
     ProjectDetailComponent,
-    AdsensebannerComponent
+    AdsensebannerComponent,
+    VirtualOfficeComponent
   ],
   imports: [
     BrowserModule,

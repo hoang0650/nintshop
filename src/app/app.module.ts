@@ -46,6 +46,8 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker'; // Import module cho date-picker
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -120,6 +122,7 @@ import { CardComponent } from './components/page-list/card/card.component';
 import { ProjectDetailComponent } from './components/page-list/project-detail/project-detail.component';
 import { AdsensebannerComponent } from './components/adsensebanner/adsensebanner.component';
 import { VirtualOfficeComponent } from './components/virtual-office/virtual-office.component';
+import { ContactListComponent } from './components/contact-list/contact-list.component';
 
 registerLocaleData(en);
 // Cấu hình để load các file JSON cho đa ngôn ngữ
@@ -200,7 +203,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CardComponent,
     ProjectDetailComponent,
     AdsensebannerComponent,
-    VirtualOfficeComponent
+    VirtualOfficeComponent,
+    ContactListComponent
   ],
   imports: [
     BrowserModule,
@@ -258,7 +262,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzTimelineModule,
     NzModalModule,
     NzDatePickerModule,
-    NzDescriptionsModule
+    NzDescriptionsModule,
+    NzEmptyModule,
+    NzPageHeaderModule
   ],
   providers: [
     provideClientHydration(),

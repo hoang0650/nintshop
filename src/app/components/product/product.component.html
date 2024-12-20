@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 pb-1">
+    <!-- <div class="col-12 pb-1">
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center mb-3">
                 <li class="page-item" [class.disabled]="currentPage === 1">
@@ -52,6 +52,10 @@
                 </li>
             </ul>
         </nav>
-    </div>
+    </div> -->
+
+    <!-- Phân trang -->
+    <nz-pagination [(nzPageIndex)]="currentPage" [nzTotal]="totalBlogs" [nzPageSize]="pageSize"
+        (nzPageIndexChange)="onPageChange($event)" class="pagination"></nz-pagination>
 </div>
 <!-- Products End -->

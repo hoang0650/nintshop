@@ -1,0 +1,77 @@
+<div class="contact-admin">
+    <!-- Mobile Header -->
+    <nz-page-header *ngIf="isMobile" [nzTitle]="selectedContact && !showList ? 'Message Details' : 'Contact Messages'"
+    [nzBackIcon]="(selectedContact && !showList) ? 'arrow-left' : null" (nzBack)="backToList()">
+    </nz-page-header>
+
+    <div class="content-wrapper">
+        <!-- Contact List -->
+        <div class="contact-list" [class.hidden]="isMobile && !showList">
+            <nz-spin [nzSpinning]="loading">
+                <div class="list-header" *ngIf="!isMobile">
+                    <h2 nz-typography>Contact Messages</h2>
+                </div>
+
+                <nz-list [nzDataSource]="contacts" [nzRenderItem]="contactItem">
+                    <ng-template #contactItem let-contact>
+                        <nz-list-item (click)="selectContact(contact)"
+                            [class.selected]="selectedContact?._id === contact._id" [class.unread]="true">
+                            <nz-list-item-meta>
+                                <nz-list-item-meta-avatar>
+                                    <nz-avatar nzIcon="user"></nz-avatar>
+                                </nz-list-item-meta-avatar>
+                                <nz-list-item-meta-title>
+                                    <div class="title-row">
+                                        <span class="name">{{ contact.name }}</span>
+                                        <span class="date">{{ formatDate(contact.date) }}</span>
+                                    </div>
+                                </nz-list-item-meta-title>
+                                <nz-list-item-meta-description>
+                                    <div class="subject">{{ contact.subject }}</div>
+                                    <div class="preview">{{ contact.message.substring(0, 100) }}...</div>
+                                </nz-list-item-meta-description>
+                            </nz-list-item-meta>
+                        </nz-list-item>
+                    </ng-template>
+                </nz-list>
+            </nz-spin>
+        </div>
+
+        <!-- Message Detail -->
+        <div class="contact-detail" [class.hidden]="isMobile && showList">
+            <ng-container *ngIf="selectedContact; else noSelection">
+                <div class="detail-content">
+                    <div class="message-header">
+                        <h3 nz-typography>{{ selectedContact.subject }}</h3>
+                        <div class="meta-info">
+                            <nz-avatar nzIcon="user" class="sender-avatar"></nz-avatar>
+                            <div class="sender-info">
+                                <span class="name">{{ selectedContact.name }}</span>
+                                <span class="email">{{ selectedContact.email }}</span>
+                            </div>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <span class="date">{{ formatDate(selectedContact.date) }}</span>
+                        </div>
+                    </div>
+
+                    <nz-card class="message-body">
+                        <div class="message-text">{{ selectedContact.message }}</div>
+                        <div class="message-actions">
+                            <button nz-button nzType="primary">Reply</button>
+                            <button nz-button>Forward</button>
+                            <button nz-button nzDanger>Delete</button>
+                        </div>
+                    </nz-card>
+                </div>
+            </ng-container>
+
+            <ng-template #noSelection>
+                <div class="no-selection">
+                    <nz-empty [nzNotFoundContent]="'Select a message to view its contents'"
+                        [nzNotFoundImage]="'simple'">
+                    </nz-empty>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

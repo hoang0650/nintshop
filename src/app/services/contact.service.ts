@@ -13,4 +13,8 @@ export class ContactService {
   sendContactForm(contactData: any): Observable<any> {
     return this.http.post(this.apiUrl, contactData);
   }
+
+  getContactForm(): Observable<any> {
+    return this.http.get(this.apiUrl);
+  }
 }

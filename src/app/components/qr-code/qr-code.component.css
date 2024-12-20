@@ -7,7 +7,7 @@
 
 .qr-item {
     width: 200px; /* Chiều rộng cố định cho từng hình ảnh */
-    height: 230px; /* Chiều cao cố định cho từng hình ảnh */
+    height: 280px; /* Chiều cao cố định cho từng hình ảnh */
     display: flex;
     justify-content: center;
     align-items: center;

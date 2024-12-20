@@ -6,6 +6,7 @@ import { DetailComponent } from './components/detail/detail.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { ContactListComponent } from './components/contact-list/contact-list.component';
 import { LoginComponent } from './components/register-page/login/login.component';
 import { SignupComponent } from './components/register-page/signup/signup.component';
 import { QrCodeComponent } from './components/qr-code/qr-code.component';
@@ -72,6 +73,7 @@ const routes: Routes = [
   { path: 'blog/:id', component: BlogComponent },
   { path: 'blog', component: BlogListComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'contact-list', component: ContactListComponent },
   { path: 'faqs', component: FaqsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: SignupComponent },

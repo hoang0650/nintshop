@@ -1,45 +1,54 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
-import { Product } from '../../interfaces/product';
 import { MessageService } from '../../services/message.service';
+import { ProductApiService } from '../../services/product-api.service';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'] // Đảm bảo rằng styleUrls là dạng số nhiều
 })
 export class ProductComponent implements OnInit {
-  constructor(public productService: ProductService, private cartService: CartService, private messageService: MessageService) { }
+  constructor(public productService: ProductApiService, private cartService: CartService, private messageService: MessageService) { }
   products: any[] = [];
-  itemsPerPage = 24; // Số lượng sản phẩm trên mỗi trang
+  searchTerm = '';             // Từ khóa tìm kiếm
   currentPage = 1; // Trang hiện tạ
+  totalBlogs = 0;              // Tổng số bài blog
+  pageSize = 24;               // Số lượng blog mỗi trang
+  isLoading = false;           // Trạng thái loading
   filteredProducts: any[] = [];
 
   ngOnInit(): void {
-    // Initialize with all products
-    this.productService.products$.subscribe(products => {
-      this.products = products;
-      this.filteredProducts = [...this.products];
-      this.applyPagination();
-    });
-  }
-  applyPagination() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    this.filteredProducts = this.products.slice(startIndex, startIndex + this.itemsPerPage);
+    this.loadProducts(this.currentPage);  // Load blog ban đầu
   }
 
-  changePage(page: number) {
-    if (page < 1 || page > this.totalPages().length) {
-      return;
-    }
+  // Tải blog theo trang và tìm kiếm (nếu có)
+  loadProducts(page: number) {
+    this.isLoading = true;
+    this.productService.getProductsWithPagination(page, this.pageSize, this.searchTerm).subscribe(
+      (data) => {
+        this.products = data.products;
+        this.totalBlogs = data.totalCount;
+        this.filteredProducts = [...this.products]; // Sao chép dữ liệu blogs vào filteredBlogs
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching blogs:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Sự kiện khi thay đổi trang
+  onPageChange(page: number) {
     this.currentPage = page;
-    this.applyPagination();
+    this.loadProducts(page);
   }
 
-  totalPages() {
-    return Array(Math.ceil(this.products.length / this.itemsPerPage)).fill(0).map((x, i) => i + 1);
+  // Sự kiện khi tìm kiếm
+  onSearch() {
+    this.currentPage = 1; // Reset về trang đầu tiên khi tìm kiếm
+    this.loadProducts(this.currentPage);
   }
-
 
   onSelect(product: string): void {
     // this.productService.setSelectedProduct(product)

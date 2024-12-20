@@ -17,7 +17,7 @@ export class ShopComponent implements OnInit{
   selectedCategory!: string;
   searchTerm: string = '';
   selectedSort: string = ''; // Khai báo thuộc tính selectedSort
-  itemsPerPage = 9; // Số lượng sản phẩm trên mỗi trang
+  itemsPerPage = 18; // Số lượng sản phẩm trên mỗi trang
   currentPage = 1; // Trang hiện tạ
   isAdAvailable = false;
 
